@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <libsmbclient.h>
+#include <dirent.h>
 #include <magic.h>
 #include <unistd.h>
 
@@ -220,6 +221,13 @@ class Spider {
    * @return 0 on success, -1 otherwise.
    */
   int InitMimeTypeAttr();
+
+  /**
+   * @brief DeleteDir Delete directory and all it's content.
+   * @param dir Name of the directory.
+   * @return 0 on success, -1 otherwise.
+   */
+  int DeleteDir(const std::string &dir);
 
  private:
   /**

@@ -167,12 +167,8 @@ Spider::~Spider() {
   if (unlikely(!DatabaseEntity::Disconnect()))
     MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
 
-  if (unlikely(rmdir(TMPDIR))) {
-    if (likely(errno == ENOTEMPTY)) {
-      // TODO(yulyugin): Delete all content from this directory
-    }
-    DetectError();
-    MSS_ERROR("rmdir", error_);
+  if (unlikely(DeleteDir(TMPDIR))) {
+    MSS_DEBUG_ERROR("DeleteDir", error_);
   }
 
   if (cookie_)
@@ -722,6 +718,79 @@ int Spider::InitMimeTypeAttr()  {
       error_ = ENOMSG;
       return -1;
     }
+  }
+
+  return 0;
+}
+
+int Spider::DeleteDir(const std::string &dir) {
+  // Try to delete directory
+  if (rmdir(dir.c_str())) {
+    if (unlikely(errno != ENOTEMPTY)) {
+      DetectError();
+      MSS_ERROR("rmdir", error_);
+      return -1;
+    }
+  } else {
+    return 0;
+  }
+
+  // Delete all content of the directory if it's noe empty and then delete it
+  DIR *dirfd = opendir(dir.c_str());
+  if (unlikely(!dirfd)) {
+    DetectError();
+    MSS_ERROR("opendir", error_);
+    return -1;
+  }
+
+  struct dirent entry;
+  struct dirent *result = NULL;
+
+  while (true) {
+    if (unlikely(readdir_r(dirfd, &entry, &result))) {
+      DetectError();
+      MSS_ERROR("readdir_r", error_);
+      break;
+    }
+
+    if (result == NULL) {
+      break;  // No more content in this directory
+    }
+
+    if (!strcmp(entry.d_name, ".") || !strcmp(entry.d_name, "..")) {
+      continue;  // Don't try to delete "." and ".."
+    }
+
+    if (unlink((dir + "/" + entry.d_name).c_str())) {
+      if (likely(errno == EISDIR)) {
+        if (unlikely(DeleteDir(dir + "/" + entry.d_name))) {
+          MSS_DEBUG_ERROR("DeleteDir", error_);
+          break;
+        }
+      } else {
+        DetectError();
+        MSS_ERROR("unlink", error_);
+        break;
+      }
+    }
+  }
+
+  if (unlikely(closedir(dirfd))) {
+    DetectError();
+    MSS_ERROR("closedir", error_);
+    return -1;
+  }
+
+  // Don't try to remove directory again
+  // if an error occurs during content removing
+  if (likely(error_ == 0)) {
+    if (unlikely(rmdir(dir.c_str()))) {
+      DetectError();
+      MSS_ERROR("rmdir", error_);
+      return -1;
+    }
+  } else {
+    return -1;
   }
 
   return 0;

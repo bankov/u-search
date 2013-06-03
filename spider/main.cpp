@@ -70,6 +70,18 @@ int main() {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
     exit(EXIT_FAILURE);
   }
-  spider.Run();
+
+  struct timeval start, end;
+
+  // Looped indexation and print time of each iteration
+  while (true) {
+    gettimeofday(&start, NULL);
+
+    spider.Run();
+
+    gettimeofday(&end, NULL);
+    printf("Iteration time - %ld second.\n", end.tv_sec - start.tv_sec);
+  }
+
   exit(EXIT_SUCCESS);
 }

@@ -176,4 +176,11 @@ void FileParameterTest::ConstructorsTestCase() {
   auto param = FileParameter::GetByFileAndAttribute(entry, attr);
   CPPUNIT_ASSERT_MESSAGE("FileParameter", param);
   CPPUNIT_ASSERT_MESSAGE("Wrong number of parameters", param->size() == 1);
+
+  // Update an entry
+  FileEntry updated_entry(name, path, server);
+
+  param = FileParameter::GetByFileAndAttribute(updated_entry, attr);
+  CPPUNIT_ASSERT_MESSAGE("FileParameter", param);
+  CPPUNIT_ASSERT_MESSAGE("Wrong number of parameters", param->size() == 1);
 }

@@ -49,13 +49,14 @@ class TCPListener : public AbstractSocket {
   /**
    * @brief TCPListener create an object with specified address and port.
    *
-   * @param newLocalAddress instance of class SocketAddress which contain
+   * @param local_address instance of class SocketAddress which contain
    * address and port to be listened.
    * @param backlog provide possibility to limit the number of outstanding
    * connections in the socket's listen queue. Implementations may impose a
    * limit on backlog and silently reduce the specified value. Normally, a
    * larger backlog argument value shall result in a larger or equal length of
    * the listen queue. Defined in <sys/socket.h>.
+   *
    * If  TCPListener() is called with a backlog argument value that is less
    * than 0, the function behaves as if it had been called with a backlog
    * argument value of 0.
@@ -71,7 +72,7 @@ class TCPListener : public AbstractSocket {
    * @brief AcceptNoWait accept a new connection on a socket. If connection is
    * not set AcceptNoWait() shall not block.
    *
-   * @return instance of class DataSocket.
+   * @return Accepted instance of class DataSocket.
    */
   DataSocket *AcceptNoWait();
 
@@ -79,7 +80,7 @@ class TCPListener : public AbstractSocket {
    * @brief Accept accept a new connection on a socket. If connection is not
    * set Accept() shall block until a connection is present.
    *
-   * @return accepted instance of class DataSocket.
+   * @return Accepted instance of class DataSocket.
    */
   DataSocket *Accept();
 

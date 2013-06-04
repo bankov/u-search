@@ -367,7 +367,7 @@ void UDPSocketTest::BasicTestCase() {
   testedSocket->SendDatagram(buf, localhostAddress2, 25);
   free(buf);
 
-  secondSocket->ReciveDatagram(&buf);
+  secondSocket->ReceiveDatagram(&buf);
   CPPUNIT_ASSERT_MESSAGE("Recived and sended not same",
                          !strcmp((char*) buf, message));
   free(buf);
@@ -380,7 +380,7 @@ void UDPSocketTest::BasicTestCase() {
   testedSocket->SendDatagram(buf, localhostAddress, 25);
   free(buf);
 
-  testedSocket->ReciveDatagram(&buf);
+  testedSocket->ReceiveDatagram(&buf);
 
   delete testedSocket;
   delete localhostAddress;

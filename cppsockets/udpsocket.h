@@ -29,96 +29,111 @@
 
 #include "datasocket.h"
 
+/**
+ * @brief Class to work with UDP.
+ */
 class UDPSocket : public DataSocket {
  public:
+  /**
+   * Simple constructor.
+   */
   UDPSocket();
+
+  /**
+   * Create an object and set set an address
+   */
   explicit UDPSocket(const SocketAddress *listenSocketAddress);
 
   /**
-   * @brief AllowBroadcast Function tell to socket allow transmiting broadcast
-   * message.
+   * @brief Tell socket allow transmiting broadcast message.
    *
    * @return Return true on success, or false on fail.
    */
   bool AllowBroadcast();
 
   /**
-   * @brief RejectBroadcast Function tell socket reject transmiting broadcast
-   * message. Default state.
+   * @brief Tell socket reject transmiting broadcast message. Default state.
    *
    * @return Return true on success, or false on fail.
    */
   bool RejectBroadcast();
 
   /**
-   * @brief WaitDatagram Function will suspend thread which call her until some
-   * data for recive would be avialible.
+   * @brief Suspend thread which call her until some data for recive
+   * would be avialible.
    *
-   * @return
+   * @return Return 0 on success, -1 otherwise.
    */
   int WaitDatagram();
 
   /**
-   * @brief Bind Function bind socket to address bindAddress, after this socket
+   * @brief Bind socket to address bindAddress, after this socket
    * can read data from network, sended on address and port matches with binded.
    *
-   * @param bindAddress Address to bind.
+   * @param address Address to bind.
+   *
    * @return 0 on success, -1 otherwise.
    */
-  int Bind(const SocketAddress &bindAddress);
+  int Bind(const SocketAddress &address);
 
   /**
-   * @brief ReciveDatagram Recive datagram no larger then maxSize storage point
-   * on begin at *__buf, write source of datagram to address. If datagram
-   * message is larger then maxSize, the excess bytes will be discarded.
-   * @param __buf Buffer.
-   * @param sourceAddress Address.
-   * @param maxSize Buffer size.
-   * @return Return count of recived bytes or -1.
-   */
-  ssize_t ReciveDatagram(void **__buf, SocketAddress *sourceAddress,
-                       ssize_t maxSize);
-
-  /**
-   * @brief ReciveDatagram Recive datagram and storage point on begin of
-   * datagram data at *__buf, write source to address.
+   * @brief Receive datagram.
    *
-   * @param __buf Buffer.
-   * @param sourceAddress Address
-   * @return Return count of recived bytes or -1.
-   */
-  ssize_t ReciveDatagram(void **__buf, SocketAddress *sourceAddress);
-
-  /**
-   * @brief ReciveDatagram Recive datagram and storage begin of them in *__buf.
+   * Receive datagram no larger then maxSize storage point on begin at *buf,
+   * write source of datagram to address. If datagram message is larger then
+   * size, the excess bytes will be discarded.
    *
-   * @param __buf Buffer.
-   * @return Return count of recived bytes or -1.
-   */
-  ssize_t ReciveDatagram(void **__buf);
-
-  /**
-   * @brief ReciveDatagram Recive datagram no larger then maxSize storage point
-   * on begin at *__buf. If datagram message is larger then maxSize, the excess
-   * bytes will be discarded.
+   * @param buf Buffer.
+   * @param address Address.
+   * @param size Buffer size.
    *
-   * @param __buf Buffer.
-   * @param maxSize Maximum size of datagram.
    * @return Return count of recived bytes or -1.
    */
-  ssize_t ReciveDatagram(void **__buf, ssize_t maxSize);
+  ssize_t ReceiveDatagram(void **buf, SocketAddress *address, ssize_t size);
 
   /**
-   * @brief SendDatagram Send data of size bytes in datagram to
-   * destinationAddress address and port.
+   * @brief Receive datagram.
+   *
+   * Recieve datagram and storage point on begin of datagram data at buf,
+   * write source to address.
+   *
+   * @param buf Buffer.
+   * @param address Address
+   *
+   * @return Return count of recived bytes or -1.
+   */
+  ssize_t ReceiveDatagram(void **buf, SocketAddress *address);
+
+  /**
+   * @brief Receive datagram and storage begin of them in *buf.
+   *
+   * @param buf Buffer.
+   * @return Return count of recived bytes or -1.
+   */
+  ssize_t ReceiveDatagram(void **buf);
+
+  /**
+   * @brief Receive datagram
+   *
+   * Receive datagram no larger then size storage point on begin at *buf. If
+   * datagram message is larger then size, the excess bytes will be discarded.
+   *
+   * @param buf Buffer.
+   * @param size Maximum size of datagram.
+   * @return Return count of recived bytes or -1.
+   */
+  ssize_t ReceiveDatagram(void **buf, ssize_t size);
+
+  /**
+   * @brief Send data of size bytes in datagram to specified address and port.
    *
    * @param data Datagram.
-   * @param destinationAddres Destination address.
+   * @param address Destination address.
    * @param size Size of datagram.
+   *
    * @return return count of sended bytes or -1.
    */
-  ssize_t SendDatagram(void *data, SocketAddress *destinationAddres,
-                     ssize_t size);
+  ssize_t SendDatagram(void *data, SocketAddress *address, ssize_t size);
 };
 
 #endif  // LIBCPPSOCKETS_UDPSOCKET_H_

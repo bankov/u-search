@@ -1,0 +1,104 @@
+\documentclass[11pt, oneside, a4paper]{book}
+
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{makeidx}
+\usepackage{natbib}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+\usepackage{subfigure}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage[table]{xcolor}
+\usepackage{textcomp}
+\usepackage{alltt}
+\usepackage[pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage{sectsty}
+\usepackage[subfigure]{tocloft}
+\usepackage{doxygen}
+\usepackage{url}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{exscale}
+\lstset{language=C++,inputencoding=utf8,basicstyle=\footnotesize\ttfamily,breaklines=true,breakatwhitespace=true,tabsize=2,keepspaces=true }
+\makeindex
+\setcounter{tocdepth}{3}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\familydefault}{\sfdefault}
+\hfuzz=15pt
+\setlength{\emergencystretch}{15pt}
+\hbadness=750
+\tolerance=750
+
+\begin{document}
+\hypersetup{pageanchor=false,citecolor=blue}
+
+\begin{titlepage}
+\vspace*{7cm}
+\begin{center}
+{\Large U-\/\-S\-E\-A\-R\-C\-H }\\
+\vspace*{1cm}
+{\large Yulyugin Evgeny (yulyugin@gmail.com}\\
+{\large Morgen Matvey (melges.morgen@gmail.com)}\\
+\vspace*{0.5cm}
+{\small \today}\\
+\end{center}
+\end{titlepage}
+\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+\clearemptydoublepage
+\pagenumbering{arabic}
+\hypersetup{pageanchor=true,citecolor=blue,colorlinks=true, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
+
+\chapter{Description}
+
+u-search --- a fast software package for search in local networks. Our product can serve you to range search results and automatically filter out duplicates. Also mipt-smb-search have a light and absolutely friendly interface: a minimum of buttons, clear indications and for each file there is a preview.
+
+GIT: \url{https://code.google.com/p/mipt-smb-search/}
+
+\section{Dependencies}
+
+\begin{itemize}
+  \item g++-4.7
+  \item libmysql++
+  \item libsmbclient
+  \item libprocps
+  \item libcppunit
+  \item libmagic
+\end{itemize}
+
+\section{How to build}\label{sec:build}
+
+By default project will build in git-workspace/build/release in release mode and in git-workspace/build/debug in debug mode.
+
+\begin{lstlisting}
+$ git clone https://code.google.com/p/mipt-smb-search/
+$ cd mipt-smb-search
+$ make install
+\end{lstlisting}
+
+To build in debug mode you should use next command:
+
+\begin{lstlisting}
+$ make DEBUG=yes install
+\end{lstlisting}
+
+\section{How to run tests}\label{sec:tests}
+
+Go to you git workspace and run next command
+
+\begin{lstlisting}
+$ ./tests/testing.sh <path_to_build_directory>
+\end{lstlisting}

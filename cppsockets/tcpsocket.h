@@ -31,31 +31,78 @@
 #include <unistd.h>
 #include <string>
 
+/**
+ * @brief Class to work with TCP.
+ */
 class TCPSocket : public DataSocket {
  public:
+  /**
+   * Simple constructor.
+   */
   TCPSocket();
+
+  /**
+   * Constructor which create an object and set a local address.
+   */
   explicit TCPSocket(SocketAddress *local_address);
+
+  /**
+   * Constructor which create an object, set a local and remote
+   * addresses.
+   */
   TCPSocket(SocketAddress *local_address, SocketAddress *remote_address);
 
+  /**
+   * Destructor.
+   */
   ~TCPSocket();
 
-  // Connect the socket to host with specifed address and port
+  /**
+   * @brief Connect the socket to host with specified address and port.
+   *
+   * @param address Address.
+   * @param port Port.
+   *
+   * @return 0 on success, -1 otherwise.
+   */
   int ConnectToHost(const in_addr_t address, const in_port_t port);
+
+  /**
+   * @brief Connect the socket to host with specified address and port.
+   *
+   * @param address Address.
+   * @param port Port.
+   *
+   * @return 0 on success, -1 otherwise.
+   */
   int ConnectToHost(const char *address, const short port);
+
+  /**
+   * @brief Connect the socket to host with specified address and port.
+   *
+   * @param address Address.
+   * @param port Port.
+   *
+   * @return 0 on success, -1 otherwise.
+   */
   int ConnectToHost(const std::string *address, const short port);
 
   /**
    * @brief WriteData Write size data from data to socket.
-   * @param data Buffer.
+   *
+   * @param buffer Buffer.
    * @param size Size of buffer.
+   *
    * @return Readen size. On error return -1.
    */
   size_t WriteInSocket(void *buffer, size_t size);
 
   /**
    * @brief ReadData Read not more than size bytes from socket.
-   * @param data Buffer.
+   *
+   * @param buffer Buffer.
    * @param size Size of buffer.
+   *
    * @return Readen size. On error return -1.
    */
   size_t ReadFromSocket(void *buffer, size_t size);

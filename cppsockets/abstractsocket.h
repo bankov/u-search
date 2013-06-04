@@ -37,9 +37,19 @@
 // The maximum size of message.
 #define MAX_SIZE 2048
 
+/**
+ * @brief Class to work with abstract socket.
+ */
 class AbstractSocket {
  public:
+  /**
+   * Simple constructor which create an object and init all fields.
+   */
   AbstractSocket();
+
+  /**
+   * Destructor.
+   */
   virtual ~AbstractSocket();
 
   /**
@@ -76,103 +86,240 @@ class AbstractSocket {
     UDP
   };
 
+  /**
+   * Get last occures error.
+   *
+   * @return Last occures error.
+   */
   inline int get_error() { return error_; }
+
+  /**
+   * Get local address.
+   *
+   * @return Local address in network byte order.
+   */
   inline in_addr_t get_local_address() {
     return local_address_.GetAddressAsNet();
   }
+
+  /**
+   * Get local port.
+   *
+   * @return Local port in network byte order.
+   */
   inline in_port_t get_local_port() { return local_address_.GetPortAsNet(); }
+
+  /**
+   * Get remote address.
+   *
+   * @return Remote address in network byte order.
+   */
   inline in_addr_t get_remote_address() {
     return remote_address_.GetAddressAsNet();
   }
+
+  /**
+   * Get remote port.
+   *
+   * @return Remote port in network byte order.
+   */
   inline in_port_t get_remote_port() { return remote_address_.GetPortAsNet(); }
+
+  /**
+   * Get trasnsport layer protocol.
+   *
+   * @return Transport layer protocl.
+   */
   inline SocketType get_type() { return type_; }
+
+  /**
+   * Get state of the socket.
+   *
+   * @return State of the socket.
+   */
   inline SocketState get_state() { return state_; }
+
+  /**
+   * Get local address and port.
+   *
+   * @return Local address and port.
+   */
   inline SocketAddress &get_local_socket_address() { return local_address_; }
+
+  /**
+   * Get remote address and port.
+   *
+   * @return Remote address and port.
+   */
   inline SocketAddress &get_remote_socket_address() { return remote_address_; }
 
   /**
-   * @brief Abort Abort the socket connection immediately and reset socket,
+   * @brief Abort the socket connection immediately and reset socket,
    * free resources.
    */
   void Abort();
 
   /**
-   * @brief Close Close socket, free all attached resources.
+   * @brief Close socket, free all attached resources.
    *
    * @return 0 if success, -1 otherwise.
    */
   int Close();
 
   /**
-   * @brief Disconnect Disconect from host.
+   * @brief Disconect from host.
    */
   void Disconnect();
 
  protected:
+  /**
+   * Get socket.
+   *
+   * @return Socket.
+   */
   inline int get_socket() { return socket_; }
+
+  /**
+   * Set a error.
+   *
+   * @param error Error code.
+   */
   inline void set_error(int error) { error_ = error; }
+
+  /**
+   * Set local address.
+   *
+   * @param address Local address in network byte order.
+   */
   inline virtual void set_local_address(in_addr_t address) {
     local_address_.set_address(address);
   }
+
+  /**
+   * Set local port.
+   *
+   * @param port Local port in network byte order.
+   */
   inline virtual void set_local_port(in_port_t port) {
-    local_address_.set_port(port); }
+    local_address_.set_port(port);
+  }
+
+  /**
+   * Set remote address.
+   *
+   * @param address Remote address in network byte order.
+   */
   inline virtual void set_remote_address(in_addr_t address) {
     remote_address_.set_address(address);
   }
+
+  /**
+   * Set remote port.
+   *
+   * @param port Remote port in network byte order.
+   */
   inline virtual void set_remote_port(in_port_t port) {
     remote_address_.set_port(port);
   }
+
+  /**
+   * Set state.
+   *
+   * @param state State of the socket.
+   */
   inline void set_state(const SocketState state) { state_ = state; }
+
+  /**
+   * Set socket.
+   *
+   * @param socket Socket.
+   */
   inline void set_socket(const int socket) { socket_ = socket; }
+
+  /**
+   * Set transport layer protocol.
+   *
+   * @param type Transport layer protocol.
+   */
   inline void set_type(const SocketType type) { type_ = type; }
 
-  // Complex setters
+  /**
+   * Set local address and port.
+   *
+   * @param address Local address and port.
+   */
   virtual void set_local_address(const SocketAddress &address);
+
+  /**
+   * Set remote address and port.
+   *
+   * @param address Remote address and port.
+   */
   virtual void set_remote_address(const SocketAddress &address);
+
+  /**
+   * Set local address and port.
+   *
+   * @param address Local address and port.
+   */
   virtual void set_local_address(SocketAddress *address);
+
+  /**
+   * Set remote address and port.
+   *
+   * @param address Remote address and port.
+   */
   virtual void set_remote_address(SocketAddress *address);
 
-  // Init all private variables by NULL, 0 etc
+  /**
+   * @brief Init all private variables by NULL, 0, e.t.c.
+   */
   void InitAllVariables();
 
-  // Set port and address
+  /**
+   * Set port and address.
+   *
+   * @param address Address.
+   * @param port Port.
+   */
   virtual void UseAddressAndPort(in_addr_t address, in_port_t port);
 
   /**
-   * @brief DetectError Puts errno into object error_.
+   * @brief Puts errno into object's error_.
    */
   inline void DetectError() { error_ = errno; }
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AbstractSocket);
+
   /**
-   * @brief socket_ File descruptor associated with socket.
+   * File descruptor associated with socket.
    */
   int socket_;
 
   /**
-   * @brief error_ Variable for storage last error.
+   * Variable for storage last error.
    */
   int error_;
 
   /**
-   * @brief type_ Variable for storage socket type.
+   * Variable for storage socket type.
    */
   SocketType type_;
 
   /**
-   * @brief state_ Variable for storage socket state.
+   * Variable for storage socket state.
    */
   SocketState state_;
 
   /**
-   * @brief local_address_ Local address and port associated with socket.
+   * Local address and port associated with socket.
    */
   SocketAddress local_address_;
 
   /**
-   * @brief remote_address_ Remote address and port associated with socket
-   * or default destination for UDP
+   * Remote address and port associated with socket or
+   * default destination for UDP.
    */
   SocketAddress remote_address_;
 };

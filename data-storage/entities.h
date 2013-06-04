@@ -29,9 +29,9 @@
 
 #define MYSQLPP_MYSQL_HEADERS_BURIED
 
-#if !defined(EXPAND_MY_SSQLS_STATICS)
-#   define MYSQLPP_SSQLS_NO_STATICS
-#endif
+#ifndef EXPAND_MY_SSQLS_STATICS
+#define MYSQLPP_SSQLS_NO_STATICS
+#endif  // #ifndef EXPAND_MY_SSQLS_STATICS
 
 #include <sys/time.h>
 #include <mysql++/mysql++.h>
@@ -63,9 +63,12 @@ sql_create_5(mss_files, 1, 4,
              mysqlpp::sql_varchar, server_name,
              mysqlpp::sql_timestamp, last_seen);
 
+/**
+ * @brief Class to work with data base.
+ */
 class DatabaseEntity {
   public:
-    /** Method to create an object immediately connected to a database and
+    /** @brief Create an object immediately connected to a database and
       * meet to receive the data and store them in the database. This method
       * must be called with success for properly work of entities objects.
       *
@@ -76,6 +79,8 @@ class DatabaseEntity {
       * @param password Password for specifed user.
       * @param reconnect should we reconnect programm to another database (or
       * to the same) if we alredy connected?
+      *
+      * @return true if connection successfull, false otherwise.
       */
     static bool ConnectToServer(const std::string &db_name,
                                 const std::string &server,
@@ -84,7 +89,9 @@ class DatabaseEntity {
                                 const bool reconnect);
 
     /**
-     * @brief Disconnect disconnect from connected server.
+     * @brief Disconnect from connected server.
+     *
+     * @return true on success, false otherwise.
      */
     static bool Disconnect();
 
@@ -92,8 +99,6 @@ class DatabaseEntity {
      * @brief Stores the object in the database.
      * If this object is new and it still does not correspond to any record in
      * the database, created by appropriate record in the database table.
-     *
-     * Stores at the database
      *
      * @return true if success, else - false.
      */
@@ -114,33 +119,58 @@ class DatabaseEntity {
     /**
      * @brief Start transaction for opened connection, all next quires will
      * executed in this transaction, until it would be commited or rollbacked.
+     *
+     * @return true on success, false otherwise.
      */
     static bool StartTransaction();
 
     /**
      * @brief Commit opened transaction.
+     *
      * @return True if transaction opened or false on error.
      */
     static bool CommitTransaction();
 
     /**
      * @brief Rolling back opened transaction.
+     *
+     * @return true on success, false otherwise.
      */
     static bool RollbackTransaction();
 
     /**
-     * @brief get_db_error returns lase occures edata base error.
+     * @brief Returns last occures data base error.
      *
      * @return error string.
      */
     static inline std::string get_db_error() { return db_error_; }
 
   protected:
+    /**
+     * @brief Get connection with data base.
+     *
+     * @return Connection with data base.
+     */
     static mysqlpp::TCPConnection & get_db_connection();
 
+    /**
+     * @brief Connection with data base.
+     */
     static mysqlpp::TCPConnection db_connection_;
+
+    /**
+     * @brief Last occured error.
+     */
     static std::string db_error_;
+
+    /**
+     * Current transaction.
+     */
     static std::shared_ptr<mysqlpp::Transaction> current_transaction_;
+
+    /**
+     * Last occured error.
+     */
     std::string error_;
 };
 
@@ -155,6 +185,7 @@ class FileAttribute : DatabaseEntity {
   public:
     virtual bool Commit() { return false; }
     virtual bool Delete() { return false; }
+
     /**
      * @brief Enum defines avialible type of value for attribute
      */
@@ -168,63 +199,109 @@ class FileAttribute : DatabaseEntity {
     /**
      * @brief Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
-     * @param name name of new attribute
-     * @param type type of new attribute
+     *
+     * @param name name of new attribute.
+     *
+     * @param type type of new attribute.
      */
     FileAttribute(const std::string &name, const AttributeType type);
 
     /**
      * @brief Finds the attribyte entry with specifed id.
+     *
      * @param id id of needed row at the database.
-     * @return Object corresponding to records at database or NULL if error or
-     * row not founded.
+     *
+     * @return Object corresponding to records at database or nullptr if error
+     * occurs or row not founded.
      */
     static std::shared_ptr<FileAttribute> GetById(const int id);
 
     /**
      * @brief Find attribute entrys with the name exactly matches with
      * specified.
-     * @param name name to search
+     *
+     * @param name name to search.
+     *
      * @return pointer to vector with objects corresponding to records founded
-     * in the database, if error will ocured - returns NULL.
+     * in the database, if error will ocured - returns nullptr.
      */
     static std::shared_ptr<FileAttribute> GetByName(const std::string &name);
 
     /**
      * @brief Find attribute entrys with the name and type exactly matches with
      * specified.
+     *
      * @param name name to search
      * @param type type which record must be.
+     *
      * @return pointer to vector with objects corresponding to record founded
-     * in the database, if error will ocured - returns NULL.
+     * in the database, if error will ocured - returns nullptr.
      */
     static std::shared_ptr<FileAttribute> GetByNameAndType(
         const std::string &name, const AttributeType type);
 
-    // setters
+    /**
+     * Set a type of the attribute.
+     *
+     * @param type Type of the attribute.
+     */
     inline void set_type(const AttributeType type) {
       type_ = type;
     }
 
+    /**
+     * Set a name of the attribute.
+     *
+     * @param name of the attribute.
+     */
     inline void set_name(const std::string &name) {
       name_ = name;
     }
 
-    // getters
+    /**
+     * Get a type of the attribute.
+     *
+     * @return Type of the attribute.
+     */
     inline AttributeType get_type() const {
       return type_;
     }
 
+    /**
+     * Get a name of the attribute.
+     *
+     * @return Name of the attribute.
+     */
     inline std::string get_name() const {
       return name_;
     }
 
+    /**
+     * Get id of the attribute.
+     *
+     * @return id of the attribute.
+     */
     inline int get_id() const {
       return id_;
     }
 
   protected:
+    /**
+     * @brief Convert attributes type to string.
+     *
+     * @param type Type of the attribute as AttributeType.
+     *
+     * @return Type of the attribute converted to string.
+     */
     static std::string AttrTypeToString(const AttributeType type);
+
+    /**
+     * @brief Convert attributes type to AttributeType.
+     *
+     * @param string Type of the attribute as string.
+     *
+     * @return Type of the attribute as AttributeType.
+     */
     static AttributeType StringToAttrType(const std::string &string);
 
   private:
@@ -246,9 +323,11 @@ class FileEntry : DatabaseEntity {
   public:
     virtual bool Commit() { return false; }
     virtual bool Delete() { return false; }
+
     /**
      * @brief Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
+     *
      * @param file_name name of new entry.
      * @param file_path path to file on server corresponding to new entry.
      * @param server_name name or ip address of server where file located.
@@ -272,6 +351,7 @@ class FileEntry : DatabaseEntity {
      * min_rowsnum will be removed from the results.
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
+     *
      * @return pointer to vector with objects сorresponding to records founded
      * in the database, if error will ocured - returns NULL.
      */
@@ -281,11 +361,13 @@ class FileEntry : DatabaseEntity {
 
     /**
      * @brief Find file entrys with the name exactly matches with specified.
+     *
      * @param name name to search.
      * @param min_rownum Limits founded rows from the top, rows from 1 to
      * min_rowsnum will be removed from the results.
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
+     *
      * @return pointer to vector with objects сorresponding to records founded
      * in the database, if error will ocured - returns NULL.
      */
@@ -295,12 +377,14 @@ class FileEntry : DatabaseEntity {
 
     /**
      * @brief Find the entrys relevant to file located on specified server.
+     *
      * @param server_name name or ip address of server from which files should
      * be found
      * @param min_rownum Limits founded rows from the top, rows from 1 to
      * min_rowsnum will be removed from the results.
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
+     *
      * @return pointer to vector with objects corresponding to recordss founded
      * on the database, if error will ocured - return NULL.
      */
@@ -309,12 +393,14 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Finds record which path matches with specifed.
+     * @brief Find record which path matches with specifed.
+     *
      * @param path path of aimed entry.
      * @param min_rownum Limits founded rows from the top, rows from 1 to
      * min_rowsnum will be removed from the results.
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
+     *
      * @return pointer to object corresponding to records founded
      * in the database, if error will ocured - return NULL.
      */
@@ -324,52 +410,94 @@ class FileEntry : DatabaseEntity {
 
     /**
      * @brief Find row with specifed server and path
+     *
      * @param path path to file on server
      * @param server server where file is located
+     *
      * @return pointer to object corresponding to record in the database, on
-     * error or if nothing was founded return NULL.
+     * error or if nothing was founded return nullptr.
      */
     static std::shared_ptr<FileEntry> GetByPathOnServer(
         const std::string &path, const std::string &server);
 
     /**
-     * @brief Finds the file entry with specifed id.
+     * @brief Find the file entry with specifed id.
+     *
      * @param id id of needed row at the database.
-     * @return Object corresponding to records at database or NULL if error or
-     * row not founded.
+     *
+     * @return Object corresponding to records at database or nullptr if error
+     * or row not founded.
      */
     static std::shared_ptr<FileEntry> GetById(const int id);
 
-    // Setters
+    /**
+     * Set name of the file.
+     *
+     * @param name Name of the file.
+     */
     inline void set_name(const std::string &name) {
       name_ = name;
     }
 
+    /**
+     * Set path to the file.
+     *
+     * @param path Path to the file.
+     */
     inline void set_file_path(const std::string &path) {
       file_path_ = path;
     }
 
+    /**
+     * Set name of the host when file situates.
+     *
+     * @param hostname name of the host when file situates.
+     */
     inline void set_server_name(const std::string &hostname) {
       server_name_ = hostname;
     }
 
-    // Getters
+    /**
+     * Get id of the file.
+     *
+     * @return if of the file.
+     */
     inline int get_id() const {
       return id_;
     }
 
+    /**
+     * Get name of the file.
+     *
+     * @return Name of the file.
+     */
     inline std::string get_name() const {
       return name_;
     }
 
+    /**
+     * Get path to the file.
+     *
+     * @return Path to the file.
+     */
     inline std::string get_file_path() const {
       return file_path_;
     }
 
+    /**
+     * Get name of the host when file situates.
+     *
+     * @return name of the host when file situates.
+     */
     inline std::string get_server_name() const {
       return server_name_;
     }
 
+    /**
+     * Get time when this entry was update at the last time.
+     *
+     * @return Time when entry was update at the last time.
+     */
     inline time_t get_timestamp() const {
       return timestamp_;
     }
@@ -407,11 +535,12 @@ class FileParameter : DatabaseEntity {
     /**
      * @brief Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
-     * @param file file that corresponds to the parameter
-     * @param attribute attribute that corresponds to the parameter
-     * @param str_value parameter string value
-     * @param num_value parameter numerical value
-     * @param bool_value parameter boolean value
+     *
+     * @param file file that corresponds to the parameter.
+     * @param attribute attribute that corresponds to the parameter.
+     * @param str_value parameter string value.
+     * @param num_value parameter numerical value.
+     * @param bool_value parameter boolean value.
      */
     FileParameter(const FileEntry &file, const FileAttribute &attribute,
                   const std::string &str_value, const int num_value,
@@ -420,20 +549,23 @@ class FileParameter : DatabaseEntity {
     /**
      * @brief Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
-     * @param file_id od of file that corresponds to the parameter
-     * @param attr_id id of attribute that corresponds to the parameter
-     * @param str_value parameter string value
-     * @param num_value parameter numerical value
-     * @param bool_value parameter boolean value
+     *
+     * @param file_id od of file that corresponds to the parameter.
+     * @param attr_id id of attribute that corresponds to the parameter.
+     * @param str_value parameter string value.
+     * @param num_value parameter numerical value.
+     * @param bool_value parameter boolean value.
      */
     FileParameter(const int file_id, const int attr_id,
                   const std::string &str_value, const int num_value,
                   const bool bool_value);
 
     /**
-     * @brief Find entry by file and attribute
-     * @param file_id id of corresponding file to aimed parameter
-     * @param attr_id id of corresponding attribute to aimed parameter
+     * @brief Find entry by file and attribute.
+     *
+     * @param file_id id of corresponding file to aimed parameter.
+     * @param attr_id id of corresponding attribute to aimed parameter.
+     *
      * @return pointer to vector with objects corresponding to record founded
      * in the database, if error will ocured - returns nullptr.
      */
@@ -441,9 +573,11 @@ class FileParameter : DatabaseEntity {
         GetByFileAndAttribute(const int file_id, const int attr_id);
 
     /**
-     * @brief Find entry by file and attribute
-     * @param file file object corresponding to aimed parameter
-     * @param attribute attribute object corresponding to aimed parameter
+     * @brief Find entry by file and attribute.
+     *
+     * @param file file object corresponding to aimed parameter.
+     * @param attribute attribute object corresponding to aimed parameter.
+     *
      * @return pointer to vector with objects corresponding to record founded
      * in the database, if error will ocured - returns nullptr.
      */
@@ -453,7 +587,9 @@ class FileParameter : DatabaseEntity {
 
     /**
      * @brief Method returns all parameters associated with specifed file.
+     *
      * @param file_id id of specifed file.
+     *
      * @return pointer to vector with objects corresponding to records founded
      * in the database, if error will ocured - returns nullptr.
      */
@@ -462,7 +598,9 @@ class FileParameter : DatabaseEntity {
 
     /**
      * @brief Method returns all parameters associated with specifed file.
+     *
      * @param file object corresponding to specifed file.
+     *
      * @return pointer to vector with objects corresponding to records founded
      * in the database, if error will ocured - returns nullptr.
      */
@@ -471,38 +609,73 @@ class FileParameter : DatabaseEntity {
 
     /**
      * @brief Method search entrys with specifed string value.
+     *
      * @param str_value value ​​that should have records.
-     * @param attr_id optionally we can search only by specifed attribute
+     * @param attr_id optionally we can search only by specifed attribute.
+     *
      * @return pointer to vector with objects corresponding to records founded
-     * in the database, if error will ocured - returns NULL.
+     * in the database, if error will ocured - returns nullptr.
      */
     static std::shared_ptr<std::vector<std::shared_ptr<FileParameter> > >
         GetByValue(const std::string &str_value, const int attr_id = -1);
 
     /**
      * @brief Method search entrys with specifed numerical value.
-     * @param num_value value ​​that should have records.
-     * @param attr_id optionally we can search only by specifed attribute
+     *
+     * @param num_value value that should have records.
+     * @param attr_id optionally we can search only by specifed attribute.
+     *
      * @return pointer to vector with objects corresponding to records founded
-     * in the database, if error will ocured - returns NULL.
+     * in the database, if error will ocured - returns nullptr.
      */
     static std::shared_ptr<std::vector<std::shared_ptr<FileParameter> > >
         GetByValue(const int num_value, const int attr_id = -1);
 
     /**
      * @brief Method search entrys with specifed boolean value.
-     * @param bool_value value ​​that should have records.
-     * @param attr_id optionally we can search only by specifed attribute
+     *
+     * @param bool_value value that should have records.
+     * @param attr_id optionally we can search only by specifed attribute.
+     *
      * @return pointer to vector with objects corresponding to records founded
-     * in the database, if error will ocured - returns NULL.
+     * in the database, if error will ocured - returns nullptr.
      */
     static std::shared_ptr<std::vector<std::shared_ptr<FileParameter> > >
         GetByValue(const bool bool_value, const int attr_id = -1);
 
+    /**
+     * Get the attribute the parameter associated with.
+     *
+     * @return The attribute the parameter is assciated with.
+     */
     inline std::shared_ptr<FileAttribute> get_attr() const { return attr_; }
+
+    /**
+     * Get file the parameter associoated with.
+     *
+     * @return The file the parameter associated with.
+     */
     inline std::shared_ptr<FileEntry> get_file() const { return file_; }
+
+    /**
+     * Get the string value of the attribute.
+     *
+     * @return The string value of the attribute.
+     */
     inline std::string get_str_value() const { return str_value_; }
+
+    /**
+     * Get numeric value ot the attribute.
+     *
+     * @return Numeric value of the attribute.
+     */
     inline int get_num_value() const { return num_value_; }
+
+    /**
+     * Get boolean value of the attribute.
+     *
+     * @return Boolean value of the attribute.
+     */
     inline bool get_bool_value() const { return bool_value_; }
 
   private:

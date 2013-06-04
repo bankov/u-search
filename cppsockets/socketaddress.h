@@ -33,12 +33,14 @@
 #include <strings.h>
 #include <stdio.h>
 #include <errno.h>
+
 #include <ostream>
 #include <string>
 
 #include "common.h"
 
-/** @brief The class allows you to store and work with IPv4 addresses.
+/**
+ * @brief The class allows you to store and work with IPv4 addresses.
  *
  * The class allows you to store and work with full IPv4 addresses. Class allows
  * you to store and retrieve IPv4 address (IP address and port) formats: string,
@@ -46,16 +48,20 @@
  */
 class SocketAddress {
  public:
-  /** Standart constructor, create empty object. */
+  /**
+   * Standart constructor, create empty object.
+  */
   SocketAddress();
 
-  /** Copy constructor. Create the same objext as sock.
+  /**
+   * Copy constructor. Create the same object as sock.
    *
    * @param address a copy of the object that want to be.
    */
   SocketAddress(const SocketAddress &address);
 
-  /** Create object with specified address and empty port.
+  /**
+   * Create object with specified address and empty port.
    *
    * @param address Address, in the form of an array of characters, to be
    * stored in the new object.
@@ -64,7 +70,8 @@ class SocketAddress {
    */
   SocketAddress(const char *address, const short port = 0);
 
-  /** Create object with specified address and empty port.
+  /**
+   * Create object with specified address and empty port.
    *
    * @param address Address, in the form of std::string, to be
    * stored in the new object.
@@ -73,7 +80,8 @@ class SocketAddress {
    */
   SocketAddress(const std::string *address, const short port = 0);
 
-  /** Create object with specified address and port.
+  /**
+   * Create object with specified address and port.
    *
    * @param address Address, in the network byte order, to be
    * stored in the new object.
@@ -82,7 +90,8 @@ class SocketAddress {
    */
   SocketAddress(const in_addr_t address, const in_port_t port = 0);
 
-  /** Create object with specified address and empty port.
+  /**
+   * Create object with specified address and empty port.
    *
    * @param address Address, in the host byte order, to be
    * stored in the new object.
@@ -91,50 +100,77 @@ class SocketAddress {
    */
   SocketAddress(const int address, const short port = 0);
 
-  /** Create object with specified port and empty address.
+  /**
+   * Create object with specified port and empty address.
    *
    * @param port Port, in the network byte order, to be
    * stored in the new object.
    */
   explicit SocketAddress(const in_port_t port);
 
-  /** Create object with specified port and empty address.
+  /**
+   * Create object with specified port and empty address.
    *
    * @param port Port, in the host byte order, to be
    * stored in the new object.
    */
   explicit SocketAddress(const short port);
 
-  /** @param address Address in network byte order */
+  /**
+   * Set addess.
+   *
+   * @param address Address in network byte order
+   */
   inline void set_address(const in_addr_t address) { address_ = address; }
 
-  /** @param address Address in host byte order */
+  /**
+   * Set address.
+   *
+   * @param address Address in host byte order
+   */
   inline void set_address(const int address) { address_ = htonl(address); }
 
-  /** @param address Pointer to human readable string of Address, stored in
+  /**
+   * Set address.
+   *
+   * @param address Pointer to human readable string of Address, stored in
    * array of characters.
    */
   int set_address(const char *address);
 
-  /** @param address Pointer to human readable string of Address, stored in
+  /**
+   * Set address.
+   *
+   * @param address Pointer to human readable string of Address, stored in
    * std::string object.
    */
   inline int set_address(const std::string *address) {
     return set_address(address->c_str());
   }
 
-  /** @param port Port in network byte order. */
+  /**
+   * Set port.
+   *
+   * @param port Port in network byte order.
+   */
   inline void set_port(const in_port_t port) { port_ = port; }
 
-  /** @param port Port in host byte order */
+  /**
+   * Set port.
+   *
+   * @param port Port in host byte order
+   */
   inline void set_port(const short port) { port_ = htons(port); }
 
-  /** Function return error occurred during the last operation.
+  /**
+   * Return code of error occurred during the last operation.
+   *
    * @return Last error or 0.
    */
   inline int get_error() { return error_; }
 
-  /** @brief Convert saved address in array of characters.
+  /**
+   * @brief Convert saved address in array of characters.
    *
    * Function convert saved address to human readable char array and return
    * it. After the call internal format of the data in the object does not
@@ -144,7 +180,8 @@ class SocketAddress {
    */
   char *GetAddressAsChar();
 
-  /** @brief Convert saved address in std::string.
+  /**
+   * @brief Convert saved address in std::string.
    *
    * Function convert saved address to std::string human readable format and
    * return it. After the call internal format of the data in the object does
@@ -164,7 +201,8 @@ class SocketAddress {
    */
   inline in_addr_t GetAddressAsNet() { return address_; }
 
-  /** @brief Convert saved address to network byte order.
+  /**
+   * @brief Convert saved address to network byte order.
    *
    * Function convert saved address to host byte order and
    * return it. After the call internal format of the data in the object does
@@ -174,7 +212,8 @@ class SocketAddress {
    */
   inline int GetAddressAsHost() { return ntohl(address_); }
 
-  /** @brief Convert saved port to network byte order.
+  /**
+   * @brief Convert saved port to network byte order.
    *
    * Function convert saved port to network byte order and
    * return it. After the call internal format of the data in the object does
@@ -184,7 +223,8 @@ class SocketAddress {
    */
   inline in_port_t GetPortAsNet() { return port_; }
 
-  /** @brief Convert saved port to host byte order.
+  /**
+   * @brief Convert saved port to host byte order.
    *
    * Function convert saved port to network byte order and
    * return it. After the call internal format of the data in the object does
@@ -194,13 +234,15 @@ class SocketAddress {
    */
   inline int GetPortAsHost() { return ntohs(port_); }
 
-  /** Makes this a copy of the object argument
-   * @param A copy of the object that you want to be
+  /**
+   * Makes a copy of the object argument.
+   *
+   * @param address A copy of the object that you want to be
    */
   SocketAddress& operator=(const SocketAddress &address);
 
-  // Out stream operators
-  /** Function displays the object to the standard output in the form of
+  /**
+   * Function displays the object to the standard output in the form of
    * a.b.c.d:efghi
    *
    * @param __cout Output stream
@@ -208,7 +250,8 @@ class SocketAddress {
    */
   friend std::ostream& operator<<(std::ostream& __cout,
                                   const SocketAddress &obj);
-  /** Function displays the object to the standard output in the form of
+  /**
+   * Function displays the object to the standard output in the form of
    * a.b.c.d:efghi
    *
    * @param __cout Output stream

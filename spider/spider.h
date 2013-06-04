@@ -57,87 +57,214 @@
 // The size of file header to copy in TMPDIR to detect mime type of file.
 #define HEADERSIZE 1024
 
+/**
+ * @brief Class to index files located in local network.
+ */
 class Spider {
  public:
+  /**
+   * Simple constructor which init all variables.
+   */
   Spider();
+  /**
+   * Constructor which init all variables and read file with servers to
+   * scan.
+   *
+   * @param servers_file File with list of servers.
+   */
   explicit Spider(const std::string &servers_file);
+  /**
+   * Constructor which create an object, init all variables, connect to
+   * data base, create a mimt type attribute if it doesn't exists.
+   *
+   * @param servers_file File with list of servers.
+   * @param db_name Name of the data base.
+   * @param db_server Name of the data base server.
+   * @param db_user Name of the data base user.
+   * @param db_password Password to data base.
+   */
   Spider(const std::string &servers_file, const std::string &db_name,
          const std::string &db_server, const std::string &db_user,
          const std::string &db_password);
+
+  /**
+   * Destructor.
+   */
   ~Spider();
 
+  /**
+   * @brief Index all servers fro servers list.
+   */
   void Run();
 
+  /**
+   * Get last occured error.
+   *
+   * @return Last occured error.
+   */
   inline int get_error() const { return error_; }
+
+  /**
+   * Get list of servers to be indexed.
+   *
+   * @return List of servers to be indexed.
+   */
   inline std::list<std::string> get_servers_list() const {
     return *servers_list_;
   }
+
+  /**
+   * Get set of indexed files which still don't dumped in data base.
+   *
+   * @return Get vector of indexed files.
+   */
   inline std::vector<std::string> get_result() const { return *result_; }
+
+  /**
+   * Get an iterator to the last indexed file.
+   *
+   * @return iterator to the last indexed file.
+   */
   inline std::vector<std::string>::iterator get_last() const { return last_; }
+
+  /**
+   * Get name of the files with list of servers.
+   *
+   * @return Name of config file with servers list.
+   */
   inline std::string get_servers_file() const { return servers_file_; }
+
+  /**
+   * Get the name of the data base.
+   *
+   * @return Name of the dasta base.
+   */
   inline std::string get_db_name() const { return db_name_; }
+
+  /**
+   * Get the name of the server with data base.
+   *
+   * @return Name of the server with data base.
+   */
   inline std::string get_db_server() const { return db_server_; }
+
+  /**
+   * Get the user of data base.
+   *
+   * @return Data base user.
+   */
   inline std::string get_db_user() const { return db_user_; }
+
+  /**
+   * Get the password of data base.
+   *
+   * @return Data base password.
+   */
   inline std::string get_db_password() const { return db_password_; }
+
+  /**
+   * Get a mime type attribute.
+   *
+   * @return Mime type attribute.
+   */
   inline FileAttribute get_mime_type_attr() const { return *mime_type_attr_; }
 
  protected:
+  /**
+   * Set a error.
+   *
+   * @param error Error code.
+   */
   inline void set_error(const int error) { error_ = error; }
+
+  /**
+   * Set file with list of servers.
+   *
+   * @param servers_file Path to config file with servers list.
+   */
   inline void set_servers_file(const std::string &servers_file) {
     servers_file_ = servers_file;
   }
+
+  /**
+   * Set the name of the data base.
+   *
+   * @param db_name Name of the data base.
+   */
   inline void set_db_name(const std::string &db_name) { db_name_ = db_name; }
+
+  /**
+   * Set the name of data base server.
+   *
+   * @param db_server Name of the server with data base.
+   */
   inline void set_db_server(const std::string &db_server) {
     db_server_ = db_server;
   }
+
+  /**
+   * Set the name of data base user.
+   *
+   * @param db_user Name of the data base user.
+   */
   inline void set_db_user(const std::string &db_user) {
     db_user_ = db_user;
   }
+
+  /**
+   * Set the data base password.
+   *
+   * @param db_password Password to data base.
+   */
   inline void set_db_password(const std::string &db_password) {
     db_password_ = db_password;
   }
 
   /**
-   * @brief DumpToFile Dump the result vector in file.
+   * @brief Dump the result vector in file.
    *
    * @param name Name of the file.
    * @param files Vector with scan results to be dumped to data base.
+   *
    * @return 0 on success, -1 otherwise.
    */
   int DumpToFile(const std::string &name, std::vector<std::string> *files);
 
   /**
-   * @brief DumpToDataBase Dump the result vector to data base.
+   * @brief Dump the result vector to data base.
    *
    * @return 0 on success, -1 otherwise.
    */
   int DumpToDataBase();
 
   /**
-   * @brief AddServer Add server to the servers_list_ and write it in
+   * @brief Add server to the servers_list_ and write it in
    * servers_file_.
    *
    * @param name Name of the server.
+   *
    * @return 0 on success, -1 otherwise.
    */
   int AddServer(const std::string &name);
 
   /**
-   * @brief DelServer Delete server from servers_list_ and delete it from
+   * @brief Delete server from servers_list_ and delete it from
    * servers_file_.
    *
    * @param name Name of the server.
+   *
    * @return 0 on success, -1 otherwise.
    */
   int DelServer(const std::string &name);
 
   /**
-   * @brief DetectError Save last occured error in error_.
+   * @brief Save last occured error in error_.
    */
   inline void DetectError() { error_ = errno; }
 
   /**
-   * @brief ConnetToDataBase Connect to data base server.
+   * @brief Connect to data base server.
+   *
    * @return 0 if success -1 otherwise.
    */
   inline int ConnetToDataBase() {
@@ -158,6 +285,7 @@ class Spider {
    * @brief Get content of the smb directory.
    *
    * @param dir URL to the directory. For example "smb://server/share".
+   *
    * @return list of files in directory.
    */
   std::shared_ptr<std::list<std::string> > GetSMBDirContent(
@@ -184,29 +312,33 @@ class Spider {
    * @brief Search files in smb directory and all subdirectories.
    *
    * @param dir name of the smb directory.
+   *
    * @return 0 if functions completed, -1 otherwise.
    */
   int ScanSMBDir(const std::string &dir);
 
   /**
-   * @brief NameParser Parsing the given name. Now just replace '_' symbols
-   * with spaces.
-   * @param name Name to be parsed
+   * @brief Parsing the given name.
+   *
+   * Now just replace '_' symbols with spaces.
+   *
+   * @param name Name to be parsed.
+   *
    * @return 0 on success, -1 otherwise.
    */
   int NameParser(std::string *name);
 
   /**
-   * @brief AddSMBFile Add a file to result vector and if it full - dump it to
-   * data base.
+   * @brief Add a file to result vector and if it full - dump it to data base.
    *
    * @param name Name to be added.
+   *
    * @return 0 on success, -1 otherwise.
    */
   void AddSMBFile(const std::string &name);
 
   /**
-   * @brief DetectMimeType Detect mime type of given file.
+   * @brief Detect mime type of given file.
    *
    * @param name Name of the file to be observed.
    *
@@ -215,16 +347,17 @@ class Spider {
   const char *DetectMimeType(const std::string &name);
 
   /**
-   * @brief InitMimeTypeAttr Initilize file attribute to store mime type in data
-   * base.
+   * @brief Initilize file attribute to store mime type in data base.
    *
    * @return 0 on success, -1 otherwise.
    */
   int InitMimeTypeAttr();
 
   /**
-   * @brief DeleteDir Delete directory and all it's content.
+   * @brief Delete directory and all it's content.
+   *
    * @param dir Name of the directory.
+   *
    * @return 0 on success, -1 otherwise.
    */
   int DeleteDir(const std::string &dir);

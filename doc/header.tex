@@ -79,6 +79,27 @@ GIT: \url{https://code.google.com/p/mipt-smb-search/}
   \item libmagic
 \end{itemize}
 
+\section{Modules overview}
+
+The system is modular and completely network transparent. Each module can be deployed on a single server (or multiple servers). But you also can deploy a system on a single machine.
+
+In the system there are four modules:
+
+\begin{itemize}
+  \item Spider --- a indexing network module, climbs over the network, and writes the files into the database.
+  \item Data-storage --- a database, which saves information about files and search required information.
+  \item Face --- a web-interface for users.
+  \item Preview-maker --- a module for making previews for files.
+\end{itemize}
+
+
+\section{Hardware Requirements}
+To run the entire system, we recommend a minimum of two servers. For increasing the load it may require additional machine.
+
+Basically all modules except preview-maker runs on single machine and preview-maker runs on separate machine. You need at least 512mb of ram for ``Face'' module, about 32mb for spider and 1Gb for each 5 million of files records in database (for search in range of 0,5 seconds). We recommend a 4 core processor, for prevent long cpu waits.
+
+Preview-maker runs on another machine because it can use all memory space and processors time for file processing. There are no special requirments but the faster computer will faster handle queue of the files.
+
 \section{How to build}\label{sec:build}
 
 By default project will build in git-workspace/build/release in release mode and in git-workspace/build/debug in debug mode.

@@ -37,27 +37,78 @@ svn commit -m "My importand change description."
 \section{How to test coverage}
 
 \begin{enumerate}
-  \item Build with TEST\_COVERAGE flag:
+
+\item Build with TEST\_COVERAGE flag:
 \begin{lstlisting}
 $ make TEST_COVERAGE=yes
 \end{lstlisting}
-  \item Run tests. For more information see section~\ref{sec:tests}
-  \item Go to the directory with tested file.
+
+\item Run tests. For more information see section~\ref{sec:tests}
+
+\item Go to the directory with tested file.
 \begin{lstlisting}
 $ cd mipt-smb-serach/spider
 \end{lstlisting}
-  \item Test coverage with gcov programm
+
+\item Test coverage with gcov programm
 \begin{lstlisting}
 $ gcov spider.gcda
 File 'mipt-smb-search/spider/spider.cpp'
 Lines executed:55.23% of 239
 Creating 'spider.cpp.gcov'
 \end{lstlisting}
-  \item You can see information about what lines and how often been executed.
+
+\item You can see information about what lines and how often been executed.
 \begin{lstlisting}
 $ nano spider.cpp.gcov
 \end{lstlisting}
+
 \end{enumerate}
+
+\section{Web interface module development}
+
+First of all you should prepare your workspace and install nesessary environment.
+
+For developing you need:
+
+\begin{enumerate}
+
+\item JDK 1.6 or higher.
+You can install JDK using the following command's:
+
+For Ubuntu/Debian users:
+
+\begin{lstlisting}
+sudo apt-get install openjdk-7-jdk openjdk-7-jre
+\end{lstlisting}
+
+For OpenSUSE users:
+
+\begin{lstlisting}
+sudo zypper install java-1_7_0-openjdk jdk
+\end{lstlisting}
+
+For Arch Linux users:
+
+\begin{lstlisting}
+sudo pacman -S  jdk7-openjdk  jre7-openjdk
+\end{lstlisting}
+
+You can also download Oracle Java and install it.
+
+\item Eclipse with GWT plugin.
+
+More information about Eclipse set up you can find on the following web-cite \url{https://developers.google.com/web-toolkit/usingeclipse}.
+
+\item Application server (we will use Glassfish OSE).
+
+\end{enumerate}
+
+\subsection{System Requirements}
+
+For comfortable developing and debugging you will need at least 2 GB of RAM and a processor Intel Core i3 or equivalent. Development of the face module is theoretically possible under Windows, but this option will not be considered.
+
+Will agree that our user calls ``melges'', his home directory is located at /home/melges and his custom executable files are stored in ~/bin.
 
 \chapter{Qt-Creator settings}
 

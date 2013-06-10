@@ -28,7 +28,10 @@ docs: doc
 	cd $(SRC_BASE)/doc && make
 
 help:
-	@echo libcppsockets libspider spiderd libdata_storage test copygiles docs
+	@echo Available modules: libcppsockets libspider spiderd libdata_storage test copygiles docs
+	@echo Debug mode: DEBUG=yes
+	@echo Test coverage: TEST_COVERAGE=yes
+	@echo Show build commands: VERBOSE=yes
 
 clean:
 	rm -rf build

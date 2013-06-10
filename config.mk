@@ -3,6 +3,10 @@ SRC_BASE:= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 CC:=g++-4.7
 
+ifneq ($(VERBOSE),yes)
+MAKEFLAGS += -s
+endif
+
 ifeq ($(DEBUG),yes)
 CFLAGS:=-Wall --std=c++11 -g -O0
 BUILD:=$(SRC_BASE)/build/debug
@@ -15,7 +19,6 @@ endif
 ifeq ($(TEST_COVERAGE),yes)
 CFLAGS+=--coverage -O0 -ftest-coverage
 LDFLAGS:=-lgcov
-else
 endif
 
 INCLUDE_PATHS:=-I$(SRC_BASE)

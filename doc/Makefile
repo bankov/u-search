@@ -8,5 +8,5 @@ doc: footer.tex header.tex u-search images
 	cp latex/refman.pdf u-search.pdf
 
 clean:
-	rm -rf *.aux *.out *.log latex
+	rm -rf *.aux *.out *.log latex html
 

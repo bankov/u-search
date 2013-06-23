@@ -41,6 +41,9 @@ class UDPSocket : public DataSocket {
 
   /**
    * Create an object and set set an address
+   *
+   * @param listenSocketAddress Address and port to be set as local address and
+   * port.
    */
   explicit UDPSocket(const SocketAddress *listenSocketAddress);
 

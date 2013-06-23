@@ -43,12 +43,17 @@ class TCPSocket : public DataSocket {
 
   /**
    * Constructor which create an object and set a local address.
+   *
+   * @param local_address Local address and port.
    */
   explicit TCPSocket(SocketAddress *local_address);
 
   /**
    * Constructor which create an object, set a local and remote
    * addresses.
+   *
+   * @param local_address Local address and port.
+   * @param remote_address Remote address and port.
    */
   TCPSocket(SocketAddress *local_address, SocketAddress *remote_address);
 

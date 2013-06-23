@@ -135,6 +135,8 @@ class SocketAddress {
    *
    * @param address Pointer to human readable string of Address, stored in
    * array of characters.
+   *
+   * @return 0 on success, -1 otherwise.
    */
   int set_address(const char *address);
 
@@ -143,6 +145,8 @@ class SocketAddress {
    *
    * @param address Pointer to human readable string of Address, stored in
    * std::string object.
+   *
+   * @return 0 on success, -1 otherwise.
    */
   inline int set_address(const std::string *address) {
     return set_address(address->c_str());
@@ -237,16 +241,20 @@ class SocketAddress {
   /**
    * Makes a copy of the object argument.
    *
-   * @param address A copy of the object that you want to be
+   * @param address A copy of the object that you want to be.
+   *
+   * @return A copy of given object.
    */
   SocketAddress& operator=(const SocketAddress &address);
 
   /**
    * Function displays the object to the standard output in the form of
-   * a.b.c.d:efghi
+   * a.b.c.d:efghi.
    *
-   * @param __cout Output stream
-   * @param obj Object for writing to stream
+   * @param __cout Output stream.
+   * @param obj Object for writing to stream.
+   *
+   * @return ostream object for given SocketAddress.
    */
   friend std::ostream& operator<<(std::ostream& __cout,
                                   const SocketAddress &obj);
@@ -256,6 +264,8 @@ class SocketAddress {
    *
    * @param __cout Output stream
    * @param obj Object for writing to stream
+   *
+   * @return ostream object for given SocketAddress.
    */
   friend std::ostream& operator<<(std::ostream& __cout, SocketAddress *obj);
 

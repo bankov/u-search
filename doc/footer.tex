@@ -110,6 +110,26 @@ For comfortable developing and debugging you will need at least 2 GB of RAM and 
 
 Will agree that our user calls ``melges'', his home directory is located at /home/melges and his custom executable files are stored in ~/bin.
 
+\section{Usefull commands for immediate work with data base.}
+
+\begin{itemize}
+
+\item To connect data base use following command:
+
+\begin{lstlisting}
+$ mysql db_name -u db_user -p -h db_server
+\end{lstlisting}
+
+Than enter data base password.
+
+\item To detect last element in data base use following command:
+
+\begin{lstlisting}
+mysql> SELECT * FROM mss_files ORDER BY id DESC LIMIT 1;
+\end{lstlisting}
+
+\end{itemize}
+
 \chapter{Qt-Creator settings}
 
 \section{Build settings}\label{sec:qt-build}

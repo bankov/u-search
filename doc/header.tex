@@ -2,6 +2,7 @@
 
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 \usepackage{makeidx}
+\usepackage{savetrees}
 \usepackage{natbib}
 \usepackage{graphicx}
 \graphicspath{{./images/}}
@@ -42,7 +43,7 @@
 \tolerance=750
 
 \begin{document}
-\hypersetup{pageanchor=false,citecolor=blue}
+\hypersetup{pageanchor=true,citecolor=blue,colorlinks=true, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
 
 \begin{titlepage}
 \vspace*{7cm}
@@ -60,7 +61,6 @@
 \tableofcontents
 \clearemptydoublepage
 \pagenumbering{arabic}
-\hypersetup{pageanchor=true,citecolor=blue,colorlinks=true, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
 
 \chapter{Description}
 

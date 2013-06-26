@@ -5,6 +5,7 @@
 \usepackage{savetrees}
 \usepackage{natbib}
 \usepackage{graphicx}
+\usepackage{textcomp}
 \graphicspath{{./images/}}
 \usepackage{subfigure}
 \usepackage{multicol}
@@ -15,23 +16,24 @@
 \usepackage[table]{xcolor}
 \usepackage{textcomp}
 \usepackage{alltt}
-\usepackage[pagebackref=true,
+\usepackage[xetex,
+            pagebackref=true,
             colorlinks=true,
-            linkcolor=blue
+            linkcolor=blue,
            ]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage{mathptmx}
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
 \usepackage{sectsty}
-\usepackage[subfigure]{tocloft}
+\usepackage[titles, subfigure]{tocloft}
 \usepackage{doxygen}
 \usepackage{url}
 \usepackage[english]{babel}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{exscale}
-\lstset{language=C++,inputencoding=utf8,basicstyle=\footnotesize\ttfamily,breaklines=true,breakatwhitespace=true,tabsize=2,keepspaces=true }
+\lstset{inputencoding=utf8,basicstyle=\footnotesize\ttfamily,breaklines=true,breakatwhitespace=true,tabsize=2,keepspaces=true}
 \makeindex
 \setcounter{tocdepth}{3}
 \renewcommand{\footrulewidth}{0.4pt}
@@ -40,7 +42,7 @@
 \setlength{\emergencystretch}{15pt}
 \hbadness=750
 \tolerance=750
-
+\setlength{\headheight}{15pt}
 \begin{document}
 \hypersetup{pageanchor=false,citecolor=blue,colorlinks=true, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
 
@@ -60,6 +62,7 @@
 \tableofcontents
 \clearemptydoublepage
 \pagenumbering{arabic}
+\hypersetup{pageanchor=true,citecolor=blue}
 
 \chapter{Description}
 

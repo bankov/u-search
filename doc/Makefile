@@ -1,4 +1,5 @@
 # -*- makefile -*-
+include ../config.mk
 all: pdf
 
 doxygen: footer.tex header.tex u-search images
@@ -6,7 +7,7 @@ doxygen: footer.tex header.tex u-search images
 	cp -r images latex
 
 pdf: doxygen
-	cd latex && xelatex refman.tex && makeindex refman.idx && xelatex refman.tex
+	cd latex && xelatex refman && makeindex refman.idx && xelatex refman
 	cp latex/refman.pdf u-search.pdf
 
 clean:

@@ -217,7 +217,7 @@ class FileAttribute : DatabaseEntity {
     static std::shared_ptr<FileAttribute> GetById(const int id);
 
     /**
-     * @brief Find attribute entrys with the name exactly matches with
+     * @brief Find attribute entries with the name exactly matches with
      * specified.
      *
      * @param name name to search.
@@ -228,7 +228,7 @@ class FileAttribute : DatabaseEntity {
     static std::shared_ptr<FileAttribute> GetByName(const std::string &name);
 
     /**
-     * @brief Find attribute entrys with the name and type exactly matches with
+     * @brief Find attribute entries with the name and type exactly matches with
      * specified.
      *
      * @param name name to search
@@ -352,7 +352,7 @@ class FileEntry : DatabaseEntity {
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
      *
-     * @return pointer to vector with objects сorresponding to records founded
+     * @return pointer to vector with objects corresponding to records founded
      * in the database, if error will ocured - returns NULL.
      */
     static std::vector<std::shared_ptr<FileEntry> > *FindByName(
@@ -360,7 +360,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find file entrys with the name exactly matches with specified.
+     * @brief Find file entries with the name exactly matches with specified.
      *
      * @param name name to search.
      * @param min_rownum Limits founded rows from the top, rows from 1 to
@@ -368,7 +368,7 @@ class FileEntry : DatabaseEntity {
      * @param max_rownum Limits founded rows from he bottom, rows from
      * max_rownum to last will be removed from result.
      *
-     * @return pointer to vector with objects сorresponding to records founded
+     * @return pointer to vector with objects corresponding to records founded
      * in the database, if error will ocured - returns NULL.
      */
     static std::vector<std::shared_ptr<FileEntry> > *GetByName(
@@ -376,7 +376,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find the entrys relevant to file located on specified server.
+     * @brief Find the entries relevant to file located on specified server.
      *
      * @param server_name name or ip address of server from which files should
      * be found
@@ -608,10 +608,10 @@ class FileParameter : DatabaseEntity {
         GetByFile(const FileEntry &file);
 
     /**
-     * @brief Method search entrys with specifed string value.
+     * @brief Method search entries with specifed string value.
      *
-     * @param str_value value ​​that should have records.
-     * @param attr_id optionally we can search only by specifed attribute.
+     * @param str_value String value that should have records.
+     * @param attr_id Optionally we can search only by specifed attribute.
      *
      * @return pointer to vector with objects corresponding to records founded
      * in the database, if error will ocured - returns nullptr.
@@ -620,7 +620,7 @@ class FileParameter : DatabaseEntity {
         GetByValue(const std::string &str_value, const int attr_id = -1);
 
     /**
-     * @brief Method search entrys with specifed numerical value.
+     * @brief Method search entries with specifed numerical value.
      *
      * @param num_value value that should have records.
      * @param attr_id optionally we can search only by specifed attribute.
@@ -632,7 +632,7 @@ class FileParameter : DatabaseEntity {
         GetByValue(const int num_value, const int attr_id = -1);
 
     /**
-     * @brief Method search entrys with specifed boolean value.
+     * @brief Method search entries with specifed boolean value.
      *
      * @param bool_value value that should have records.
      * @param attr_id optionally we can search only by specifed attribute.

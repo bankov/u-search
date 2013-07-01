@@ -1,4 +1,6 @@
-\documentclass[11pt, oneside, a4paper]{book}
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{naturalnames}{hyperref}
+\documentclass[11pt, twoside, a4paper]{book}
 
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 \usepackage{makeidx}
@@ -8,6 +10,7 @@
 \usepackage{textcomp}
 \graphicspath{{./images/}}
 \usepackage{subfigure}
+\usepackage[T1]{fontenc}
 \usepackage{multicol}
 \usepackage{float}
 \usepackage{listings}
@@ -16,7 +19,7 @@
 \usepackage[table]{xcolor}
 \usepackage{textcomp}
 \usepackage{alltt}
-\usepackage[xetex,
+\usepackage[pdftex,
             pagebackref=true,
             colorlinks=true,
             linkcolor=blue,
@@ -44,7 +47,7 @@
 \tolerance=750
 \setlength{\headheight}{15pt}
 \begin{document}
-\hypersetup{pageanchor=false,citecolor=blue,colorlinks=true, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
+\hypersetup{pageanchor=false, linkcolor=black, filecolor=black, citecolor=black, urlcolor=blue, pdfauthor = Evgeny Yulyugin, pdftitle=mipt-smb-search guide}
 
 \begin{titlepage}
 \vspace*{7cm}

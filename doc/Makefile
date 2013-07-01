@@ -7,8 +7,8 @@ doxygen: footer.tex header.tex u-search images
 	cp -r images latex
 
 pdf: doxygen
-	cd latex && xelatex refman && makeindex refman.idx && xelatex refman
+	cd latex && make
 	cp latex/refman.pdf u-search.pdf
 
 clean:
-	rm -rf *.aux *.out *.log latex html
+	rm -rf latex html

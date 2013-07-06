@@ -1,12 +1,12 @@
 \chapter{Development}
 
-\section{Coading style}
+\section{Coding style}
 
-We use google coading style for more details see "Google C++ Style Guide" (\url{http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml}) for C++ codes.
+We use google coding style for more details see "Google C++ Style Guide" (\url{http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml}) for C++ codes.
 
 \section{How to commit changes}
 
-Before commit your changes you should pass code review.
+Before committing your changes you should pass code review.
 
 To send your patch on code review you should use upload.py script (\url{https://codereview.appspot.com/static/upload.py}).
 
@@ -14,7 +14,7 @@ To send your patch on code review you should use upload.py script (\url{https://
 $ python2.7 upload.py -m "My important change description."
 \end{lstlisting}
 
-For more imformation about usage and option of upload.py see \url{http://code.google.com/p/rietveld/wiki/UploadPyUsage}.
+For more information about usage and option of upload.py see \url{http://code.google.com/p/rietveld/wiki/UploadPyUsage}.
 
 Then go to \url{https://codereview.appspot.com/}, choose your subject.
 
@@ -58,7 +58,7 @@ Lines executed:55.23% of 239
 Creating 'spider.cpp.gcov'
 \end{lstlisting}
 
-\item You can see information about what lines and how often been executed.
+\item You can see information about what lines and how often have been executed.
 \begin{lstlisting}
 $ nano spider.cpp.gcov
 \end{lstlisting}
@@ -74,7 +74,7 @@ For developing you need:
 \begin{enumerate}
 
 \item JDK 1.6 or higher.
-You can install JDK using the following command's:
+You can install JDK using the following commands:
 
 For Ubuntu/Debian users:
 
@@ -98,7 +98,7 @@ You can also download Oracle Java and install it.
 
 \item Eclipse with GWT plugin.
 
-More information about Eclipse set up you can find on the following web-cite \url{https://developers.google.com/web-toolkit/usingeclipse}.
+More information about Eclipse set up you can find on the following web-site \url{https://developers.google.com/web-toolkit/usingeclipse}.
 
 \item Application server (we will use Glassfish OSE).
 
@@ -120,9 +120,9 @@ Will agree that our user calls ``melges'', his home directory is located at /hom
 $ mysql db_name -u db_user -p -h db_server
 \end{lstlisting}
 
-Than enter data base password.
+Then enter database password.
 
-\item To detect last element in data base use following command:
+\item To detect last element in database use following command:
 
 \begin{lstlisting}
 mysql> SELECT * FROM mss_files ORDER BY id DESC LIMIT 1;
@@ -134,7 +134,7 @@ mysql> SELECT * FROM mss_files ORDER BY id DESC LIMIT 1;
 
 \section{Build settings}\label{sec:qt-build}
 
-When you open Qt-Creaotr at first you can see window like fig.~\ref{fig:qt-creator-config-main}. Clear "Shadow build".
+When you open Qt-Creator at first you can see window like fig.~\ref{fig:qt-creator-config-main}. Clear "Shadow build".
 
 \begin{figure}[ht]
   \centering
@@ -143,7 +143,7 @@ When you open Qt-Creaotr at first you can see window like fig.~\ref{fig:qt-creat
   \label{fig:qt-creator-config-main}
 \end{figure}
 
-Release setting should look like fig~\ref{fig:qt-creator-config-release}. Debug setting should look like fig~\ref{fig:qt-creator-config-debug}.
+Release settings should look like fig~\ref{fig:qt-creator-config-release}. Debug settings should look like fig~\ref{fig:qt-creator-config-debug}.
 
 \begin{figure}[ht]
   \centering
@@ -160,15 +160,15 @@ Release setting should look like fig~\ref{fig:qt-creator-config-release}. Debug 
 
 \section{Run settings}
 
-This is an example of Qt-Creator settings to run fulltest. This settings should be done after build settings (look at section~\ref{sec:qt-build} for more details).
+This is an example of Qt-Creator settings to run fulltest. These settings should be done after build settings (look at section~\ref{sec:qt-build} for more details).
 
 \begin{enumerate}
-  \item First of all you should choose pass to executable file. In our example it's situated in \%{buildDir}/build/debug/tests/bin/fulltest
-  \item Than add path to working directory. Full test should executes from directory when it situates. In our example it's situated in \%{buildDir}/build/debug/tests/bin
+  \item First of all you should choose path to executable file. In our example it's situated in \%{buildDir}/build/debug/tests/bin/fulltest
+  \item Then add path to working directory. Fulltest should be executed from directory where it's situated. In our example it's situated in \%{buildDir}/build/debug/tests/bin
   \item You should set LD\_LIBRARY\_PATH variable to detect new shared libraries which created in our project. You should add path to lib and tests/lib folder. LD\_LIBRARY\_PATH should contain full path to this folder.
 \end{enumerate}
 
-The result of this settings could be shown in fig.~\ref{fig:qt-creator-config-run}
+The result of these settings could be shown in fig.~\ref{fig:qt-creator-config-run}
 
 \begin{figure}[ht]
   \centering

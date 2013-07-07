@@ -6,31 +6,48 @@ We use google coding style for more details see "Google C++ Style Guide" (\url{h
 
 \section{How to commit changes}
 
-Before committing your changes you should pass code review.
+\begin{itemize}
 
-To send your patch on code review you should use upload.py script (\url{https://codereview.appspot.com/static/upload.py}).
+\item Commit changes in you local branch.
 
 \begin{lstlisting}
-$ python2.7 upload.py -m "My important change description."
+$ git commit -a -m "My important change description."
+\end{lstlisting}
+
+\item Send your patch on code review. Use \texttt{upload.py} script (\url{https://codereview.appspot.com/static/upload.py}).
+
+\begin{lstlisting}
+$ python2.7 upload.py -m "My important change description." --rev <hash tag of last revision in remote repository>
 \end{lstlisting}
 
 For more information about usage and option of upload.py see \url{http://code.google.com/p/rietveld/wiki/UploadPyUsage}.
 
-Then go to \url{https://codereview.appspot.com/}, choose your subject.
+\item Go to \url{https://codereview.appspot.com/}, change your subject and start code review.
 
-Reviewers: yulyugin@gmail.com, melges.morgen@gmail.com
+Click \textbf{Publish+Mail Comments} and fill the following parameters (see fig.~\ref{fig:codereview}):
 
-CC: mipt-smb-search-review@googlegroups.com
+\begin{itemize}
+  \item Reviewers: \texttt{yulyugin@gmail.com, melges.morgen@gmail.com}
+  \item CC: \texttt{mipt-smb-search-review@googlegroups.com}
+  \item Description: \texttt{Description of your changes and testlog.}
+\end{itemize}
 
-Description: Description of your changes and testlog.
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./codereview.png}
+  \caption{Codereview fields.}
+  \label{fig:codereview}
+\end{figure}
 
-Than start codereview review.
+Then start codereview review by clicking \textbf{Publish all my drafts}.
 
-After "LGTM" you can commit your changes.
+\item After "LGTM" you can push your changes on the main server.
 
 \begin{lstlisting}
-svn commit -m "My importand change description."
+git push origin master
 \end{lstlisting}
+
+\end{itemize}
 
 \section{How to write tests}
 
@@ -136,7 +153,7 @@ mysql> SELECT * FROM mss_files ORDER BY id DESC LIMIT 1;
 
 When you open Qt-Creator at first you can see window like fig.~\ref{fig:qt-creator-config-main}. Clear "Shadow build".
 
-\begin{figure}[ht]
+\begin{figure}[htp]
   \centering
   \includegraphics[width=0.8\textwidth]{./qt-creator-config-main.png}
   \caption{Qt-Creator settings main.}
@@ -145,7 +162,7 @@ When you open Qt-Creator at first you can see window like fig.~\ref{fig:qt-creat
 
 Release settings should look like fig~\ref{fig:qt-creator-config-release}. Debug settings should look like fig~\ref{fig:qt-creator-config-debug}.
 
-\begin{figure}[ht]
+\begin{figure}[htp]
   \centering
   \subfigure[]{
     \includegraphics[width=0.8\textwidth]{./qt-creator-config-build-release.png}

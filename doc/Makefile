@@ -12,7 +12,7 @@ parse: doxygen tex-parser.py
 	python tex-parser.py latex/refman.tex
 
 pdf: parse copyfiles
-	cd latex && make
+	cd latex && pdflatex refman && pdflatex refman
 	cp latex/refman.pdf u-search.pdf
 
 html: doxygen

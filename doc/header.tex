@@ -1,6 +1,5 @@
 \PassOptionsToPackage{top=1.5cm,bottom=2.2cm,left=1.5cm,right=1.5cm}{geometry}
-\documentclass[10pt, twoside, a4paper]{scrbook}
-\usepackage{makeidx}
+\documentclass[10pt, oneside, a4paper]{scrbook}
 \usepackage{savetrees}
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -25,18 +24,16 @@
 \usepackage{mathptmx}
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
-\usepackage{sectsty}
 \usepackage[titles, subfigure]{tocloft}
 \usepackage{doxygen}
+\fancyfoot{} % To delete doxygen generated footer
 \usepackage{url}
 \usepackage[english]{babel}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{exscale}
 \lstset{inputencoding=utf8,basicstyle=\footnotesize\ttfamily,breaklines=true,breakatwhitespace=true,tabsize=2,keepspaces=true}
-\makeindex
 \setcounter{tocdepth}{2}
-\renewcommand{\footrulewidth}{0.4pt}
 \renewcommand{\familydefault}{\sfdefault}
 \hfuzz=15pt
 \setlength{\emergencystretch}{15pt}

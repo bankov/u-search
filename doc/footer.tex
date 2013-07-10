@@ -53,9 +53,11 @@ git push origin master
 
 \section{How to test coverage}
 
+\textbf{Importatnt:} If you previously compiled project without \texttt{TEST\_COVERAGE} tag clean up your project before testing coverage.
+
 \begin{enumerate}
 
-\item Build with TEST\_COVERAGE flag:
+\item Build with \texttt{TEST\_COVERAGE} flag:
 \begin{lstlisting}
 $ make TEST_COVERAGE=yes
 \end{lstlisting}
@@ -69,7 +71,7 @@ $ cd mipt-smb-serach/spider
 
 \item Test coverage with gcov programm
 \begin{lstlisting}
-$ gcov spider.gcda
+$ gcov-4.7 spider.gcda
 File 'mipt-smb-search/spider/spider.cpp'
 Lines executed:55.23% of 239
 Creating 'spider.cpp.gcov'

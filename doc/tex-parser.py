@@ -16,8 +16,10 @@ def fix_class_index(input_file):
             next_line = fin.readline()
             if next_line == "\input{hierarchy}\n":
                 line = "\chapter{\-Class \-Index}\n\input{hierarchy}\n"
-            if next_line == "\input{annotated}\n":
+            elif next_line == "\input{annotated}\n":
                 line = next_line
+            else:
+                line += next_line
 
         fout.write(line)
 

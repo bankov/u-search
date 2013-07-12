@@ -23,7 +23,8 @@ def fix_class_index(input_file):
 
     fin.close()
     fout.close()
-    os.remove(input_file) # Thats needed for Windows.
+    if os.access(input_file, os.F_OK):
+        os.remove(input_file)
     os.rename(tmp_file, input_file)
 
 def main():

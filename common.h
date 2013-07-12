@@ -24,8 +24,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+/**
+ * @file common.h
+ *
+ * @brief File containing instruments common for all modules.
+ */
+
+#ifndef U_SEARCH_COMMON_H_
+#define U_SEARCH_COMMON_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -33,8 +39,10 @@
 #include <assert.h>
 #include <syslog.h>
 
-// A macro to disallow the copy constructor and operator= functions
-// This should be used in the private: declarations for a class
+/**
+ * A macro to disallow the copy constructor and operator= functions
+ * This should be used in the private: declarations for a class
+ */
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&);               \
   void operator=(const TypeName&)
@@ -134,4 +142,62 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
   return new mType(obj);
 }
 
-#endif  // COMMON_H_
+/**
+ * @def DATABASE_CONFIG
+ * @brief A macro to define path to the database config file.
+ */
+#define DATABASE_CONFIG "/etc/u-search/database.dat"
+
+/**
+ * @brief Read database config file.
+ */
+inline int read_database_config(std::string *database_name, std::string *database_hostname,
+                         std::string *database_user, std::string *database_password,
+                         const char *database_config_file) {
+  FILE *fin = fopen(database_config_file, "r");
+  if (unlikely(!fin)) {
+    MSS_FATAL("fopen", errno);
+    return -1;
+  }
+
+  char *buf = NULL;
+  size_t size = 0;
+
+  // Detect database name
+  if (getline(&buf, &size, fin) < 0) {
+    MSS_FATAL("getline", errno);
+    return -1;
+  }
+  database_name->assign(buf);
+  database_name->erase(database_name->end() - 1);
+
+  // Detect database hostname
+  if (getline(&buf, &size, fin) < 0) {
+    MSS_FATAL("getline", errno);
+    return -1;
+  }
+  database_hostname->assign(buf);
+  database_hostname->erase(database_hostname->end() - 1);
+
+  // Detect database username
+  if (getline(&buf, &size, fin) < 0) {
+    MSS_FATAL("getline", errno);
+    return -1;
+  }
+  database_user->assign(buf);
+  database_user->erase(database_user->end() - 1);
+
+  // Detect database password
+  if (getline(&buf, &size, fin) < 0) {
+    MSS_FATAL("getline", errno);
+    return -1;
+  }
+  database_password->assign(buf);
+  database_password->erase(database_password->end() - 1);
+
+  free(buf);
+  fclose(fin);
+  return 0;
+}
+
+#endif  // U_SEARCH_COMMON_H_

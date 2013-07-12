@@ -29,26 +29,10 @@
 SpiderTest::SpiderTest() : Spider() {}
 
 void SpiderTest::setUp() {
-  FILE *fin = fopen("../../etc/u-search/database.dat", "r");
-  CPPUNIT_ASSERT(fin);
-
-  char *buf = NULL;
-  size_t size = 0;
-  CPPUNIT_ASSERT(getline(&buf, &size, fin) > 0);
-  name_ = buf;
-  name_.erase(name_.end() - 1);
-  CPPUNIT_ASSERT(getline(&buf, &size, fin) > 0);
-  server_ = buf;
-  server_.erase(server_.end() - 1);
-  CPPUNIT_ASSERT(getline(&buf, &size, fin) > 0);
-  user_ = buf;
-  user_.erase(user_.end() - 1);
-  CPPUNIT_ASSERT(getline(&buf, &size, fin) > 0);
-  password_ = buf;
-  password_.erase(password_.end() - 1);
-
-  free(buf);
-  fclose(fin);
+  CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
+                         read_database_config(&name_, &server_, &user_,
+                                              &password_,
+                                              "../../" DATABASE_CONFIG) == 0);
 }
 
 void SpiderTest::ConstructorsTestCase() {

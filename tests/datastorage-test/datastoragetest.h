@@ -34,6 +34,7 @@
 #include <iostream>
 
 #include "data-storage/entities.h"
+#include "common.h"
 
 class FileEntryTest : public CppUnit::TestFixture {
  public:

@@ -29,41 +29,10 @@
 #include "spider.h"
 
 int main() {
-  FILE *fin = fopen("../etc/u-search/database.dat", "r");
-  if (unlikely(!fin)) {
-    MSS_FATAL("fopen", errno);
-    exit(EXIT_FAILURE);
+  std::string name, server, user, password;
+  if (unlikely(read_database_config(&name, &server, &user, &password, "../" DATABASE_CONFIG))) {
+    MSS_DEBUG_MESSAGE("failed");
   }
-
-  char *buf = NULL;
-  size_t size = 0;
-  if (getline(&buf, &size, fin) < 0) {
-    MSS_FATAL("getline", errno);
-    exit(EXIT_FAILURE);
-  }
-  std::string name(buf);
-  name.erase(name.end() - 1);
-  if (getline(&buf, &size, fin) < 0) {
-    MSS_FATAL("getline", errno);
-    exit(EXIT_FAILURE);
-  }
-  std::string server(buf);
-  server.erase(server.end() - 1);
-  if (getline(&buf, &size, fin) < 0) {
-    MSS_FATAL("getline", errno);
-    exit(EXIT_FAILURE);
-  }
-  std::string user(buf);
-  user.erase(user.end() - 1);
-  if (getline(&buf, &size, fin) < 0) {
-    MSS_FATAL("getline", errno);
-    exit(EXIT_FAILURE);
-  }
-  std::string password(buf);
-  password.erase(password.end() - 1);
-
-  free(buf);
-  fclose(fin);
 
   Spider spider("../etc/u-search/servers.dat", name, server, user, password);
   if (spider.get_error()) {

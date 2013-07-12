@@ -36,6 +36,7 @@
 #include <list>
 
 #include "spider/spider.h"
+#include "common.h"
 
 class SpiderTest : public CppUnit::TestFixture, public Spider {
  public:

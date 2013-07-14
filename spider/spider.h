@@ -93,7 +93,7 @@ class Spider {
   ~Spider();
 
   /**
-   * @brief Index all servers fro servers list.
+   * @brief Index all servers from servers list.
    */
   void Run();
 
@@ -222,6 +222,7 @@ class Spider {
 
   /**
    * @brief Dump the result vector in file.
+   * Each entry should started at new line.
    *
    * @param name Name of the file.
    * @param files Vector with scan results to be dumped to data base.

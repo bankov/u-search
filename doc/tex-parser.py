@@ -2,7 +2,7 @@ import os, sys, argparse, re
 
 tmp_file = os.path.join("latex", "temp.tex")
 
-def fix_class_index(input_file):
+def fix_index(input_file):
     fin = open(input_file, "r")
     fout = open(tmp_file, "w")
     chapter_re = re.compile(r"\\chapter\{")
@@ -15,9 +15,12 @@ def fix_class_index(input_file):
         if re.search(chapter_re, line) != None:
             next_line = fin.readline()
             if next_line == "\input{hierarchy}\n":
-                line = "\chapter{\-Class \-Index}\n\input{hierarchy}\n"
+                line = "\chapter{Class Index}\n\input{hierarchy}\n"
             elif next_line == "\input{annotated}\n":
                 line = next_line
+            elif next_line == "\input{files}\n":
+                # Don't show file index
+                continue
             else:
                 line += next_line
 
@@ -37,7 +40,7 @@ def main():
 
     args = parser.parse_args()
 
-    fix_class_index(args.input_file)
+    fix_index(args.input_file)
 
     return 0
 

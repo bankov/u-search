@@ -519,19 +519,19 @@ int Spider::AddFileEntryInDataBase(const std::string &file,
 
   if (db_file == nullptr) {  // No such entry in database create it.
     FileEntry entry(name, path, server);  // Put new entity in data base.
-    if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
       MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
       return -1;
-    }
+    }*/
 
     // Added a mime type information for entry
     FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-    if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
       MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
       return -1;
-    }
+    }*/
   } else {
     auto param = FileParameter::GetByFileAndAttribute(*db_file,
                                                       *mime_type_attr_);
@@ -548,36 +548,36 @@ int Spider::AddFileEntryInDataBase(const std::string &file,
                         " That's strange.");
 
       FileEntry entry(name, path, server);  // Put new entity in data base.
-      if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+      /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
         MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
         error_ = ENOMSG;
         return -1;
-      }
+      }*/
 
       // Added a mime type information for entry
       FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-      if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+      /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
         MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
         error_ = ENOMSG;
         return -1;
-      }
+      }*/
     }
 
     FileEntry entry(name, path, server);  // Put new entity in data base.
-    if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
       MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
       return -1;
-    }
+    }*/
 
     // Added a mime type information for entry
     FileParameter(entry, *mime_type_attr_, (*param->begin())->get_str_value(),
                   0, true);
-    if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
       MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
       return -1;
-    }
+    }*/
   }
 
   return 0;
@@ -614,11 +614,11 @@ int Spider::DumpToDataBase() {
   std::string server(result_->front(), 6, result_->front().find("/", 6) - 6);
 
   DatabaseEntity::StartTransaction();
-  if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+  /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
     MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
     return -1;
-  }
+  }*/
 
   for (std::vector<std::string>::iterator itr = result_->begin();
        itr != last_; ++itr) {
@@ -632,11 +632,11 @@ int Spider::DumpToDataBase() {
   }
 
   DatabaseEntity::CommitTransaction();
-  if (unlikely(!DatabaseEntity::get_db_error().empty())) {
+  /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
     MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
     return -1;
-  }
+  }*/
 
   return 0;
 }

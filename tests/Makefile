@@ -4,16 +4,16 @@ include ../config.mk
 all: cppsocketstest datastoragetest spidertest fulltest
 	@echo [FINISHED test]
 
-cppsocketstest: cppsockets-test
+cppsocketstest:
 	cd $(SRC_BASE)/tests/cppsockets-test && make
 
-datastoragetest: datastorage-test
+datastoragetest:
 	cd $(SRC_BASE)/tests/datastorage-test && make
 
-spidertest: spider-test
+spidertest:
 	cd $(SRC_BASE)/tests/spider-test && make
 
-fulltest: full-test spidertest datastoragetest cppsocketstest
+fulltest: spidertest datastoragetest cppsocketstest
 	cd $(SRC_BASE)/tests/full-test && make
 
 clean:

@@ -11,13 +11,13 @@ LDFLAGS+=-lcppunit -lmysqlpp -lmysqlclient -L$(BUILD)/lib -lcppsockets -lspider 
 fulltest: $(SOURCES) libcppsocketstest libdatastoragetest libspidertest
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(BUILD)/tests/bin/fulltest $(SOURCES) $(LDFLAGS)
 
-libcppsocketstest: $(SRC_BASE)/tests/cppsockets-test/*.h $(SRC_BASE)/tests/cppsockets-test/*.cpp
+libcppsocketstest:
 	cd $(SRC_BASE)/tests make libcppsocketstest
 
-libspidertest: $(SRC_BASE)/tests/spider-test/*.h $(SRC_BASE)/tests/spider-test/*.cpp
+libspidertest:
 	cd $(SRC_BASE)/tests make libspidertest
 
-libdatastoragetest: $(SRC_BASE)/tests/datastorage-test/*.h $(SRC_BASE)/tests/datastorage-test/*.cpp
+libdatastoragetest:
 	cd $(SRC_BASE)/tests make libdatastoragetest
 
 clean:

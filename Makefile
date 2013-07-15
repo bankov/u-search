@@ -4,19 +4,19 @@ include config.mk
 all: test spiderd
 	@echo [FINISHED u-search]
 
-libcppsockets: cppsockets
+libcppsockets:
 	cd $(SRC_BASE)/cppsockets && make
 
-libspider: libdata_storage spider
+libspider:
 	cd $(SRC_BASE)/spider && make libspider
 
-spiderd: libspider copyfiles
-	cd $(SRC_BASE)/spider && make spider
+spiderd: copyfiles
+	cd $(SRC_BASE)/spider && make
 
-libdata_storage: data-storage
+libdata_storage:
 	cd $(SRC_BASE)/data-storage && make
 
-test: libspider libcppsockets libdata_storage copyfiles tests
+test:
 	cd $(SRC_BASE)/tests && make
 
 copyfiles: database.dat.example servers.dat.example
@@ -24,7 +24,7 @@ copyfiles: database.dat.example servers.dat.example
 	cp database.dat.example $(BUILD)/etc/u-search
 	cp servers.dat.example $(BUILD)/etc/u-search
 
-docs: doc
+docs:
 	cd $(SRC_BASE)/doc && make
 
 help:

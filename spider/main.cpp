@@ -29,6 +29,10 @@
 #include "spider.h"
 
 int main() {
+  int hours;
+  int minutes;
+
+  // Read config from database
   std::string name, server, user, password;
   if (unlikely(read_database_config(&name, &server, &user, &password, "../" DATABASE_CONFIG))) {
     MSS_DEBUG_MESSAGE("failed");
@@ -49,7 +53,11 @@ int main() {
     spider.Run();
 
     gettimeofday(&end, NULL);
-    printf("Iteration time - %ld second.\n", end.tv_sec - start.tv_sec);
+
+    hours = (end.tv_sec - start.tv_sec) / 3600;
+    minutes = ((end.tv_sec - start.tv_sec) % 3600) / 60;
+
+    printf("Iteration time: %d hourse, %d minutes.\n", hours, minutes);
   }
 
   exit(EXIT_SUCCESS);

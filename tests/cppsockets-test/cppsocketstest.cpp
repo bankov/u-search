@@ -26,6 +26,9 @@
 
 #include "cppsocketstest.h"
 
+#include <typeinfo>
+#include <cstdio>
+
 void  AbstractSocketTest::ConstructorsTestCase() {
   AbstractSocket socket;
 
@@ -252,6 +255,98 @@ void TCPSocketTest::Run() {
   free(message);
 }
 
+void TCPSocketTest::ConstructorsTestCase(){
+  
+  // Creating thread for listener
+  mutex_.lock();
+  //listener_->join();
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::Run, this);
+  CPPUNIT_ASSERT(listener_);
+  mutex_.lock();
+
+  
+  // default constructor test
+  TCPSocket *testedSocket = new(std::nothrow) TCPSocket();
+  CPPUNIT_ASSERT(testedSocket);
+  delete testedSocket;
+  
+  // explicit constructor test
+  SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
+  CPPUNIT_ASSERT(lAddr);
+  testedSocket = new(std::nothrow) TCPSocket(lAddr);
+  CPPUNIT_ASSERT(testedSocket);
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
+                         testedSocket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_port_",
+                         testedSocket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in type_",
+                         testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT_MESSAGE("Error in error_",
+                         !testedSocket->get_error());
+  /*
+  CPPUNIT_ASSERT_MESSAGE("Error in socket_",
+                         testedSocket->get_socket() == socket(PF_INET, SOCK_STREAM, 0));
+  */
+  delete lAddr;
+  delete testedSocket;
+  
+  // Connection constructor test
+  lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
+  CPPUNIT_ASSERT(lAddr);
+  SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
+  CPPUNIT_ASSERT(rAddr);
+  testedSocket = new(std::nothrow) TCPSocket(lAddr, rAddr);
+  CPPUNIT_ASSERT(testedSocket);
+  
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
+                         testedSocket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_port_",
+                         testedSocket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_",
+                         testedSocket->get_remote_address() == rAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_port_",
+                         testedSocket->get_remote_port() == rAddr->GetPortAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in type_",
+                         testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT_MESSAGE("Error in state_",
+                         testedSocket->get_state() == AbstractSocket::ConnectedState);
+}
+
+void TCPSocketTest::ConnectToHostTestCase(){
+
+  SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
+  SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
+  CPPUNIT_ASSERT(lAddr);
+
+  TCPSocket *testedSocket = new(std::nothrow) TCPSocket(lAddr);
+  CPPUNIT_ASSERT(testedSocket);
+  int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(), rAddr->GetPortAsHost());
+  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
+  testedSocket->Disconnect();
+
+  
+  in_addr_t address = rAddr->GetAddressAsNet();
+  in_port_t port = rAddr->GetPortAsNet();
+  result = testedSocket->ConnectToHost(address, port);
+  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
+  
+  delete testedSocket;
+  testedSocket = new(std::nothrow) TCPSocket(lAddr);
+  
+  
+  std::string strAddr = rAddr->GetAddressAsString();
+  result = testedSocket->ConnectToHost( &strAddr, rAddr->GetPortAsHost());
+  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
+ 
+  delete testedSocket;
+  delete lAddr;
+  delete rAddr;
+}
+
+void TCPSocketTest::WriteInSocketTestCase(){}
+void TCPSocketTest::ReadFromSocketTestCase(){}
+
+/*
 void TCPSocketTest::BasicTestCase() {
   CPPUNIT_ASSERT(message = (char*) malloc(sizeof(char) * TSTMSGSZE));
 
@@ -265,6 +360,7 @@ void TCPSocketTest::BasicTestCase() {
   CPPUNIT_ASSERT(listener_);
   mutex_.lock();
 
+//=================== ConstructorsTestCase====================//
   // Simple constructor and destructor test
   TCPSocket *testedSocket = new(std::nothrow) TCPSocket();
   CPPUNIT_ASSERT(testedSocket);
@@ -286,10 +382,10 @@ void TCPSocketTest::BasicTestCase() {
   CPPUNIT_ASSERT(rAddr);
   testedSocket = new(std::nothrow) TCPSocket(lAddr, rAddr);
   CPPUNIT_ASSERT(testedSocket);
-
+  //===================END_ConstructorsTestCase====================//
   char *recv = (char*) malloc(TSTMSGSZE);
   CPPUNIT_ASSERT(recv);
-
+  //===================WriteInSocket and ReadFromSocket tests=======//
   int writedBytes = testedSocket->WriteInSocket(message, TSTMSGSZE);
   int readedBytes = testedSocket->ReadFromSocket(recv, TSTMSGSZE);
 
@@ -330,6 +426,8 @@ void TCPSocketTest::BasicTestCase() {
   delete testedSocket;
   delete listener_;
 }
+
+*/
 
 void UDPSocketTest::BasicTestCase() {
   // Simple Constructor and destructor test

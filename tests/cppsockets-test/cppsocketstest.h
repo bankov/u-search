@@ -87,7 +87,7 @@ class TCPSocketTest : public CppUnit::TestFixture, public std::thread {
     std::thread *listener_;
     CPPUNIT_TEST_SUITE(TCPSocketTest);
     CPPUNIT_TEST(ConstructorsTestCase);
-    //CPPUNIT_TEST(ConnectToHostTestCase);
+    CPPUNIT_TEST(ConnectToHostTestCase);
     CPPUNIT_TEST(WriteInSocketTestCase);
     CPPUNIT_TEST(ReadFromSocketTestCase);
     //CPPUNIT_TEST(BasicTestCase);

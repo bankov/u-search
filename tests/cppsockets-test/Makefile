@@ -7,7 +7,7 @@ HEADERS=cppsocketstest.h
 
 include ../../config.mk
 
-LDFLAGS+=-lcppunit -L$(BUILD)/lib -lcppsockets
+LDFLAGS+=-lcppunit -L$(BUILD)/lib -lcppsockets -lpthread
 
 .SUFFIXES: .cpp .o
 

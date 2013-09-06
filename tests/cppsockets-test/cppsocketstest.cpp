@@ -367,14 +367,13 @@ void TCPSocketTest::WriteInSocketTestCase(){
   CPPUNIT_ASSERT_MESSAGE("Error on sending, test for constructor",
                          writedBytes != -1);
   
-  std::cout<<" writed successfully!!! ";
   testedSocket->Disconnect();
 
   delete lAddr;
   delete rAddr;
   delete testedSocket;
-  
 }
+
 void TCPSocketTest::ReadFromSocketTestCase(){}
 
 /*

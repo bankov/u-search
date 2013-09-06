@@ -7,7 +7,6 @@ then
 fi
 
 MSS_BUILD="$(readlink -f $1)"
-echo $MSS_BUILD
 
 # Add path to libraries in LD_LIBRARY_PATH
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$MSS_BUILD/lib:$MSS_BUILD/tests/lib"

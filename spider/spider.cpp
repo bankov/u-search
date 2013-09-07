@@ -517,15 +517,13 @@ int Spider::AddFileEntryInDataBase(const std::string &file,
   // Try to find this entry in database
   auto db_file = FileEntry::GetByPathOnServer(path, server);
 
-  if (db_file == nullptr) {  // No such entry in database create it.
-    FileEntry entry(name, path, server);  // Put new entity in data base.
-    // TODO(yulyugin): Add error check
+  // Add new entry or updaste existing
+  FileEntry entry(name, path, server);
+  // TODO(yulyugin): Add error check
 
-    // Added a mime type information for entry
+  if (db_file == nullptr) {
+    // No such entry in database so we need to add a mime type information
     FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-    // TODO(yulyugin): Add error check
-  } else {
-    FileEntry entry(name, path, server);  // Update existing entry.
     // TODO(yulyugin): Add error check
   }
 

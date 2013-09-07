@@ -519,65 +519,14 @@ int Spider::AddFileEntryInDataBase(const std::string &file,
 
   if (db_file == nullptr) {  // No such entry in database create it.
     FileEntry entry(name, path, server);  // Put new entity in data base.
-    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-      MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-      error_ = ENOMSG;
-      return -1;
-    }*/
+    // TODO(yulyugin): Add error check
 
     // Added a mime type information for entry
     FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-      MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-      error_ = ENOMSG;
-      return -1;
-    }*/
+    // TODO(yulyugin): Add error check
   } else {
-    auto param = FileParameter::GetByFileAndAttribute(*db_file,
-                                                      *mime_type_attr_);
-
-    if (unlikely(param == nullptr)) {
-      MSS_ERROR_MESSAGE(("FileParameter::GetByFileAndAttribute: " +
-                         DatabaseEntity::get_db_error()).c_str());
-      error_ = ENOMSG;
-      return -1;
-    }
-
-    if (unlikely(param->size() == 0)) {
-      MSS_ERROR_MESSAGE("No mime type parameters for entry in database."
-                        " That's strange.");
-
-      FileEntry entry(name, path, server);  // Put new entity in data base.
-      /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-        MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-        error_ = ENOMSG;
-        return -1;
-      }*/
-
-      // Added a mime type information for entry
-      FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-      /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-        MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-        error_ = ENOMSG;
-        return -1;
-      }*/
-    }
-
-    FileEntry entry(name, path, server);  // Put new entity in data base.
-    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-      MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-      error_ = ENOMSG;
-      return -1;
-    }*/
-
-    // Added a mime type information for entry
-    FileParameter(entry, *mime_type_attr_, (*param->begin())->get_str_value(),
-                  0, true);
-    /*if (unlikely(!DatabaseEntity::get_db_error().empty())) {
-      MSS_ERROR_MESSAGE(DatabaseEntity::get_db_error().c_str());
-      error_ = ENOMSG;
-      return -1;
-    }*/
+    FileEntry entry(name, path, server);  // Update existing entry.
+    // TODO(yulyugin): Add error check
   }
 
   return 0;

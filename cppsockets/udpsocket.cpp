@@ -31,12 +31,12 @@ UDPSocket::UDPSocket() : DataSocket() {}
 
 UDPSocket::UDPSocket(const SocketAddress *listenSocketAddress) : DataSocket() {
   set_local_address(*listenSocketAddress);
-  if (unlikely(Bind(*listenSocketAddress)))
+  if (UNLIKELY(Bind(*listenSocketAddress)))
     MSS_DEBUG_MESSAGE("Bind");
 }
 
 bool UDPSocket::AllowBroadcast() {
-  if (unlikely(get_socket() < 0)) {
+  if (UNLIKELY(get_socket() < 0)) {
     set_error(EBADF);
     MSS_DEBUG_ERROR("UDPSocket::AllowBroadcast", get_error());
     return false;
@@ -44,7 +44,7 @@ bool UDPSocket::AllowBroadcast() {
 
   // Set value to true
   int optval = 1;
-  if (unlikely(setsockopt(get_socket(), SOL_SOCKET, SO_BROADCAST, &optval,
+  if (UNLIKELY(setsockopt(get_socket(), SOL_SOCKET, SO_BROADCAST, &optval,
                           sizeof(optval)) == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("setsockopt", get_error())
@@ -55,7 +55,7 @@ bool UDPSocket::AllowBroadcast() {
 }
 
 bool UDPSocket::RejectBroadcast() {
-  if (unlikely(get_socket() < 0)) {
+  if (UNLIKELY(get_socket() < 0)) {
     set_error(EBADF);
     MSS_DEBUG_ERROR("UDPSocket::RejectBroadcast", get_error());
     return false;
@@ -63,7 +63,7 @@ bool UDPSocket::RejectBroadcast() {
 
   // Set value to false
   int optval = 0;
-  if (unlikely(setsockopt(get_socket(), SOL_SOCKET, SO_BROADCAST, &optval,
+  if (UNLIKELY(setsockopt(get_socket(), SOL_SOCKET, SO_BROADCAST, &optval,
                           sizeof(optval)) == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("setsockopt", get_error());
@@ -74,7 +74,7 @@ bool UDPSocket::RejectBroadcast() {
 }
 
 int UDPSocket::WaitDatagram() {
-  if (unlikely(get_socket() < 0)) {
+  if (UNLIKELY(get_socket() < 0)) {
     set_error(EBADF);
     MSS_DEBUG_ERROR("UDPSocket::WaitDatagram", get_error());
     return -1;
@@ -88,14 +88,14 @@ int UDPSocket::WaitDatagram() {
 
   int selectStatus = select(get_socket() + 1, &waitReadSet, NULL, &errorSet,
                             NULL);
-  if (unlikely(selectStatus == -1)) {
+  if (UNLIKELY(selectStatus == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("select", get_error());
     return -1;
   }
 
   // Check is socket alert on error
-  if (unlikely(FD_ISSET(this->get_socket(), &errorSet))) {
+  if (UNLIKELY(FD_ISSET(this->get_socket(), &errorSet))) {
     DetectError();
     MSS_DEBUG_ERROR("FD_ISSET", get_error());
     return -1;
@@ -109,7 +109,7 @@ int UDPSocket::Bind(const SocketAddress &bindAddress) {
   set_state(ConnectingState);
 
   set_socket(socket(AF_INET, SOCK_DGRAM, 0));
-  if (unlikely(get_socket() == -1)) {
+  if (UNLIKELY(get_socket() == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("socket", get_error());
     set_state(UnconnectedState);
@@ -124,7 +124,7 @@ int UDPSocket::Bind(const SocketAddress &bindAddress) {
   localAddr.sin_addr.s_addr = get_local_address();
   localAddr.sin_port = get_local_port();
 
-  if (unlikely(bind(get_socket(), (sockaddr*) &localAddr,
+  if (UNLIKELY(bind(get_socket(), (sockaddr*) &localAddr,
                     sizeof(localAddr)) == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("bind", get_error());
@@ -150,7 +150,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
   *buf = NULL;
 
   bool ignoreSize = false;
-  if (unlikely(size == 0)) {
+  if (UNLIKELY(size == 0)) {
     MSS_DEBUG_MESSAGE("UDPSocket::ReciveDatagram: maxSize is 0");
     size = MAX_SIZE;
     ignoreSize = true;
@@ -161,7 +161,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
   struct iovec inputData;
   struct msghdr messageInfo;
   void *buffer = malloc(size);
-  if (unlikely(buffer == NULL)) {
+  if (UNLIKELY(buffer == NULL)) {
     DetectError();
     MSS_DEBUG_ERROR("malloc", get_error());
   }
@@ -187,7 +187,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
 
   // Try to recive message
   datagrammLength = recvmsg(get_socket(), &messageInfo, MSG_PEEK);
-  if (unlikely(datagrammLength < 0)) {
+  if (UNLIKELY(datagrammLength < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("recvmsg", get_error());
     free(buffer);
@@ -197,7 +197,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
   // If bufer less then message length we need to rereceive them
   if (size < datagrammLength && ignoreSize) {
     void *newbuf = realloc(buffer, datagrammLength);
-    if (unlikely(newbuf == NULL)) {
+    if (UNLIKELY(newbuf == NULL)) {
       DetectError();
       MSS_DEBUG_ERROR("realloc", get_error());
       free(buffer);
@@ -207,7 +207,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
     buffer = newbuf;
 
     int datagrammLength = recvmsg(get_socket(), &messageInfo, 0);
-    if (unlikely(datagrammLength < 0)) {
+    if (UNLIKELY(datagrammLength < 0)) {
       DetectError();
       MSS_DEBUG_ERROR("recvmsg", get_error());
       free(buffer);
@@ -215,7 +215,7 @@ ssize_t UDPSocket::ReceiveDatagram(void **buf, SocketAddress *address,
     }
   } else if (size < datagrammLength) {
     int tempVar = recv(get_socket(), &tempVar, sizeof(tempVar), 0);
-    if (unlikely(tempVar < 0)) {
+    if (UNLIKELY(tempVar < 0)) {
       DetectError();
       MSS_DEBUG_ERROR("recv", get_error());
       free(buffer);
@@ -269,7 +269,7 @@ ssize_t UDPSocket::SendDatagram(void *data, SocketAddress *address,
   int sendedBytesCount = sendto(get_socket(), data, size, 0,
                                 (struct sockaddr*) &destinationAddr,
                                 sizeof(destinationAddr));
-  if (unlikely(sendedBytesCount < 0)) {
+  if (UNLIKELY(sendedBytesCount < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("sendto", get_error());
     return -1;

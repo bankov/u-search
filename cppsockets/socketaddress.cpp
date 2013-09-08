@@ -56,14 +56,14 @@ SocketAddress::SocketAddress(const short port)
     : error_(0), address_(0), port_(htons(port)) {}
 
 int SocketAddress::set_address(const char *address) {
-  if (unlikely(address == NULL)) {
+  if (UNLIKELY(address == NULL)) {
     error_ = EINVAL;
     MSS_DEBUG_ERROR("set_address", error_);
     return -1;
   }
 
   // We can safely convert in_addr_t to struct in_addr because it 32-bits long
-  if (unlikely(inet_aton(address, (struct in_addr*) &address_) == 0)) {
+  if (UNLIKELY(inet_aton(address, (struct in_addr*) &address_) == 0)) {
     DetectError();
     MSS_DEBUG_ERROR("inet_aton", error_);
     return -1;
@@ -76,13 +76,13 @@ int SocketAddress::set_address(const char *address) {
 char *SocketAddress::GetAddressAsChar() {
   char *addressAsChar =
       (char*) malloc(sizeof(char) * INET_ADDRSTRLEN);
-  if (unlikely(addressAsChar == NULL)) {
+  if (UNLIKELY(addressAsChar == NULL)) {
     DetectError();
     MSS_DEBUG_ERROR("inet_ntop", error_);
     return NULL;
   }
 
-  if (unlikely(inet_ntop(AF_INET, &address_, addressAsChar,
+  if (UNLIKELY(inet_ntop(AF_INET, &address_, addressAsChar,
                          INET_ADDRSTRLEN) == NULL)) {
     DetectError();
     MSS_DEBUG_ERROR("inet_ntop", error_);
@@ -94,7 +94,7 @@ char *SocketAddress::GetAddressAsChar() {
 
 std::string SocketAddress::GetAddressAsString() {
   char *addressAsChar = GetAddressAsChar();
-  if (unlikely(addressAsChar == NULL)) {
+  if (UNLIKELY(addressAsChar == NULL)) {
     MSS_DEBUG_ERROR("GetAddressAsChar",  error_);
     return NULL;
   }

@@ -54,7 +54,7 @@ void DataSocket::Flush() {
   std::vector<unsigned char> buffer;
   buffer.resize(MAX_SIZE);
   while (read_state == MAX_SIZE) {
-    if (unlikely(read_state = read(socket, &buffer, MAX_SIZE) == -1)) {
+    if (UNLIKELY(read_state = read(socket, &buffer, MAX_SIZE) == -1)) {
       DetectError();
       MSS_DEBUG_ERROR("read", get_error());
     }
@@ -62,14 +62,14 @@ void DataSocket::Flush() {
 }
 
 size_t DataSocket::ReadData(void *data, size_t size) {
-  if (unlikely(data == NULL || size < 1)) {
+  if (UNLIKELY(data == NULL || size < 1)) {
     set_error(EINVAL);
     MSS_DEBUG_ERROR("DataSocket::ReadData", get_error());
     return -1;
   }
 
   int readed_bytes = read(get_socket(), data, size);
-  if (unlikely(readed_bytes == -1)) {
+  if (UNLIKELY(readed_bytes == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("read", get_error());
     return -1;
@@ -83,7 +83,7 @@ size_t DataSocket::ReadData(void *data, size_t size) {
 }
 
 size_t DataSocket::WriteData(void *data, size_t size) {
-  if (unlikely(data == NULL || size < 1)) {
+  if (UNLIKELY(data == NULL || size < 1)) {
     set_error(EINVAL);
     MSS_DEBUG_ERROR("DataSocket::WriteData", get_error());
     return -1;

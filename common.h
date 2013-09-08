@@ -35,7 +35,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <proc/procps.h>
 #include <assert.h>
 #include <syslog.h>
 
@@ -207,6 +206,9 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
  */
 #define DATABASE_CONFIG "/etc/u-search/database.dat"
 
+#define LIKELY(x)   __builtin_expect(!!(x),1)
+#define UNLIKELY(x) __builtin_expect(!!(x),0)
+
 /**
  * Read database config file.
  *
@@ -224,7 +226,7 @@ inline int read_database_config(std::string *database_name,
                                 std::string *database_password,
                                 const char *database_config_file) {
   FILE *fin = fopen(database_config_file, "r");
-  if (unlikely(!fin)) {
+  if (UNLIKELY(!fin)) {
     MSS_FATAL("fopen", errno);
     return -1;
   }

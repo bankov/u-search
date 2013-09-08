@@ -36,7 +36,7 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
 
   // Creating socket
   int temp = socket(PF_INET, SOCK_STREAM, 0);
-  if (unlikely(temp < 0)) {
+  if (UNLIKELY(temp < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("socket", get_error());
     return;
@@ -45,7 +45,7 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
   set_socket(temp);
 
   int optval = 1;
-  if (unlikely(setsockopt(get_socket(), SOL_SOCKET, SO_REUSEADDR, &optval,
+  if (UNLIKELY(setsockopt(get_socket(), SOL_SOCKET, SO_REUSEADDR, &optval,
                           sizeof(optval)) < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("setsockopt", get_error());
@@ -59,7 +59,7 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
   serverAddress.sin_port = local_address->GetPortAsNet();
   socklen_t serverStructSize = sizeof(serverAddress);
 
-  if (unlikely(bind(temp, (struct sockaddr *)&serverAddress,
+  if (UNLIKELY(bind(temp, (struct sockaddr *)&serverAddress,
                     sizeof(serverAddress)) < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("bind", get_error());
@@ -67,14 +67,14 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
   }
 
   // Detecting real binded address
-  if (unlikely(getsockname(temp, (struct sockaddr*) &serverAddress,
+  if (UNLIKELY(getsockname(temp, (struct sockaddr*) &serverAddress,
                            &serverStructSize) < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("getsockname", get_error());
     return;
   }
 
-  if (unlikely(listen(temp, backlog_) < 0)) {
+  if (UNLIKELY(listen(temp, backlog_) < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("listen", get_error());
     return;
@@ -94,14 +94,14 @@ TCPListener::~TCPListener() {
 DataSocket *TCPListener::AcceptNoWait() {
   // Reading the socket status flags
   int temp = fcntl(get_socket(), F_GETFL, NULL);
-  if (unlikely(temp < 0)) {
+  if (UNLIKELY(temp < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("fcntl", get_error());
     return NULL;
   }
 
   // Setting flag no wait
-  if (unlikely((fcntl(get_socket(), F_SETFL, temp | O_NONBLOCK)) == -1)) {
+  if (UNLIKELY((fcntl(get_socket(), F_SETFL, temp | O_NONBLOCK)) == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("fcntl", get_error());
     return NULL;
@@ -111,7 +111,7 @@ DataSocket *TCPListener::AcceptNoWait() {
   struct sockaddr_in clientAddress;
   socklen_t clientAddressLength = sizeof(clientAddress);
 
-  if (unlikely((temp = accept(get_socket(), (struct sockaddr *)&clientAddress,
+  if (UNLIKELY((temp = accept(get_socket(), (struct sockaddr *)&clientAddress,
                               &clientAddressLength)) < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("accept", get_error());
@@ -122,7 +122,7 @@ DataSocket *TCPListener::AcceptNoWait() {
   DataSocket *data_socket =
       new(std::nothrow) DataSocket(temp, get_local_socket_address(),
                                    addr, TCP);
-  if (unlikely(data_socket == NULL)) {
+  if (UNLIKELY(data_socket == NULL)) {
     set_error(ENOMEM);
     MSS_DEBUG_ERROR("DataSocket", get_error());
     return NULL;
@@ -138,7 +138,7 @@ DataSocket *TCPListener::Accept() {
 
   int temp = accept(get_socket(), (struct sockaddr *)&clientAddress,
                     &clientAddressLength);
-  if (unlikely(temp < 0)) {
+  if (UNLIKELY(temp < 0)) {
     DetectError();
     MSS_DEBUG_ERROR("accept", get_error());
     return NULL;
@@ -148,7 +148,7 @@ DataSocket *TCPListener::Accept() {
   DataSocket *data_socket =
       new(std::nothrow) DataSocket(temp, get_local_socket_address(),
                                    addr, TCP);
-  if (unlikely(data_socket == NULL)) {
+  if (UNLIKELY(data_socket == NULL)) {
     set_error(ENOMEM);
     MSS_DEBUG_ERROR("DataSocket", get_error());
     return NULL;

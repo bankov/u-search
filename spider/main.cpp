@@ -34,7 +34,7 @@ int main() {
 
   // Read config from database
   std::string name, server, user, password;
-  if (unlikely(read_database_config(&name, &server, &user, &password, "../" DATABASE_CONFIG))) {
+  if (UNLIKELY(read_database_config(&name, &server, &user, &password, "../" DATABASE_CONFIG))) {
     MSS_DEBUG_MESSAGE("failed");
   }
 

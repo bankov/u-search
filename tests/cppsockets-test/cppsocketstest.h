@@ -76,7 +76,7 @@ class SocketAddressTest : public CppUnit::TestFixture {
 class TCPSocketTest : public CppUnit::TestFixture, public std::thread {
   public:
     void Run();
-    void RunConstructors();
+    void RunSimple();
     void Constructors();
     void ConnectToHost();
     void WriteInSocket();

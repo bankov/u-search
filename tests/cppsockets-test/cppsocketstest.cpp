@@ -224,7 +224,7 @@ void TCPSocketTest::Run() {
   mutex_.unlock();
   DataSocket *testClient = genericListener->Accept();
   CPPUNIT_ASSERT(testClient);
-  char *message = (char*) malloc(TSTMSGSZE);
+  char *message = static_cast<char*>(malloc(TSTMSGSZE));
   CPPUNIT_ASSERT(message);
   int recived = testClient->ReadData(message, TSTMSGSZE);
 
@@ -255,10 +255,11 @@ void TCPSocketTest::Run() {
   free(message);
 }
 
-void TCPSocketTest::RunConstructors() {
+void TCPSocketTest::RunSimple() {
   SocketAddress address("127.0.0.1", 25555);
   TCPListener *listener = new(std::nothrow) TCPListener(&address, 10);
   CPPUNIT_ASSERT(listener);
+  mutex_.unlock();
   CPPUNIT_ASSERT(!listener->get_error());
   CPPUNIT_ASSERT(listener->get_local_address() == address.GetAddressAsNet());
   CPPUNIT_ASSERT(listener->get_local_port() == address.GetPortAsNet());
@@ -267,108 +268,132 @@ void TCPSocketTest::RunConstructors() {
   CPPUNIT_ASSERT(listener->get_type() == AbstractSocket::Listener);
   CPPUNIT_ASSERT(listener->get_state() == AbstractSocket::ListeningState);
 
-  mutex_.unlock();
-  DataSocket *client = listener->Accept();
-  CPPUNIT_ASSERT(client);
-  CPPUNIT_ASSERT(!client->get_error());
-  CPPUNIT_ASSERT(client->get_local_address() == address.GetAddressAsNet());
-  CPPUNIT_ASSERT(client->get_local_port() == address.GetPortAsNet());
-  CPPUNIT_ASSERT(client->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
-  CPPUNIT_ASSERT(client->get_remote_port() == 0X3978  /* 30777 */);
-  CPPUNIT_ASSERT(client->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT(client->get_state() == AbstractSocket::ConnectedState);
-
-  delete client;
+  mutex_.lock();
   delete listener;
+  mutex_.unlock();
 }
 
-void TCPSocketTest::Constructors(){
+void TCPSocketTest::Constructors() {
   // Creating thread for listener
   mutex_.lock();
-  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::RunConstructors,
-                                            this);
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::RunSimple, this);
   CPPUNIT_ASSERT(listener_);
   mutex_.lock();
 
-  TCPSocket *testedSocket = new(std::nothrow) TCPSocket();
-  CPPUNIT_ASSERT(testedSocket);
-  CPPUNIT_ASSERT(testedSocket->get_local_address() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_local_port() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_remote_address() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_remote_port() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::UnconnectedState);
-  CPPUNIT_ASSERT(!testedSocket->get_error());
-
-  delete testedSocket;
+  TCPSocket *socket = new(std::nothrow) TCPSocket();
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_local_address() == 0);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
+  delete socket;
 
   SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
   CPPUNIT_ASSERT(lAddr);
-  testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  CPPUNIT_ASSERT(testedSocket);
-  CPPUNIT_ASSERT(testedSocket->get_local_address() == lAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_local_port() == lAddr->GetPortAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_remote_address() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_remote_port() == 0);
-  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::UnconnectedState);
-  CPPUNIT_ASSERT(!testedSocket->get_error());
-
+  socket = new(std::nothrow) TCPSocket(lAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
   delete lAddr;
-  delete testedSocket;
+  delete socket;
 
   lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
   CPPUNIT_ASSERT(lAddr);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
   CPPUNIT_ASSERT(rAddr);
-  testedSocket = new(std::nothrow) TCPSocket(lAddr, rAddr);
-  CPPUNIT_ASSERT(testedSocket);
+  socket = new(std::nothrow) TCPSocket(lAddr, rAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_address() == rAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_port() == rAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
 
-  CPPUNIT_ASSERT(testedSocket->get_local_address() == lAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_local_port() == lAddr->GetPortAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_remote_address() ==
-                     rAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_remote_port() == rAddr->GetPortAsNet());
-  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::ConnectedState);
-  CPPUNIT_ASSERT(!testedSocket->get_error());
-
+  mutex_.unlock();
   delete lAddr;
   delete rAddr;
-  delete testedSocket;
+  listener_->join();
+  delete listener_;
+  delete socket;
 }
 
-void TCPSocketTest::ConnectToHost(){
+void TCPSocketTest::ConnectToHost() {
+  // Creating thread for listener
+  mutex_.lock();
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::RunSimple, this);
+  CPPUNIT_ASSERT(listener_);
+  mutex_.lock();
 
   SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
   CPPUNIT_ASSERT(lAddr);
 
-  TCPSocket *testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  CPPUNIT_ASSERT(testedSocket);
-  int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(), rAddr->GetPortAsHost());
-  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
-  testedSocket->Disconnect();
+  TCPSocket *socket = new(std::nothrow) TCPSocket(lAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->ConnectToHost(rAddr->GetAddressAsChar(),
+                                        rAddr->GetPortAsHost()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  socket->Disconnect();
 
-  in_addr_t address = rAddr->GetAddressAsNet();
-  in_port_t port = rAddr->GetPortAsNet();
-  result = testedSocket->ConnectToHost(address, port);
-  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
-  
-  delete testedSocket;
-  testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  
-  
+  sleep(1);  // Give it few time to free address and port
+  CPPUNIT_ASSERT(!socket->ConnectToHost(rAddr->GetAddressAsNet(),
+                                        rAddr->GetPortAsNet()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  delete socket;
+
+  socket = new(std::nothrow) TCPSocket(lAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  sleep(1);  // Give it few time to free address and port
   std::string strAddr = rAddr->GetAddressAsString();
-  result = testedSocket->ConnectToHost( &strAddr, rAddr->GetPortAsHost());
-  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
- 
-  delete testedSocket;
+  CPPUNIT_ASSERT(!socket->ConnectToHost(&strAddr, rAddr->GetPortAsHost()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  mutex_.unlock();
   delete lAddr;
   delete rAddr;
+  listener_->join();
+  delete listener_;
+  delete socket;
 }
 
-void TCPSocketTest::WriteInSocket(){
+void TCPSocketTest::WriteInSocket() {
   CPPUNIT_ASSERT(message = (char*) malloc(sizeof(char) * TSTMSGSZE));
 
   // Made etalon string
@@ -385,7 +410,8 @@ void TCPSocketTest::WriteInSocket(){
   CPPUNIT_ASSERT(testedSocket);
   
   // connect to host
-  int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(), rAddr->GetPortAsHost());
+  int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(),
+                                           rAddr->GetPortAsHost());
   CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
   
   // write to socket

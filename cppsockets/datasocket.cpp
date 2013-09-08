@@ -36,6 +36,8 @@ DataSocket::DataSocket(int socket, SocketAddress &local_address,
   set_remote_address(remote_address);
   set_socket(socket);
   set_type(type);
+  if (socket > 0)
+    set_state(ConnectedState);
 }
 
 DataSocket::~DataSocket() {

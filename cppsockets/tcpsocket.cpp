@@ -26,7 +26,9 @@
 
 #include "tcpsocket.h"
 
-TCPSocket::TCPSocket() : DataSocket() {}
+TCPSocket::TCPSocket() : DataSocket() {
+  set_type(TCP);
+}
 
 TCPSocket::TCPSocket(SocketAddress *local_address) : DataSocket() {
   set_local_address(local_address->GetAddressAsNet());

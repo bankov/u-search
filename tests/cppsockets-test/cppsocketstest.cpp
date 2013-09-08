@@ -255,33 +255,68 @@ void TCPSocketTest::Run() {
   free(message);
 }
 
-void TCPSocketTest::ConstructorsTestCase(){
+void TCPSocketTest::RunConstructors() {
+  SocketAddress address("127.0.0.1", 25555);
+  TCPListener *listener = new(std::nothrow) TCPListener(&address, 10);
+  CPPUNIT_ASSERT(listener);
+  CPPUNIT_ASSERT(!listener->get_error());
+  CPPUNIT_ASSERT(listener->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(listener->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(listener->get_remote_address() == 0);
+  CPPUNIT_ASSERT(listener->get_remote_port() == 0);
+  CPPUNIT_ASSERT(listener->get_type() == AbstractSocket::Listener);
+  CPPUNIT_ASSERT(listener->get_state() == AbstractSocket::ListeningState);
+
+  mutex_.unlock();
+  DataSocket *client = listener->Accept();
+  CPPUNIT_ASSERT(client);
+  CPPUNIT_ASSERT(!client->get_error());
+  CPPUNIT_ASSERT(client->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(client->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(client->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(client->get_remote_port() == 0X3978  /* 30777 */);
+  CPPUNIT_ASSERT(client->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(client->get_state() == AbstractSocket::ConnectedState);
+
+  delete client;
+  delete listener;
+}
+
+void TCPSocketTest::Constructors(){
   // Creating thread for listener
   mutex_.lock();
-  //listener_->join();
-  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::Run, this);
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::RunConstructors,
+                                            this);
   CPPUNIT_ASSERT(listener_);
   mutex_.lock();
 
-  // default constructor test
   TCPSocket *testedSocket = new(std::nothrow) TCPSocket();
   CPPUNIT_ASSERT(testedSocket);
+  CPPUNIT_ASSERT(testedSocket->get_local_address() == 0);
+  CPPUNIT_ASSERT(testedSocket->get_local_port() == 0);
+  CPPUNIT_ASSERT(testedSocket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(testedSocket->get_remote_port() == 0);
+  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::UnconnectedState);
+  CPPUNIT_ASSERT(!testedSocket->get_error());
+
   delete testedSocket;
 
-  // explicit constructor test
   SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
   CPPUNIT_ASSERT(lAddr);
   testedSocket = new(std::nothrow) TCPSocket(lAddr);
   CPPUNIT_ASSERT(testedSocket);
   CPPUNIT_ASSERT(testedSocket->get_local_address() == lAddr->GetAddressAsNet());
   CPPUNIT_ASSERT(testedSocket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(testedSocket->get_remote_port() == 0);
   CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::UnconnectedState);
   CPPUNIT_ASSERT(!testedSocket->get_error());
 
   delete lAddr;
   delete testedSocket;
 
-  // Connection constructor test
   lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
   CPPUNIT_ASSERT(lAddr);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
@@ -296,13 +331,14 @@ void TCPSocketTest::ConstructorsTestCase(){
   CPPUNIT_ASSERT(testedSocket->get_remote_port() == rAddr->GetPortAsNet());
   CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
   CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(!testedSocket->get_error());
 
   delete lAddr;
   delete rAddr;
   delete testedSocket;
 }
 
-void TCPSocketTest::ConnectToHostTestCase(){
+void TCPSocketTest::ConnectToHost(){
 
   SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
@@ -332,7 +368,7 @@ void TCPSocketTest::ConnectToHostTestCase(){
   delete rAddr;
 }
 
-void TCPSocketTest::WriteInSocketTestCase(){
+void TCPSocketTest::WriteInSocket(){
   CPPUNIT_ASSERT(message = (char*) malloc(sizeof(char) * TSTMSGSZE));
 
   // Made etalon string
@@ -364,7 +400,7 @@ void TCPSocketTest::WriteInSocketTestCase(){
   delete testedSocket;
 }
 
-void TCPSocketTest::ReadFromSocketTestCase(){}
+void TCPSocketTest::ReadFromSocket(){}
 
 /*
 void TCPSocketTest::BasicTestCase() {

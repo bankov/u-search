@@ -273,14 +273,10 @@ void TCPSocketTest::ConstructorsTestCase(){
   CPPUNIT_ASSERT(lAddr);
   testedSocket = new(std::nothrow) TCPSocket(lAddr);
   CPPUNIT_ASSERT(testedSocket);
-  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
-                         testedSocket->get_local_address() == lAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in local_port_",
-                         testedSocket->get_local_port() == lAddr->GetPortAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in type_",
-                         testedSocket->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT_MESSAGE("Error in error_",
-                         !testedSocket->get_error());
+  CPPUNIT_ASSERT(testedSocket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(!testedSocket->get_error());
 
   delete lAddr;
   delete testedSocket;
@@ -293,18 +289,13 @@ void TCPSocketTest::ConstructorsTestCase(){
   testedSocket = new(std::nothrow) TCPSocket(lAddr, rAddr);
   CPPUNIT_ASSERT(testedSocket);
 
-  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
-                         testedSocket->get_local_address() == lAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in local_port_",
-                         testedSocket->get_local_port() == lAddr->GetPortAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_",
-                         testedSocket->get_remote_address() == rAddr->GetAddressAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in remote_port_",
-                         testedSocket->get_remote_port() == rAddr->GetPortAsNet());
-  CPPUNIT_ASSERT_MESSAGE("Error in type_",
-                         testedSocket->get_type() == AbstractSocket::TCP);
-  CPPUNIT_ASSERT_MESSAGE("Error in state_",
-                         testedSocket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(testedSocket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_remote_address() ==
+                     rAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_remote_port() == rAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(testedSocket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(testedSocket->get_state() == AbstractSocket::ConnectedState);
 
   delete lAddr;
   delete rAddr;

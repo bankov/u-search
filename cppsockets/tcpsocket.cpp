@@ -193,7 +193,7 @@ int TCPSocket::ConnectToHost(const std::string *address, const short port) {
 
 size_t TCPSocket::WriteInSocket(void *buffer, size_t size) {
   if (UNLIKELY((get_error() != 0) || (get_state() != ConnectedState))) {
-    MSS_DEBUG_MESSAGE("TCPSocket::WriteInSocket: Bas socket");
+    MSS_DEBUG_MESSAGE("WriteInSocket: Bad socket");
     return -1;
   }
 
@@ -209,7 +209,7 @@ size_t TCPSocket::WriteInSocket(void *buffer, size_t size) {
 
 size_t TCPSocket::ReadFromSocket(void *buffer, size_t size) {
   if (UNLIKELY((get_error() != 0) || (this->get_state() != ConnectedState))) {
-    MSS_DEBUG_MESSAGE("TCPSocket::ReadFromSocket: Bas socket");
+    MSS_DEBUG_MESSAGE("ReadFromSocket: Bad socket");
     return -1;
   }
 

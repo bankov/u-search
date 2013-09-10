@@ -393,40 +393,38 @@ void TCPSocketTest::ConnectToHost() {
   delete socket;
 }
 
-void TCPSocketTest::WriteInSocket() {
-  CPPUNIT_ASSERT(message = (char*) malloc(sizeof(char) * TSTMSGSZE));
+void TCPSocketTest::ReadWrite() {
+  CPPUNIT_ASSERT(message = static_cast<char*>(malloc(sizeof(char)*TSTMSGSZE)));
 
   // Made etalon string
-  strcpy(message, TSTMSG);
-  
-  // create addresses
+  snprintf(message, TSTMSGSZE, "%s", TSTMSG);
+
+  // Create addresses
   SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
   CPPUNIT_ASSERT(lAddr);
   CPPUNIT_ASSERT(rAddr);
-  
-  //create socket
+
+  // Create socket
   TCPSocket *testedSocket = new(std::nothrow) TCPSocket(lAddr);
   CPPUNIT_ASSERT(testedSocket);
-  
-  // connect to host
+
+  // Connect to host
   int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(),
                                            rAddr->GetPortAsHost());
   CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
-  
-  // write to socket
+
+  // Write to socket
   int writedBytes = testedSocket->WriteInSocket(message, TSTMSGSZE);
   CPPUNIT_ASSERT_MESSAGE("Error on sending, test for constructor",
                          writedBytes != -1);
-  
+
   testedSocket->Disconnect();
 
   delete lAddr;
   delete rAddr;
   delete testedSocket;
 }
-
-void TCPSocketTest::ReadFromSocket(){}
 
 /*
 void TCPSocketTest::BasicTestCase() {

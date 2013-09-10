@@ -33,7 +33,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <mutex>
 #include <thread>
-#include <iostream>
 #include <sstream>
 
 #include "cppsockets/tcplistener.h"
@@ -79,9 +78,7 @@ class TCPSocketTest : public CppUnit::TestFixture, public std::thread {
     void RunSimple();
     void Constructors();
     void ConnectToHost();
-    void WriteInSocket();
-    void ReadFromSocket();
-    //void BasicTestCase();
+    void ReadWrite();
   private:
     char *message;
     std::mutex mutex_;
@@ -89,8 +86,7 @@ class TCPSocketTest : public CppUnit::TestFixture, public std::thread {
     CPPUNIT_TEST_SUITE(TCPSocketTest);
     CPPUNIT_TEST(Constructors);
     CPPUNIT_TEST(ConnectToHost);
-    //CPPUNIT_TEST(ReadWrite);
-    //CPPUNIT_TEST(BasicTestCase);
+    CPPUNIT_TEST(ReadWrite);
     CPPUNIT_TEST_SUITE_END();
 };
 

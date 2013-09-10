@@ -218,40 +218,43 @@ void SocketAddressTest::OperatorsTestCase() {
 
 void TCPSocketTest::Run() {
   SocketAddress address("127.0.0.1", 25555);
-  TCPListener *genericListener = new(std::nothrow) TCPListener(&address, 10);
-  CPPUNIT_ASSERT(genericListener);
+  TCPListener *listener = new(std::nothrow) TCPListener(&address, 10);
+  CPPUNIT_ASSERT(listener);
+  mutex_.unlock();
+  CPPUNIT_ASSERT(!listener->get_error());
+  CPPUNIT_ASSERT(listener->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(listener->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(listener->get_remote_address() == 0);
+  CPPUNIT_ASSERT(listener->get_remote_port() == 0);
+  CPPUNIT_ASSERT(listener->get_type() == AbstractSocket::Listener);
+  CPPUNIT_ASSERT(listener->get_state() == AbstractSocket::ListeningState);
 
   mutex_.unlock();
-  DataSocket *testClient = genericListener->Accept();
-  CPPUNIT_ASSERT(testClient);
+  DataSocket *client = listener->Accept();
+  CPPUNIT_ASSERT(client);
+  CPPUNIT_ASSERT(!client->get_error());
+  CPPUNIT_ASSERT(client->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(client->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(client->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(client->get_remote_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(client->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(client->get_state() == AbstractSocket::ConnectedState);
+
   char *message = static_cast<char*>(malloc(TSTMSGSZE));
   CPPUNIT_ASSERT(message);
-  int recived = testClient->ReadData(message, TSTMSGSZE);
 
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, listener", recived == TSTMSGSZE);
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, listener",
-                         !strcmp(message, TSTMSG));
+  int recived = client->ReadData(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(recived == TSTMSGSZE);
+  CPPUNIT_ASSERT(!strcmp(message, TSTMSG));
 
-  int sended = testClient->WriteData(message, TSTMSGSZE);
+  int sended = client->WriteData(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!client->get_error());
+  CPPUNIT_ASSERT(sended == TSTMSGSZE);
 
-  CPPUNIT_ASSERT_MESSAGE("Wrong sending data, listener", sended == TSTMSGSZE);
-
-  delete testClient;
-
-  testClient = genericListener->Accept();
-  CPPUNIT_ASSERT_MESSAGE("Accept failed", testClient);
-
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, listener 2",
-                         recived == TSTMSGSZE);
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, listener 2",
-                         !strcmp(message, TSTMSG));
-
-  sended = testClient->WriteData(message, TSTMSGSZE);
-
-  CPPUNIT_ASSERT_MESSAGE("Wrong sending data, listener 2", sended == TSTMSGSZE);
-
-  delete testClient;
-  delete genericListener;
+  delete client;
+  mutex_.lock();
+  delete listener;
+  mutex_.unlock();
   free(message);
 }
 
@@ -394,120 +397,49 @@ void TCPSocketTest::ConnectToHost() {
 }
 
 void TCPSocketTest::ReadWrite() {
-  CPPUNIT_ASSERT(message = static_cast<char*>(malloc(sizeof(char)*TSTMSGSZE)));
-
-  // Made etalon string
-  snprintf(message, TSTMSGSZE, "%s", TSTMSG);
-
-  // Create addresses
-  SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
-  SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
-  CPPUNIT_ASSERT(lAddr);
-  CPPUNIT_ASSERT(rAddr);
-
-  // Create socket
-  TCPSocket *testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  CPPUNIT_ASSERT(testedSocket);
-
-  // Connect to host
-  int result = testedSocket->ConnectToHost(rAddr->GetAddressAsChar(),
-                                           rAddr->GetPortAsHost());
-  CPPUNIT_ASSERT_MESSAGE("Error on connect to host", !result);
-
-  // Write to socket
-  int writedBytes = testedSocket->WriteInSocket(message, TSTMSGSZE);
-  CPPUNIT_ASSERT_MESSAGE("Error on sending, test for constructor",
-                         writedBytes != -1);
-
-  testedSocket->Disconnect();
-
-  delete lAddr;
-  delete rAddr;
-  delete testedSocket;
-}
-
-/*
-void TCPSocketTest::BasicTestCase() {
-  CPPUNIT_ASSERT(message = (char*) malloc(sizeof(char) * TSTMSGSZE));
-
-  // Made etalon string
-  strcpy(message, TSTMSG);
-
   // Creating thread for listener
   mutex_.lock();
-  //listener_->join();
   listener_ = new(std::nothrow) std::thread(&TCPSocketTest::Run, this);
   CPPUNIT_ASSERT(listener_);
   mutex_.lock();
 
-//=================== ConstructorsTestCase====================//
-  // Simple constructor and destructor test
-  TCPSocket *testedSocket = new(std::nothrow) TCPSocket();
-  CPPUNIT_ASSERT(testedSocket);
-  delete testedSocket;
+  CPPUNIT_ASSERT(message = static_cast<char*>(malloc(sizeof(char)*TSTMSGSZE)));
 
-  // Simple test for other constructor
-  SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
-  CPPUNIT_ASSERT(lAddr);
-  testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  CPPUNIT_ASSERT(testedSocket);
+  // Made etalon string
+  CPPUNIT_ASSERT(snprintf(message, TSTMSGSZE, "%s", TSTMSG) == TSTMSGSZE - 1);
 
-  delete lAddr;
-  delete testedSocket;
-
-  // Test for constructor with connection and sending data
-  lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
+  SocketAddress *lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
   CPPUNIT_ASSERT(lAddr);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
   CPPUNIT_ASSERT(rAddr);
-  testedSocket = new(std::nothrow) TCPSocket(lAddr, rAddr);
-  CPPUNIT_ASSERT(testedSocket);
-  //===================END_ConstructorsTestCase====================//
-  char *recv = (char*) malloc(TSTMSGSZE);
-  CPPUNIT_ASSERT(recv);
-  //===================WriteInSocket and ReadFromSocket tests=======//
-  int writedBytes = testedSocket->WriteInSocket(message, TSTMSGSZE);
-  int readedBytes = testedSocket->ReadFromSocket(recv, TSTMSGSZE);
 
-  CPPUNIT_ASSERT_MESSAGE("Error on sending, test for constructor",
-                         writedBytes != -1);
-  CPPUNIT_ASSERT_MESSAGE("Error on recieving, test for constructor",
-                         readedBytes != -1);
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, test for constructor",
-                         !strcmp(recv, TSTMSG));
+  TCPSocket *socket = new(std::nothrow) TCPSocket(lAddr, rAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_address() == rAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_port() == rAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
 
+  // Write to socket
+  int sended = socket->WriteInSocket(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(sended == TSTMSGSZE);
+
+  int reseived = socket->ReadFromSocket(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(reseived == TSTMSGSZE);
+  CPPUNIT_ASSERT(!strcmp(message, TSTMSG));
+
+  mutex_.unlock();
   delete lAddr;
   delete rAddr;
-  delete testedSocket;
-
-  // Creating socket and try to connect
-  lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30778);
-  CPPUNIT_ASSERT(lAddr);
-  testedSocket = new(std::nothrow) TCPSocket(lAddr);
-  CPPUNIT_ASSERT(testedSocket);
-  int result = testedSocket->ConnectToHost("127.0.0.1", 25555);
-  CPPUNIT_ASSERT_MESSAGE("Error in connect to host", !result);
-
-  writedBytes = testedSocket->WriteInSocket(message, TSTMSGSZE);
-  readedBytes = testedSocket->ReadFromSocket(recv, TSTMSGSZE);
-
-  CPPUNIT_ASSERT_MESSAGE("Error on sending, try to connect", writedBytes != -1);
-  CPPUNIT_ASSERT_MESSAGE("Error on recieving, try to connect",
-                         readedBytes != -1);
-  CPPUNIT_ASSERT_MESSAGE("Wrong recived data, test for constructor",
-                         !strcmp(recv, TSTMSG));
-
   listener_->join();
-
-  free(message);
-  free(recv);
-
-  delete lAddr;
-  delete testedSocket;
   delete listener_;
+  delete socket;
 }
-
-*/
 
 void UDPSocketTest::BasicTestCase() {
   // Simple Constructor and destructor test

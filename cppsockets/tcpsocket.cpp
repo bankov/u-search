@@ -156,7 +156,8 @@ int TCPSocket::ConnectToHost(const in_addr_t address, const in_port_t port) {
   return 0;
 }
 
-int TCPSocket::ConnectToHost(const char *address, const short port) {
+int TCPSocket::ConnectToHost(const char *address,
+                             const unsigned short port) {
   if (address == NULL) {
     set_error(EINVAL);
     MSS_DEBUG_ERROR("ConnectToHost", get_error());
@@ -174,7 +175,8 @@ int TCPSocket::ConnectToHost(const char *address, const short port) {
   return 0;
 }
 
-int TCPSocket::ConnectToHost(const std::string *address, const short port) {
+int TCPSocket::ConnectToHost(const std::string *address,
+                             const unsigned short port) {
   if (UNLIKELY(address == NULL)) {
     set_error(EINVAL);
     MSS_DEBUG_ERROR("ConnectToHost", get_error());

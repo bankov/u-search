@@ -124,7 +124,7 @@ int UDPSocket::Bind(const SocketAddress &bindAddress) {
   localAddr.sin_addr.s_addr = get_local_address();
   localAddr.sin_port = get_local_port();
 
-  if (UNLIKELY(bind(get_socket(), (sockaddr*) &localAddr,
+  if (UNLIKELY(bind(get_socket(), reinterpret_cast<sockaddr*>(&localAddr),
                     sizeof(localAddr)) == -1)) {
     DetectError();
     MSS_DEBUG_ERROR("bind", get_error());

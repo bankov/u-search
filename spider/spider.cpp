@@ -48,12 +48,12 @@ Spider::Spider()
   openlog("spider", LOG_CONS | LOG_ODELAY, LOG_USER);
 
   mime_type_attr_ = NULL;
+  servers_list_ = NULL;
+  result_ = NULL;
 
   if (UNLIKELY(smbc_init(libsmbmm_guest_auth_smbc_get_data, 0) < 0)) {
     DetectError();
     MSS_FATAL("smbc_init", error_);
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
 
@@ -61,8 +61,6 @@ Spider::Spider()
   if (UNLIKELY(mkdir(TMPDIR, 00744 /* rwxr--r-- */) && errno != EEXIST)) {
     DetectError();
     MSS_ERROR("mkdir", error_);
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
 
@@ -70,15 +68,11 @@ Spider::Spider()
   if (UNLIKELY((cookie_ = magic_open(MAGIC_MIME_TYPE | MAGIC_ERROR)) == NULL)) {
     error_ = magic_errno(cookie_);
     MSS_ERROR("magic_open", error_);
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
   if (UNLIKELY(magic_load(cookie_, NULL) == -1)) {
     error_ = magic_errno(cookie_);
     MSS_ERROR("magic_open", error_);
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
 
@@ -87,8 +81,6 @@ Spider::Spider()
   if (UNLIKELY(servers_list_ == NULL)) {
     error_ = ENOMEM;
     MSS_FATAL("", error_);
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
 
@@ -99,7 +91,6 @@ Spider::Spider()
     MSS_FATAL("result_", error_);
     delete servers_list_;
     servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
   last_ = result_->begin();

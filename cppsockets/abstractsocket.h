@@ -196,6 +196,24 @@ class AbstractSocket {
   }
 
   /**
+   * Set local address.
+   *
+   * @param address Local address in network byte order.
+   */
+  inline virtual void set_local_address(std::string *address) {
+    local_address_.set_address(address);
+  }
+
+  /**
+   * Set local address.
+   *
+   * @param address Local address in network byte order.
+   */
+  inline virtual void set_local_address(char *address) {
+    local_address_.set_address(address);
+  }
+
+  /**
    * Set local port.
    *
    * @param port Local port in network byte order.
@@ -210,6 +228,24 @@ class AbstractSocket {
    * @param address Remote address in network byte order.
    */
   inline virtual void set_remote_address(in_addr_t address) {
+    remote_address_.set_address(address);
+  }
+
+  /**
+   * Set remote address.
+   *
+   * @param address Remote address in network byte order.
+   */
+  inline virtual void set_remote_address(std::string *address) {
+    remote_address_.set_address(address);
+  }
+
+  /**
+   * Set remote address.
+   *
+   * @param address Remote address in network byte order.
+   */
+  inline virtual void set_remote_address(char *address) {
     remote_address_.set_address(address);
   }
 

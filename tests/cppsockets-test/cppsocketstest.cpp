@@ -305,11 +305,8 @@ void TCPSocketTest::Constructors() {
   CPPUNIT_ASSERT(socket->get_remote_port() == 0);
   CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
   CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
-  delete lAddr;
   delete socket;
 
-  lAddr = new(std::nothrow) SocketAddress("127.0.0.1", 30777);
-  CPPUNIT_ASSERT(lAddr);
   SocketAddress *rAddr = new(std::nothrow) SocketAddress("127.0.0.1", 25555);
   CPPUNIT_ASSERT(rAddr);
   socket = new(std::nothrow) TCPSocket(lAddr, rAddr);
@@ -321,6 +318,18 @@ void TCPSocketTest::Constructors() {
   CPPUNIT_ASSERT(socket->get_remote_port() == rAddr->GetPortAsNet());
   CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
   CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  delete socket;
+
+  rAddr->set_port((short)25556);
+  socket = new(std::nothrow) TCPSocket(lAddr, rAddr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(socket->get_error() == ECONNREFUSED);
+  CPPUNIT_ASSERT(socket->get_local_address() == lAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_local_port() == lAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_address() == rAddr->GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_port() == rAddr->GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
 
   mutex_.unlock();
   delete lAddr;

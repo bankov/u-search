@@ -93,6 +93,8 @@ class TCPSocket : public DataSocket {
    */
   int ConnectToHost(const std::string *address, const unsigned short port);
 
+  int Connect();
+
   /**
    * @brief WriteData Write size data from data to socket.
    *
@@ -112,6 +114,9 @@ class TCPSocket : public DataSocket {
    * @return Readen size. On error return -1.
    */
   size_t ReadFromSocket(void *buffer, size_t size);
+
+ private:
+  int CreateSocket();
 };
 
 #endif  // LIBCPPSOCKETS_TCPSOCKET_H_

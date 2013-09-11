@@ -37,6 +37,7 @@
 #include <string.h>
 #include <assert.h>
 #include <syslog.h>
+#include <string>
 
 /**
  * A macro to disallow the copy constructor and operator= functions
@@ -206,8 +207,8 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
  */
 #define DATABASE_CONFIG "/etc/u-search/database.dat"
 
-#define LIKELY(x)   __builtin_expect(!!(x),1)
-#define UNLIKELY(x) __builtin_expect(!!(x),0)
+#define LIKELY(x)   __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
 /**
  * Read database config file.

@@ -290,6 +290,69 @@ void TCPSocketTest::Constructors() {
   delete socket;
 }
 
+void TCPSocketTest::ConnectToHost() {
+  // Creating thread for listener
+  mutex_.lock();
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::RunSimple, this);
+  CPPUNIT_ASSERT(listener_);
+  mutex_.lock();
+
+  SocketAddress l_addr("127.0.0.1", 30778);
+  SocketAddress r_addr("127.0.0.1", 25555);
+
+  TCPSocket *socket = new(std::nothrow) TCPSocket(&l_addr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->ConnectToHost("127.0.0.1",
+                                        r_addr.GetPortAsHost()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  socket->Disconnect();
+
+  sleep(1);  // Give it few time to free address and port
+  CPPUNIT_ASSERT(!socket->ConnectToHost(r_addr.GetAddressAsNet(),
+                                        r_addr.GetPortAsNet()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  delete socket;
+
+  socket = new(std::nothrow) TCPSocket(&l_addr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  sleep(1);  // Give it few time to free address and port
+  std::string strAddr = r_addr.GetAddressAsString();
+  CPPUNIT_ASSERT(!socket->ConnectToHost(&strAddr, r_addr.GetPortAsHost()));
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+  CPPUNIT_ASSERT(socket->get_local_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_local_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  mutex_.unlock();
+  listener_->join();
+  delete listener_;
+  delete socket;
+}
+
 void UDPSocketTest::BasicTestCase() {
   // Simple Constructor and destructor test
   UDPSocket *testedSocket = new(std::nothrow) UDPSocket();

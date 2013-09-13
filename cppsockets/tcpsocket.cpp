@@ -26,109 +26,90 @@
 
 #include "tcpsocket.h"
 
-TCPSocket::TCPSocket() : DataSocket() {}
-
-TCPSocket::TCPSocket(SocketAddress *local_address) : DataSocket() {
-  set_local_address(local_address->GetAddressAsNet());
-  set_local_port(local_address->GetPortAsNet());
+TCPSocket::TCPSocket() : DataSocket() {
   set_type(TCP);
+}
 
-  // Creating socket
-  int temp = socket(PF_INET, SOCK_STREAM, 0);
+TCPSocket::TCPSocket(SocketAddress *local_address) : TCPSocket() {
+  set_local_address(local_address);
 
-  if (UNLIKELY(temp < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("socket", get_error());
+  if (CreateSocket())
     return;
-  }
-
-  int optval = 1;
-  if (UNLIKELY(setsockopt(temp, SOL_SOCKET, SO_REUSEADDR, &optval,
-                          sizeof(optval)) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("setsockopt", get_error());
-    return;
-  }
-
-  struct sockaddr_in serverAddress;
-  serverAddress.sin_family = AF_INET;
-  serverAddress.sin_addr.s_addr = get_local_address();
-  serverAddress.sin_port = get_local_port();
-
-  // Bind a name to a socket
-  if (UNLIKELY(bind(temp, (struct sockaddr *)&serverAddress,
-                    sizeof(serverAddress)) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("bind", get_error());
-    return;
-  }
 
   set_error(0);
-  set_socket(temp);
 }
 
 TCPSocket::TCPSocket(SocketAddress *local_address,
-                     SocketAddress *remote_address) {
-  set_local_address(local_address->GetAddressAsNet());
-  set_local_port(local_address->GetPortAsNet());
-  set_remote_address(remote_address->GetAddressAsNet());
-  set_remote_port(remote_address->GetPortAsNet());
-  set_type(TCP);
-
-  // Creating socket
-  int temp = socket(PF_INET, SOCK_STREAM, 0);
-
-  if (UNLIKELY(temp < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("socket", get_error());
-    return;
-  }
-
-  int optval = 1;
-  if (UNLIKELY(setsockopt(temp, SOL_SOCKET, SO_REUSEADDR, &optval,
-                          sizeof(optval)) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("setsockopt", get_error());
-    return;
-  }
-
-  struct sockaddr_in serverAddress;
-  serverAddress.sin_family = AF_INET;
-  serverAddress.sin_addr.s_addr = get_local_address();
-  serverAddress.sin_port = get_local_port();
-
-  // Bind a name to a socket
-  if (UNLIKELY(bind(temp, (struct sockaddr *)&serverAddress,
-                    sizeof(serverAddress)) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("bind", get_error());
-    return;
-  }
-
-  // Connecting to remote address
-  set_state(ConnectingState);
-
-  struct sockaddr_in clientAddress;
-  clientAddress.sin_family = AF_INET;
-  clientAddress.sin_addr.s_addr = get_remote_address();
-  clientAddress.sin_port = get_remote_port();
-  socklen_t clientAddressLength = sizeof(clientAddress);
-
-  // Connect a socket
-  if (UNLIKELY(connect(temp, (struct sockaddr *)&clientAddress,
-                       clientAddressLength) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("connect", get_error());
-    set_state(UnconnectedState);
-    return;
-  }
-
-  set_socket(temp);
-  set_state(ConnectedState);
+                     SocketAddress *remote_address) : TCPSocket(local_address) {
+  set_remote_address(remote_address);
+  Connect();
 }
 
 TCPSocket::~TCPSocket() {
   Abort();
+}
+
+int TCPSocket::CreateSocket() {
+  // Creating socket
+  int temp = socket(PF_INET, SOCK_STREAM, 0);
+
+  if (UNLIKELY(temp < 0)) {
+    DetectError();
+    MSS_DEBUG_ERROR("socket", get_error());
+    return -1;
+  }
+
+  int optval = 1;
+  if (UNLIKELY(setsockopt(temp, SOL_SOCKET, SO_REUSEADDR, &optval,
+                          sizeof(optval)) < 0)) {
+    DetectError();
+    MSS_DEBUG_ERROR("setsockopt", get_error());
+    return -1;
+  }
+
+  struct sockaddr_in server_address;
+  server_address.sin_family = AF_INET;
+  server_address.sin_addr.s_addr = get_local_address();
+  server_address.sin_port = get_local_port();
+
+  // Bind a name to a socket
+  if (UNLIKELY(bind(temp, (struct sockaddr *)&server_address,
+                    sizeof(server_address)) < 0)) {
+    DetectError();
+    MSS_DEBUG_ERROR("bind", get_error());
+    return -1;
+  }
+
+  set_socket(temp);
+  return 0;
+}
+
+int TCPSocket::Connect() {
+  if (get_error())
+    return -1;
+
+  if (get_socket() <= 0) {
+    if (CreateSocket())
+      return -1;
+  }
+
+  struct sockaddr_in client_address;
+  client_address.sin_family = AF_INET;
+  client_address.sin_port = get_remote_port();
+  client_address.sin_addr.s_addr = get_remote_address();
+
+  // Connect a socket
+  set_state(ConnectingState);
+  if (UNLIKELY(connect(get_socket(), (struct sockaddr *)&client_address,
+                       sizeof(client_address)) < 0)) {
+    DetectError();
+    MSS_DEBUG_ERROR("connect", get_error());
+    set_state(UnconnectedState);
+    return -1;
+  }
+
+  set_state(ConnectedState);
+  return 0;
 }
 
 int TCPSocket::ConnectToHost(const in_addr_t address, const in_port_t port) {

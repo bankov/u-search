@@ -27,9 +27,10 @@
 #ifndef LIBCPPSOCKETS_TCPSOCKET_H_
 #define LIBCPPSOCKETS_TCPSOCKET_H_
 
-#include "datasocket.h"
 #include <unistd.h>
 #include <string>
+
+#include "datasocket.h"
 
 /**
  * @brief Class to work with TCP.
@@ -93,6 +94,13 @@ class TCPSocket : public DataSocket {
   int ConnectToHost(const std::string *address, const short port);
 
   /**
+   * @brief Connect the socket to host with specified address and port.
+   *
+   * @return 0 on success, -1 otherwise.
+   */
+  int Connect();
+
+  /**
    * @brief WriteData Write size data from data to socket.
    *
    * @param buffer Buffer.
@@ -111,6 +119,9 @@ class TCPSocket : public DataSocket {
    * @return Readen size. On error return -1.
    */
   size_t ReadFromSocket(void *buffer, size_t size);
+
+ private:
+  int CreateSocket();
 };
 
 #endif  // LIBCPPSOCKETS_TCPSOCKET_H_

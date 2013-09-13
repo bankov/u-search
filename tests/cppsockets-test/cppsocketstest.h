@@ -75,11 +75,14 @@ class SocketAddressTest : public CppUnit::TestFixture {
 
 class TCPSocketTest : public CppUnit::TestFixture, public std::thread {
   public:
+    void RunSimple();
+    void Constructors();
   private:
     char *message;
     std::mutex mutex_;
     std::thread *listener_;
     CPPUNIT_TEST_SUITE(TCPSocketTest);
+    CPPUNIT_TEST(Constructors);
     CPPUNIT_TEST_SUITE_END();
 };
 

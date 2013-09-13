@@ -113,80 +113,20 @@ int TCPSocket::Connect() {
 }
 
 int TCPSocket::ConnectToHost(const in_addr_t address, const in_port_t port) {
-  set_remote_address(address);
-  set_remote_port(port);
-
-  struct sockaddr_in clientAddress;
-  clientAddress.sin_family = AF_INET;
-  clientAddress.sin_port = get_remote_port();
-  clientAddress.sin_addr.s_addr = get_remote_address();
-  socklen_t clientAddressLength = sizeof(clientAddress);
-
-  // Connecting to remote host
-  set_state(ConnectingState);
-
-  // Connect a socket
-  if (UNLIKELY(connect(get_socket(), (struct sockaddr *)&clientAddress,
-                       clientAddressLength) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("connect", get_error());
-    set_state(UnconnectedState);
-    return -1;
-  }
-
-  set_state(ConnectedState);
-  return 0;
+  set_remote_address(SocketAddress(address, port));
+  return Connect();
 }
 
-int TCPSocket::ConnectToHost(const char *address, const short port) {
-  // Converting char to in_addr
-  if (address == NULL) {
-    set_error(EINVAL);
-    MSS_DEBUG_ERROR("TCPSocket::ConnectToHost", get_error());
-    return -1;
-  }
-
-  SocketAddress server_address(address, port);
-
-  struct sockaddr_in clientAddress;
-  memset(&clientAddress, 0, sizeof(clientAddress));
-  clientAddress.sin_family = AF_INET;
-  clientAddress.sin_port = server_address.GetPortAsNet();
-  clientAddress.sin_addr.s_addr = server_address.GetAddressAsNet();
-  socklen_t clientAddressLength = sizeof(clientAddress);
-
-  set_remote_address(clientAddress.sin_addr.s_addr);
-  set_remote_port(clientAddress.sin_port);
-
-  // Connecting to remote host
-  set_state(ConnectingState);
-
-  // Connect a socket
-  if (UNLIKELY(connect(get_socket(), (struct sockaddr *)&clientAddress,
-                       clientAddressLength) < 0)) {
-    DetectError();
-    MSS_DEBUG_ERROR("connect", get_error());
-    set_state(UnconnectedState);
-    return -1;
-  }
-
-  set_state(ConnectedState);
-  return 0;
+int TCPSocket::ConnectToHost(const char *address,
+                             const unsigned short port) {
+  set_remote_address(SocketAddress(address, port));
+  return Connect();
 }
 
-int TCPSocket::ConnectToHost(const std::string *address, const short port) {
-  if (UNLIKELY(address == NULL)) {
-    set_error(EINVAL);
-    MSS_DEBUG_ERROR("TCPSocket::ConnectToHost", get_error());
-    return -1;
-  }
-
-  if (UNLIKELY(ConnectToHost(address->c_str(), port))) {
-    MSS_DEBUG_ERROR("TCPSocket::ConnectToHost", get_error());
-    return -1;
-  }
-
-  return 0;
+int TCPSocket::ConnectToHost(const std::string *address,
+                             const unsigned short port) {
+  set_remote_address(SocketAddress(address, port));
+  return Connect();
 }
 
 size_t TCPSocket::WriteInSocket(void *buffer, size_t size) {

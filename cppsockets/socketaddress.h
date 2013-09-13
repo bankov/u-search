@@ -148,9 +148,7 @@ class SocketAddress {
    *
    * @return 0 on success, -1 otherwise.
    */
-  inline int set_address(const std::string *address) {
-    return set_address(address->c_str());
-  }
+  int set_address(const std::string *address);
 
   /**
    * Set port.

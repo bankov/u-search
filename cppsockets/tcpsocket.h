@@ -81,7 +81,7 @@ class TCPSocket : public DataSocket {
    *
    * @return 0 on success, -1 otherwise.
    */
-  int ConnectToHost(const char *address, const short port);
+  int ConnectToHost(const char *address, const unsigned short port);
 
   /**
    * @brief Connect the socket to host with specified address and port.
@@ -91,7 +91,7 @@ class TCPSocket : public DataSocket {
    *
    * @return 0 on success, -1 otherwise.
    */
-  int ConnectToHost(const std::string *address, const short port);
+  int ConnectToHost(const std::string *address, const unsigned short port);
 
   /**
    * @brief Connect the socket to host with specified address and port.

@@ -213,6 +213,48 @@ void SocketAddressTest::OperatorsTestCase() {
                          !strcmp(oss.str().c_str(), "127.0.0.1:22805"));
 }
 
+void TCPSocketTest::Run() {
+  SocketAddress address("127.0.0.1", 25555);
+  TCPListener *listener = new(std::nothrow) TCPListener(&address, 10);
+  CPPUNIT_ASSERT(listener);
+  mutex_.unlock();
+  CPPUNIT_ASSERT(!listener->get_error());
+  CPPUNIT_ASSERT(listener->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(listener->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(listener->get_remote_address() == 0);
+  CPPUNIT_ASSERT(listener->get_remote_port() == 0);
+  CPPUNIT_ASSERT(listener->get_type() == AbstractSocket::Listener);
+  CPPUNIT_ASSERT(listener->get_state() == AbstractSocket::ListeningState);
+
+  mutex_.unlock();
+  DataSocket *client = listener->Accept();
+  CPPUNIT_ASSERT(client);
+  CPPUNIT_ASSERT(!client->get_error());
+  CPPUNIT_ASSERT(client->get_local_address() == address.GetAddressAsNet());
+  CPPUNIT_ASSERT(client->get_local_port() == address.GetPortAsNet());
+  CPPUNIT_ASSERT(client->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
+  CPPUNIT_ASSERT(client->get_remote_port() == 0x3A78  /* 30778 */);
+  CPPUNIT_ASSERT(client->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(client->get_state() == AbstractSocket::ConnectedState);
+
+  char *message = static_cast<char*>(malloc(TSTMSGSZE));
+  CPPUNIT_ASSERT(message);
+
+  int recived = client->ReadData(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(recived == TSTMSGSZE);
+  CPPUNIT_ASSERT(!strcmp(message, TSTMSG));
+
+  int sended = client->WriteData(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!client->get_error());
+  CPPUNIT_ASSERT(sended == TSTMSGSZE);
+
+  delete client;
+  mutex_.lock();
+  delete listener;
+  mutex_.unlock();
+  free(message);
+}
+
 void TCPSocketTest::RunSimple() {
   SocketAddress address("127.0.0.1", 25555);
   TCPListener *listener = new(std::nothrow) TCPListener(&address, 10);
@@ -346,6 +388,52 @@ void TCPSocketTest::ConnectToHost() {
   CPPUNIT_ASSERT(socket->get_remote_address() == 0x0100007f  /* 127.0.0.1 */);
   CPPUNIT_ASSERT(socket->get_remote_port() == 0xD363  /* 25555 */);
   CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+
+  mutex_.unlock();
+  listener_->join();
+  delete listener_;
+  delete socket;
+}
+
+void TCPSocketTest::ReadWrite() {
+  // Creating thread for listener
+  mutex_.lock();
+  listener_ = new(std::nothrow) std::thread(&TCPSocketTest::Run, this);
+  CPPUNIT_ASSERT(listener_);
+  mutex_.lock();
+
+  CPPUNIT_ASSERT(message = static_cast<char*>(malloc(sizeof(char)*TSTMSGSZE)));
+
+  // Made etalon string
+  CPPUNIT_ASSERT(snprintf(message, TSTMSGSZE, "%s", TSTMSG) == TSTMSGSZE - 1);
+
+  SocketAddress l_addr("127.0.0.1", 30778);
+  SocketAddress r_addr("127.0.0.1", 25555);
+
+  TCPSocket *socket = new(std::nothrow) TCPSocket(&l_addr, &r_addr);
+  CPPUNIT_ASSERT(socket);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(socket->get_local_address() == l_addr.GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_local_port() == l_addr.GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_address() == r_addr.GetAddressAsNet());
+  CPPUNIT_ASSERT(socket->get_remote_port() == r_addr.GetPortAsNet());
+  CPPUNIT_ASSERT(socket->get_type() == AbstractSocket::TCP);
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::ConnectedState);
+
+  // Write to socket
+  int sended = socket->WriteInSocket(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(sended == TSTMSGSZE);
+
+  int reseived = socket->ReadFromSocket(message, TSTMSGSZE);
+  CPPUNIT_ASSERT(!socket->get_error());
+  CPPUNIT_ASSERT(reseived == TSTMSGSZE);
+  CPPUNIT_ASSERT(!strcmp(message, TSTMSG));
+
+  socket->Disconnect();
+  CPPUNIT_ASSERT(socket->get_state() == AbstractSocket::UnconnectedState);
+  CPPUNIT_ASSERT(socket->WriteInSocket(message, TSTMSGSZE) == -1);
+  CPPUNIT_ASSERT(socket->ReadFromSocket(message, TSTMSGSZE) == -1);
 
   mutex_.unlock();
   listener_->join();

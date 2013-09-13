@@ -90,6 +90,7 @@ int AbstractSocket::Close() {
     state_ = UnconnectedState;
   }
 
+  socket_ = 0;
   return 0;
 }
 

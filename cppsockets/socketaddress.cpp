@@ -72,6 +72,16 @@ int SocketAddress::set_address(const char *address) {
   return 0;
 }
 
+int SocketAddress::set_address(const std::string *address) {
+  if (UNLIKELY(address == NULL)) {
+    error_ = EINVAL;
+    MSS_DEBUG_ERROR("set_address", error_);
+    return -1;
+  }
+
+  return set_address(address->c_str());
+}
+
 // Getters
 char *SocketAddress::GetAddressAsChar() {
   char *addressAsChar =

@@ -472,21 +472,21 @@ void UDPSocketTest::BasicTestCase() {
   CPPUNIT_ASSERT(buf);
   memset(buf, 0, 25);
   const char *message = "Hello sockets world!";
-  strcpy((char*) buf, message);
+  strcpy(static_cast<char *>(buf), message);
 
   testedSocket->SendDatagram(buf, localhostAddress2, 25);
   free(buf);
 
   secondSocket->ReceiveDatagram(&buf);
   CPPUNIT_ASSERT_MESSAGE("Recived and sended not same",
-                         !strcmp((char*) buf, message));
+                         !strcmp(static_cast<char *>(buf), message));
   free(buf);
 
   // Send two
   buf = malloc(sizeof(char) * 25);
   CPPUNIT_ASSERT(buf);
   memset(buf, 0, 25);
-  strcpy((char*) buf, message);
+  strcpy(static_cast<char *>(buf), message);
   testedSocket->SendDatagram(buf, localhostAddress, 25);
   free(buf);
 
@@ -498,6 +498,6 @@ void UDPSocketTest::BasicTestCase() {
   delete secondSocket;
 
   CPPUNIT_ASSERT_MESSAGE("Recived and sended not same",
-                         !strcmp((char*) buf, message));
+                         !strcmp(static_cast<char *>(buf), message));
   free(buf);
 }

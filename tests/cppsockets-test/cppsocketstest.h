@@ -33,7 +33,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <mutex>
 #include <thread>
-#include <iostream>
 #include <sstream>
 
 #include "cppsockets/tcplistener.h"

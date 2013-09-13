@@ -60,5 +60,5 @@ int main() {
     printf("Iteration time: %d hourse, %d minutes.\n", hours, minutes);
   }
 
-  exit(EXIT_SUCCESS);
+  return 0;
 }

@@ -41,6 +41,5 @@ int main() {
       CppUnit::TestFactoryRegistry::getRegistry();
   runner.addTest( registry.makeTest() );
   runner.run();
-
-  exit(EXIT_SUCCESS);
+  return 0;
 }

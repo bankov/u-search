@@ -57,5 +57,5 @@ int main() {
   runner.run();
 
   //fclose(fout);
-  exit(EXIT_SUCCESS);
+  return 0;
 }

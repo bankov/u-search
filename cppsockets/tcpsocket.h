@@ -106,9 +106,10 @@ class TCPSocket : public DataSocket {
    * @param buffer Buffer.
    * @param size Size of buffer.
    *
-   * @return Readen size. On error return -1.
+   * @return On success, the number of bytes written is returned (zero indicates
+   * nothing was written).  On error, -1 is returned.
    */
-  size_t WriteInSocket(void *buffer, size_t size);
+  ssize_t WriteInSocket(void *buffer, const size_t size);
 
   /**
    * @brief ReadData Read not more than size bytes from socket.
@@ -116,9 +117,14 @@ class TCPSocket : public DataSocket {
    * @param buffer Buffer.
    * @param size Size of buffer.
    *
-   * @return Readen size. On error return -1.
+   * @return On success, the number of bytes read is returned (zero indicates
+   * end of file). It is not an error if this number is smaller than the number
+   * of bytes requested; this may happen for example because fewer bytes are
+   * actually available right now (maybe because  we were close to end-of-file,
+   * or because we are reading from a pipe, or from a terminal), or because
+   * ReadFromSocket() was interrupted by a signal.On error -1 is returned.
    */
-  size_t ReadFromSocket(void *buffer, size_t size);
+  ssize_t ReadFromSocket(void *buffer, const size_t size);
 
  private:
   int CreateSocket();

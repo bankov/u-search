@@ -129,13 +129,13 @@ int TCPSocket::ConnectToHost(const std::string *address,
   return Connect();
 }
 
-size_t TCPSocket::WriteInSocket(void *buffer, size_t size) {
+ssize_t TCPSocket::WriteInSocket(void *buffer, const size_t size) {
   if (UNLIKELY((get_error() != 0) || (get_state() != ConnectedState))) {
-    MSS_DEBUG_MESSAGE("TCPSocket::WriteInSocket: Bas socket");
+    MSS_DEBUG_MESSAGE("WriteInSocket: Bad socket");
     return -1;
   }
 
-  ssize_t count = write(this->get_socket(), buffer, size);
+  ssize_t count = write(get_socket(), buffer, size);
 
   if (UNLIKELY(count < 0)) {
     DetectError();
@@ -145,13 +145,13 @@ size_t TCPSocket::WriteInSocket(void *buffer, size_t size) {
   return count;
 }
 
-size_t TCPSocket::ReadFromSocket(void *buffer, size_t size) {
-  if (UNLIKELY((get_error() != 0) || (this->get_state() != ConnectedState))) {
-    MSS_DEBUG_MESSAGE("TCPSocket::ReadFromSocket: Bas socket");
+ssize_t TCPSocket::ReadFromSocket(void *buffer, const size_t size) {
+  if (UNLIKELY((get_error() != 0) || (get_state() != ConnectedState))) {
+    MSS_DEBUG_MESSAGE("ReadFromSocket: Bad socket");
     return -1;
   }
 
-  ssize_t count = read(this->get_socket(), buffer, size);
+  ssize_t count = read(get_socket(), buffer, size);
 
   if (UNLIKELY(count < 0)) {
     DetectError();

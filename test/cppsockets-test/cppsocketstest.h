@@ -45,17 +45,15 @@
 #define TSTMSG "Hello sockets!"
 #define TSTMSGSZE 15
 
-class AbstractSocketTest : public CppUnit::TestFixture {
+class AbstractSocketTest : public CppUnit::TestFixture, public AbstractSocket {
  public:
   void ConstructorsTestCase();
   void GetSetTestCase();
-  void OperatorsTestCase();
-
+  void UseAddressAndPortTestCase();
  private:
   CPPUNIT_TEST_SUITE(AbstractSocketTest);
   CPPUNIT_TEST(ConstructorsTestCase);
-//  CPPUNIT_TEST(GetSetTestCase);
-//  CPPUNIT_TEST(OperatorsTestCase);
+  CPPUNIT_TEST(GetSetTestCase);
   CPPUNIT_TEST_SUITE_END();
 };
 

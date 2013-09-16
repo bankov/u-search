@@ -41,6 +41,9 @@
  * @brief Class to work with abstract socket.
  */
 class AbstractSocket {
+  
+  friend class AbstractSocketTest;
+
  public:
   /**
    * Simple constructor which create an object and init all fields.

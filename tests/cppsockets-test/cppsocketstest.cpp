@@ -26,7 +26,7 @@
 
 #include "cppsocketstest.h"
 
-void  AbstractSocketTest::ConstructorsTestCase() {
+void AbstractSocketTest::ConstructorsTestCase() {
   AbstractSocket socket;
 
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !socket.get_error());
@@ -48,7 +48,17 @@ void  AbstractSocketTest::ConstructorsTestCase() {
                          !socket.get_remote_socket_address().GetPortAsNet());
 }
 
-void  SocketAddressTest::ConstructorsTestCase() {
+void AbstractSocketTest::GetSetTestCase() {
+  AbstractSocket socket;
+  
+  socket.set_error(1);
+  CPPUNIT_ASSERT_MESSAGE("Error in error_", socket.get_error() == 0);  
+  
+  socket.set_local_address((in_addr_t)0x0100007f);
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_", socket.get_local_address() == 0x0100007f);
+}
+
+void SocketAddressTest::ConstructorsTestCase() {
   SocketAddress addr;
   CPPUNIT_ASSERT_MESSAGE("Error in error_", addr.get_error() == 0);
   CPPUNIT_ASSERT_MESSAGE("Error in port_", addr.GetPortAsNet() == 0);

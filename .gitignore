@@ -8,13 +8,8 @@
 *.gcda
 *.gcno
 *.pro.user
-.metadata
-.project
 /build
 /doc/latex
 /doc/html
 /doc/u-search.pdf
-/face/war/WEB-INF/classes
-/face/gwt-unitCache
-/face/war/mipt_smb_search
-/face/war/WEB-INF/deploy
+*/classes/*

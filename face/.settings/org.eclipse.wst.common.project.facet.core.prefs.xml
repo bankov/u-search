@@ -1,0 +1,12 @@
+<root>
+  <facet id="jpt.jpa">
+    <node name="libprov">
+      <attribute name="provider-id" value="GlassFish-4-SystemLibrary-JPA"/>
+    </node>
+  </facet>
+  <facet id="jst.jsf">
+    <node name="libprov">
+      <attribute name="provider-id" value="GlassFish-4-SystemLibrary-JSF"/>
+    </node>
+  </facet>
+</root>

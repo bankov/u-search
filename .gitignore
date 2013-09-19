@@ -13,3 +13,5 @@
 /doc/html
 /doc/u-search.pdf
 */classes/*
+*.class
+*.jar

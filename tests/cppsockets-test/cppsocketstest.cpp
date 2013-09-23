@@ -26,8 +26,10 @@
 
 #include "cppsocketstest.h"
 
+AbstractSocketTest::AbstractSocketTest() : AbstractSocket(){}
+
 void AbstractSocketTest::ConstructorsTestCase() {
-  AbstractSocket socket;
+  AbstractSocketTest socket;
 
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !socket.get_error());
   CPPUNIT_ASSERT_MESSAGE("Error in local_address_.address_",
@@ -49,7 +51,7 @@ void AbstractSocketTest::ConstructorsTestCase() {
 }
 
 void AbstractSocketTest::GetSetTestCase() {
-  AbstractSocket socket;
+  AbstractSocketTest socket;
   
   socket.set_error(1);
   CPPUNIT_ASSERT_MESSAGE("Error in error_", socket.get_error() == 1);  
@@ -63,7 +65,8 @@ void AbstractSocketTest::GetSetTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
                          socket.get_local_address() == 0x0100007f);
   
-  char *char_address = "127.0.0.1";
+  char *char_address = new char[10];
+  sprintf(char_address, "%s", "127.0.0.1");
   socket.set_local_address(char_address);
   CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
                          socket.get_local_address() == 0x0100007f);

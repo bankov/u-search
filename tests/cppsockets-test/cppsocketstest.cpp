@@ -52,6 +52,7 @@ void AbstractSocketTest::ConstructorsTestCase() {
 
 void AbstractSocketTest::GetSetTestCase() {
   AbstractSocketTest socket;
+  CPPUNIT_ASSERT_MESSAGE("Error in error_", socket.get_error() == 0);
   
   socket.set_error(1);
   CPPUNIT_ASSERT_MESSAGE("Error in error_", socket.get_error() == 1);  

@@ -8,10 +8,13 @@ libcppsockets:
 spider: copyfiles libdata_storage
 	cd $(SRCDIR)/spider && make
 
+scheduler:
+	cd $(SRCDIR)/scheduler && make
+
 libdata_storage:
 	cd $(SRCDIR)/data-storage && make
 
-test: libcppsockets libdata_storage spider
+test: libcppsockets libdata_storage spider scheduler
 	cd $(SRCDIR)/test && make
 
 copyfiles: database.dat.example servers.dat.example
@@ -33,9 +36,10 @@ help:
 clean:
 	rm -rf build
 	cd $(SRCDIR)/spider && make clean
+	cd $(SRCDIR)/scheduler && make clean
 	cd $(SRCDIR)/cppsockets && make clean
 	cd $(SRCDIR)/data-storage && make clean
 	cd $(SRCDIR)/test && make clean
 	cd $(SRCDIR)/doc && make clean
 
-.PHONY: help doc spider copyfiles libdata_storage libcppsockets test
+.PHONY: help doc spider scheduler copyfiles libdata_storage libcppsockets test

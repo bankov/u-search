@@ -39,6 +39,10 @@
 
 #include <string>
 
+// Scheduler server port.
+// Client can choose any source port.
+#define SCHEDULERPORT "2050"
+
 /**
  * A macro to disallow the copy constructor and operator= functions
  * This should be used in the private: declarations for a class.

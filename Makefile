@@ -11,7 +11,7 @@ spider: copyfiles libdata_storage
 libdata_storage:
 	cd $(SRCDIR)/data-storage && make
 
-test: libcppsockets libdata_storage spider
+test: libcppsockets libdata_storage spider smbtaskd
 	cd $(SRCDIR)/test && make
 
 copyfiles: database.dat.example servers.dat.example

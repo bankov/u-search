@@ -10,24 +10,22 @@
 
 #include <list>
 
+#include "serverqueue.h"
+
 enum {
   BACKLOG = 10
 };
 
-std::string getserver() {
-  /* TODO: get server from queue */
-  return "abc\n";
-}
-
 class SchedulerServer {
 private:
   int sockfd;
+  ServerQueue queue;
 public:
-  SchedulerServer(const std::string service);
+  SchedulerServer(const std::string service, const std::string serversfile);
   void Run();
 };
 
-SchedulerServer::SchedulerServer(const std::string service) {
+SchedulerServer::SchedulerServer(const std::string service, const std::string serversfile) : queue(serversfile) {
   struct addrinfo hints, *p;
   memset(&hints, 0, sizeof hints);
   hints.ai_flags = AI_PASSIVE;
@@ -61,8 +59,6 @@ SchedulerServer::SchedulerServer(const std::string service) {
   if (p == NULL)
     errx(1, "can not bind socket");
   freeaddrinfo(res);
-
-  std::cerr << "successfully bound" << std::endl;
 }
 
 void SchedulerServer::Run() {
@@ -79,15 +75,35 @@ void SchedulerServer::Run() {
 
     std::string cmd(buf);
 
-    std::cerr << "Got command: '" << cmd << "'";
-    if(cmd.compare("get\n") == 0) {
-      std::string server = getserver();
-      sendto(sockfd, server.c_str(), server.size(), 0, (struct sockaddr *)&theiraddr, salen);
+    std::size_t pos = cmd.find("\n");
+    if (pos != std::string::npos)
+      cmd.erase(pos);
+
+    if (cmd.empty())
+      continue;
+
+    std::string server = cmd.substr(1);
+    switch (cmd[0]) {
+    case 'G':
+      if (server.empty()) {
+          server = queue.cmdGet();
+          sendto(sockfd, server.c_str(), server.size(), 0, (struct sockaddr *)&theiraddr, salen);
+      } else
+          queue.cmdGet(server);
+      break;
+    case 'R':
+      server = cmd.substr(1);
+      queue.cmdRelease(server);
+      break;
     }
   }
 }
 
 int main(int argc, char *argv[]) {
-  SchedulerServer serv("2050");
+  if (argc != 2) {
+    fputs("usage: smbtaskd serversfile\n", stderr);
+    return 1;
+  }
+  SchedulerServer serv("2050", argv[1]);
   serv.Run();
 }

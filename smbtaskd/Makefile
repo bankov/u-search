@@ -1,6 +1,6 @@
 # -*- makefile -*-
 TARGET=smbtaskd
-SOURCES=main.cpp
+SOURCES=main.cpp serverqueue.cpp
 
 include ../config.mk
 

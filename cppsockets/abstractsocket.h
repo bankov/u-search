@@ -24,16 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_ABSTRACTSOCKET_H_
-#define LIBCPPSOCKETS_ABSTRACTSOCKET_H_
-
-#include <unistd.h>
-#include <errno.h>
-#include <stdio.h>
-
-#include "socketaddress.h"
-#include "common.h"
-
 // The maximum size of message.
 #define MAX_SIZE 2048
 
@@ -323,5 +313,3 @@ class AbstractSocket {
    */
   SocketAddress remote_address_;
 };
-
-#endif  // LIBCPPSOCKETS_ABSTRACTSOCKET_H_

@@ -24,6 +24,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <sys/time.h>
+#include <sys/stat.h>
+
+#include <magic.h>
+#include <fcntl.h>
+#include <syslog.h>
+#include <dirent.h>
+
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#include <algorithm>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
+#include "common.h"
+#include "data-storage/entities.h"
+#include "spider/spider.h"
 #include "spidertest.h"
 
 SpiderTest::SpiderTest() : Spider() {}

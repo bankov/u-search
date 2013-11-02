@@ -24,6 +24,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <sys/select.h>
+#include <sys/socket.h>
+
+#include <errno.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+
+#include <iostream>
+
+#include "threadobject.h"
+#include "broadcastlistener.h"
 #include "task-listener.h"
 
 void *TaskListener::ThreadRoutine() {

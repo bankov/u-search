@@ -24,11 +24,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <sys/socket.h>
+
+#include <arpa/inet.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <magic.h>
+#include <syslog.h>
+
+#include <mutex>
+#include <thread>
+
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
 
 #include "common.h"
+#include "data-storage/entities.h"
+#include "spider/spider.h"
+#include "cppsockets/cppsockets.h"
 #include "tests/cppsockets-test/cppsocketstest.h"
 #include "tests/datastorage-test/datastoragetest.h"
 #include "tests/spider-test/spidertest.h"

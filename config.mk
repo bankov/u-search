@@ -1,7 +1,7 @@
 # -*- makefile -*-
 SRC_BASE:= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-CC:=g++-4.7
+CC:=g++
 
 ifneq ($(VERBOSE),yes)
 MAKEFLAGS += -s
@@ -20,6 +20,8 @@ ifeq ($(TEST_COVERAGE),yes)
 CFLAGS+=--coverage -O0 -ftest-coverage
 LDFLAGS:=-lgcov
 endif
+
+CFLAGS+=-DMYSQLPP_MYSQL_HEADERS_BURIED
 
 INCLUDE_PATHS:=-I$(SRC_BASE)
 

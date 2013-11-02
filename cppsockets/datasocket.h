@@ -24,13 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_DATASOCKET_H_
-#define LIBCPPSOCKETS_DATASOCKET_H_
-
-#include <vector>
-
-#include "abstractsocket.h"
-
 /**
  * @brief Socket which can send and receive data.
  */
@@ -83,5 +76,3 @@ class DataSocket : public AbstractSocket {
    */
   virtual size_t WriteData(void *data, size_t size);
 };
-
-#endif  // LIBCPPSOCKETS_DATASOCKET_H_

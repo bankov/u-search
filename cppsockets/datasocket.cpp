@@ -24,6 +24,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <string.h>
+#include <syslog.h>
+#include <unistd.h>
+
+#include <string>
+#include <vector>
+
+#include "common.h"
+#include "socketaddress.h"
+#include "abstractsocket.h"
 #include "datasocket.h"
 
 DataSocket::DataSocket() : AbstractSocket() {

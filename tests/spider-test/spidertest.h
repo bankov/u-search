@@ -24,20 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef TESTS_SPIDERTEST_H_
-#define TESTS_SPIDERTEST_H_
-
-#include <dirent.h>
-#include <cppunit/TestAssert.h>
-#include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <iostream>
-#include <list>
-
-#include "spider/spider.h"
-#include "common.h"
-
 class SpiderTest : public CppUnit::TestFixture, public Spider {
  public:
   SpiderTest();
@@ -80,5 +66,3 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   std::string user_;
   std::string password_;
 };
-
-#endif  // TESTS_SPIDERTEST_H_

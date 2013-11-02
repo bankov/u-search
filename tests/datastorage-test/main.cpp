@@ -24,6 +24,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
 #include "datastoragetest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FileEntryTest);

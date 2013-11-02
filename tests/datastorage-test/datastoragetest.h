@@ -24,18 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef TESTS_DATASTORAGETEST_H_
-#define TESTS_DATASTORAGETEST_H_
-
-#include <cppunit/TestAssert.h>
-#include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <iostream>
-
-#include "data-storage/entities.h"
-#include "common.h"
-
 class FileEntryTest : public CppUnit::TestFixture {
  public:
   void setUp();
@@ -83,5 +71,3 @@ class FileParameterTest : public CppUnit::TestFixture {
   std::string user_;
   std::string password_;
 };
-
-#endif  // TESTS_DATASTORAGETEST_H_

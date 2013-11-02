@@ -24,8 +24,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdlib.h>
+#include <sys/time.h>
 
+#include <magic.h>
+#include <syslog.h>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
+#include "common.h"
+#include "data-storage/entities.h"
 #include "spider.h"
 
 int main() {

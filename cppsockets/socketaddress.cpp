@@ -24,6 +24,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <string.h>
+#include <strings.h>
+#include <syslog.h>
+
+#include <string>
+
+#include "common.h"
 #include "socketaddress.h"
 
 SocketAddress::SocketAddress() : error_(0), address_(0), port_(0) {}

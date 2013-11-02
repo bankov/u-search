@@ -24,6 +24,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <magic.h>
+#include <syslog.h>
+
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
+#include "common.h"
+#include "data-storage/entities.h"
+#include "spider/spider.h"
 #include "spidertest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SpiderTest);

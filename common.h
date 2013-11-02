@@ -30,14 +30,6 @@
  * @brief File containing instruments common for all modules.
  */
 
-#ifndef U_SEARCH_COMMON_H_
-#define U_SEARCH_COMMON_H_
-
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#include <syslog.h>
-
 /**
  * A macro to disallow the copy constructor and operator= functions
  * This should be used in the private: declarations for a class.
@@ -270,5 +262,3 @@ inline int read_database_config(std::string *database_name,
   fclose(fin);
   return 0;
 }
-
-#endif  // U_SEARCH_COMMON_H_

@@ -24,9 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SERVER_DATA_STRUCTURE_H_
-#define SERVER_DATA_STRUCTURE_H_
-
 /**
  * Type for store and sending information about video file
  */
@@ -54,5 +51,3 @@ typedef struct {
     int size;
     VideoInfo *info;
 } AnswerData;
-
-#endif  // SERVER_DATA_STRUCTURE_H_

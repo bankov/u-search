@@ -24,11 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_UDPSOCKET_H_
-#define LIBCPPSOCKETS_UDPSOCKET_H_
-
-#include "datasocket.h"
-
 /**
  * @brief Class to work with UDP.
  */
@@ -138,5 +133,3 @@ class UDPSocket : public DataSocket {
    */
   ssize_t SendDatagram(void *data, SocketAddress *address, ssize_t size);
 };
-
-#endif  // LIBCPPSOCKETS_UDPSOCKET_H_

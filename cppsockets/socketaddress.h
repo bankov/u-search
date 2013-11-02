@@ -24,21 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_SOCKETADDRESS_H_
-#define LIBCPPSOCKETS_SOCKETADDRESS_H_
-
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <stdio.h>
-#include <errno.h>
-
-#include <ostream>
-#include <string>
-
-#include "common.h"
-
 /**
  * @brief The class allows you to store and work with IPv4 addresses.
  *
@@ -281,5 +266,3 @@ class SocketAddress {
   /** Variable stores port in the network byte order */
   in_port_t port_;
 };
-
-#endif  // LIBCPPSOCKETS_SOCKETADDRESS_H_

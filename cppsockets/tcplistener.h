@@ -24,18 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_TCPLISTENER_H_
-#define LIBCPPSOCKETS_TCPLISTENER_H_
-
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-#include "abstractsocket.h"
-#include "datasocket.h"
-#include "socketaddress.h"
-
 /**
  * @brief The TCPListener class allows you to listen TCP connections.
  */
@@ -94,5 +82,3 @@ class TCPListener : public AbstractSocket {
    */
   int backlog_;
 };
-
-#endif  // LIBCPPSOCKETS_TCPLISTENER_H_

@@ -24,12 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SERVER_THREADOBJECT_H_
-#define SERVER_THREADOBJECT_H_
-
-#include <pthread.h>
-#include <signal.h>
-
 class ThreadObject {
     public:
         ThreadObject();
@@ -93,5 +87,3 @@ class ThreadObject {
         // via pthread_cancel
         virtual void *ThreadRoutine() = 0;
 };
-
-#endif  // SERVER_THREADOBJECT_H_

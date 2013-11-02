@@ -24,13 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef LIBCPPSOCKETS_TCPSOCKET_H_
-#define LIBCPPSOCKETS_TCPSOCKET_H_
-
-#include "datasocket.h"
-#include <unistd.h>
-#include <string>
-
 /**
  * @brief Class to work with TCP.
  */
@@ -112,5 +105,3 @@ class TCPSocket : public DataSocket {
    */
   size_t ReadFromSocket(void *buffer, size_t size);
 };
-
-#endif  // LIBCPPSOCKETS_TCPSOCKET_H_

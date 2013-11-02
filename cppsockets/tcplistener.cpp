@@ -24,6 +24,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <fcntl.h>
+#include <string.h>
+#include <syslog.h>
+
+#include <string>
+
+#include "common.h"
+#include "socketaddress.h"
+#include "abstractsocket.h"
+#include "datasocket.h"
 #include "tcplistener.h"
 
 TCPListener::TCPListener() : AbstractSocket() {

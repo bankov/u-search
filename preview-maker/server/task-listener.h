@@ -24,22 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SERVER_TASK_LISTENER_H_
-#define SERVER_TASK_LISTENER_H_
-
-#include <pthread.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/select.h>
-#include <strings.h>
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
-#include <iostream>
-#include "broadcastlistener.h"
-
 class TaskListener : BroadcastListener {
   public:
     TaskListener();
@@ -48,5 +32,3 @@ class TaskListener : BroadcastListener {
   private:
     virtual void *ThreadRoutine();
 };
-
-#endif  // SERVER_TASK_LISTENER_H_

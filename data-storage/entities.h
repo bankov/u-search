@@ -24,26 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DATA_STORAGE_ENTITIES_H_
-#define DATA_STORAGE_ENTITIES_H_
-
-#define MYSQLPP_MYSQL_HEADERS_BURIED
-
-#ifndef EXPAND_MY_SSQLS_STATICS
-#define MYSQLPP_SSQLS_NO_STATICS
-#endif  // #ifndef EXPAND_MY_SSQLS_STATICS
-
-#include <sys/time.h>
-#include <mysql++/mysql++.h>
-#include <mysql++/ssqls.h>
-#include <mysql++/result.h>
-#include <mysql++/row.h>
-#include <string>
-#include <memory>
-#include <vector>
-
-#include "common.h"
-
 sql_create_5(mss_parameters, 2, 5,
              mysqlpp::sql_int, attr_id,
              mysqlpp::sql_int, file_id,
@@ -693,5 +673,3 @@ class FileParameter : DatabaseEntity {
     bool bool_value_;
     mss_parameters orig_row_;
 };
-
-#endif  // DATA_STORAGE_ENTITIES_H_

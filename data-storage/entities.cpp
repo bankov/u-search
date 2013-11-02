@@ -24,7 +24,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#define EXPAND_MY_SSQLS_STATICS
+#include <sys/time.h>
+
+#include <syslog.h>
+
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
+#include "common.h"
 #include "entities.h"
 
 mysqlpp::TCPConnection DatabaseEntity::db_connection_;

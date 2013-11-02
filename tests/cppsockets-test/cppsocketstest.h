@@ -24,24 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef TESTS_CPPSOCKETSTEST_H_
-#define TESTS_CPPSOCKETSTEST_H_
-
-#include <cppunit/TestAssert.h>
-#include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/extensions/HelperMacros.h>
-#include <mutex>
-#include <thread>
-#include <iostream>
-#include <sstream>
-
-#include "cppsockets/tcplistener.h"
-#include "cppsockets/tcpsocket.h"
-#include "cppsockets/abstractsocket.h"
-#include "cppsockets/socketaddress.h"
-#include "cppsockets/udpsocket.h"
-
 #define TSTMSG "Hello sockets!"
 #define TSTMSGSZE 15
 
@@ -94,5 +76,3 @@ class UDPSocketTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(BasicTestCase);
   CPPUNIT_TEST_SUITE_END();
 };
-
-#endif  // TESTS_CPPSOCKETSTEST_H_

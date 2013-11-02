@@ -24,22 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SERVER_BROADCASTLISTENER_H_
-#define SERVER_BROADCASTLISTENER_H_
-
-#include <pthread.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <errno.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <iostream>
-#include "threadobject.h"
-
 #define DEFAULT_ANSWER "mipt-smb-search preview server is here"
 #define DEFAULT_LISTEN "mipt-smb-search preview order"
 #define DEFAULT_PORT 38000
@@ -79,5 +63,3 @@ class BroadcastListener : public ThreadObject {
     bool set_answermessage(const char *newmessage);
     void InitMessageToNull();
 };
-
-#endif  // SERVER_BROADCASTLISTENER_H_

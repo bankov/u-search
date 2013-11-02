@@ -24,6 +24,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <pthread.h>
+#include <signal.h>
+
 #include "threadobject.h"
 
 ThreadObject::ThreadObject() {

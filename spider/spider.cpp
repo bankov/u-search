@@ -24,6 +24,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <dirent.h>
+#include <libsmbclient.h>
+#include <magic.h>
+#include <syslog.h>
+#include <unistd.h>
+
+#include <algorithm>
+
+#define MYSQLPP_SSQLS_NO_STATICS
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
+#include <mysql++/result.h>
+#include <mysql++/row.h>
+
+#include "common.h"
+#include "data-storage/entities.h"
 #include "spider.h"
 
 inline void libsmbmm_guest_auth_smbc_get_data(const char *server,

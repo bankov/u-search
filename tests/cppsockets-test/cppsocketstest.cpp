@@ -24,6 +24,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#include <string.h>
+#include <syslog.h>
+
+#include <mutex>
+#include <thread>
+
+#include "common.h"
+#include "cppsockets/cppsockets.h"
 #include "cppsocketstest.h"
 
 void  AbstractSocketTest::ConstructorsTestCase() {

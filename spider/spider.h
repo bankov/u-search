@@ -24,27 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SPIDER_SPIDER_H_
-#define SPIDER_SPIDER_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <libsmbclient.h>
-#include <dirent.h>
-#include <magic.h>
-#include <unistd.h>
-
-#include <algorithm>
-#include <iterator>
-#include <string>
-#include <list>
-#include <vector>
-#include <memory>
-
-#include "common.h"
-#include "data-storage/entities.h"
-
 // Size of buffer which used to get smb directory entries.
 #define BUF_SIZE 512
 
@@ -422,5 +401,3 @@ class Spider {
 
   DISALLOW_COPY_AND_ASSIGN(Spider);
 };
-
-#endif  // SPIDER_SPIDER_H_

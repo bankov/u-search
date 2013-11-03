@@ -31,6 +31,7 @@
 #include <strings.h>
 #include <syslog.h>
 
+#include <ostream>
 #include <string>
 
 #include "common.h"

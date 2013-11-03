@@ -87,7 +87,8 @@ void SchedulerServer::Run() {
     case 'G':
       if (server.empty()) {
           server = queue.cmdGet();
-          sendto(sockfd, server.c_str(), server.size(), 0, (struct sockaddr *)&theiraddr, salen);
+          if (!server.empty())
+              sendto(sockfd, server.c_str(), server.size(), 0, (struct sockaddr *)&theiraddr, salen);
       } else
           queue.cmdGet(server);
       break;

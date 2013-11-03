@@ -1,6 +1,3 @@
-#ifndef SERVERQUEUE_H
-#define SERVERQUEUE_H
-
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +12,10 @@
 
 #include "common.h"
 #include "data-storage/entities.h"
+
+class ServerQueue {
+ public:
+
 
 class Server {
  public:
@@ -35,8 +36,6 @@ class Server {
   time_t timestamp_;
 };
 
-class ServerQueue {
- public:
   /**
    * Simple constructor which inits all variables.
    */
@@ -60,7 +59,7 @@ class ServerQueue {
    *
    * @return List of servers to be indexed.
    */
-  std::list<Server> get_servers_list() const {
+  std::list<ServerQueue::Server> get_servers_list() const {
     return *servers_list_;
   }
 
@@ -86,7 +85,6 @@ class ServerQueue {
    */
   void cmdRelease(const std::string address);
 
- protected:
   /**
    * Set file with list of servers.
    *
@@ -104,6 +102,7 @@ class ServerQueue {
   int ReadServersList();
 
  private:
+
   /**
    * @brief servers_file_ name of the file with list of servers.
    */
@@ -112,17 +111,15 @@ class ServerQueue {
   /**
    * @brief servers_list_ list of the servers.
    */
-  std::list<Server> *servers_list_ = NULL;
+  std::list<ServerQueue::Server> *servers_list_ = NULL;
 
   /**
    * @brief iterator pointing to the next server
    */
-  std::list<Server>::iterator ilast_server_;
+  std::list<ServerQueue::Server>::iterator ilast_server_;
 
   /**
    * @brief Maximum time between keepalive messages
    */
   const time_t MAX_WAIT = 60;
 };
-
-#endif // SERVERMANAGER_H

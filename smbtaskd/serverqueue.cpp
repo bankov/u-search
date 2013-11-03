@@ -72,46 +72,46 @@ int ServerQueue::ReadServersList() {
 std::string ServerQueue::cmdGet() {
   if (UNLIKELY(servers_list_ == NULL || servers_list_->empty())) {
     MSS_FATAL("", ENOMEM);
-    return "";
+    return ""; //list of servers is empty
   }
 
   time_t current = time(NULL);
-  while (current - ilast_server_->get_timestamp() < MAX_WAIT)
-    if (UNLIKELY(++ilast_server_ == servers_list_->end()))
-      ilast_server_ = servers_list_->begin();
+  while (current - ilast_server_->get_timestamp() < MAX_WAIT) //look for a free server in the queue
+    if (UNLIKELY(++ilast_server_ == servers_list_->end())) //if the last server is in the end of the list,
+      ilast_server_ = servers_list_->begin();              //the next server to choose is from the beginning of the list
 
-  ilast_server_->refresh();
+  ilast_server_->refresh(); //the timestamp of the returned server is set to the current time
 
-  std::string temp = ilast_server_->get_name();
+  std::string last_server_name = ilast_server_->get_name();
 
   if (UNLIKELY(++ilast_server_ == servers_list_->end()))
     ilast_server_ = servers_list_->begin();
   
-  return temp;
+  return last_server_name;
 }
 
 void ServerQueue::cmdGet(const std::string address) {
   if (UNLIKELY(servers_list_ == NULL || servers_list_->empty())) {
     MSS_FATAL("", ENOMEM);
-    return;
+    return; //list of servers is empty
   }
 
-  std::list<Server>::iterator it = std::find(servers_list_->begin(), servers_list_->end(), address);
+  std::list<ServerQueue::Server>::iterator it = std::find(servers_list_->begin(), servers_list_->end(), address);
   if (UNLIKELY(it == servers_list_->end()))
-    return;
+    return; //server with name address hasn't been found
  
-  it->refresh();
+  it->refresh(); //the timestamp of the server is set to the current time
 }
 
 void ServerQueue::cmdRelease(const std::string address) {
   if (UNLIKELY(servers_list_ == NULL || servers_list_->empty())) {
     MSS_FATAL("", ENOMEM);
-    return;
+    return; //list of servers is empty
   }
 
   std::list<Server>::iterator it = std::find(servers_list_->begin(), servers_list_->end(), address);
   if (UNLIKELY(it == servers_list_->end()))
-    return;
+    return; //server with name address hasn't been found
  
-  it->set_timestamp(0);
+  it->set_timestamp(0); //the timestamp of the server is set to 0 (year 1970)
 }

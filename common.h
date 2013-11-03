@@ -207,6 +207,8 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
  */
 #define DATABASE_CONFIG "/home/bankov/src/u-search/database.dat"
 
+#define TASKSERVICE "2050"
+
 #define LIKELY(x)   __builtin_expect(!!(x),1)
 #define UNLIKELY(x) __builtin_expect(!!(x),0)
 

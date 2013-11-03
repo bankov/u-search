@@ -15,7 +15,7 @@ ServerManager::ServerManager(const std::string &server, const std::string &servi
   hints.ai_family = AF_UNSPEC;
   hints.ai_socktype = SOCK_DGRAM;
 
-  e = getaddrinfo(server.c_str(), "2050", &hints, &servinfo);
+  e = getaddrinfo(server.c_str(), TASKSERVICE, &hints, &servinfo);
   if (e != 0) {
     MSS_FATAL_MESSAGE(gai_strerror(e));
     return;

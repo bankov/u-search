@@ -104,6 +104,6 @@ int main(int argc, char *argv[]) {
     fputs("usage: smbtaskd serversfile\n", stderr);
     return 1;
   }
-  SchedulerServer serv("2050", argv[1]);
+  SchedulerServer serv(TASKSERVICE, argv[1]);
   serv.Run();
 }

@@ -27,16 +27,8 @@
 #ifndef SPIDER_SPIDER_H_
 #define SPIDER_SPIDER_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <libsmbclient.h>
-#include <dirent.h>
 #include <magic.h>
-#include <unistd.h>
 
-#include <algorithm>
-#include <iterator>
 #include <string>
 #include <list>
 #include <vector>

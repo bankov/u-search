@@ -24,6 +24,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <cppunit/ui/text/TestRunner.h>
+
 #include "datastoragetest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FileEntryTest);

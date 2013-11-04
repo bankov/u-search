@@ -24,11 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-
-#include "common.h"
 #include "tests/cppsockets-test/cppsocketstest.h"
 #include "tests/datastorage-test/datastoragetest.h"
 #include "tests/spider-test/spidertest.h"
@@ -43,19 +38,11 @@ CPPUNIT_TEST_SUITE_REGISTRATION(FileAttributeTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FileParameterTest);
 
 int main() {
-  // To print log message in file
-  //FILE *fout = freopen("../testing.log", "w", stdout);
-  //if (fout == NULL) {
-  //  perror("freopen");
-  //  exit(EXIT_FAILURE);
-  //}
-
   CppUnit::TextUi::TestRunner runner;
   CppUnit::TestFactoryRegistry &registry =
       CppUnit::TestFactoryRegistry::getRegistry();
   runner.addTest( registry.makeTest() );
   runner.run();
 
-  //fclose(fout);
   return 0;
 }

@@ -24,8 +24,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdlib.h>
+#include <sys/time.h>
 
+#include <string>
+
+#include "common.h"
 #include "spider.h"
 
 int main() {
@@ -34,7 +37,8 @@ int main() {
 
   // Read config from database
   std::string name, server, user, password;
-  if (UNLIKELY(read_database_config(&name, &server, &user, &password, "../" DATABASE_CONFIG))) {
+  if (UNLIKELY(read_database_config(&name, &server, &user, &password,
+                                    "../" DATABASE_CONFIG))) {
     MSS_DEBUG_MESSAGE("failed");
   }
 

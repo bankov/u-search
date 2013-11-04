@@ -24,6 +24,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <libsmbclient.h>
+#include <unistd.h>
+#include <dirent.h>
+
+#include <algorithm>
+#include <string>
+#include <list>
+#include <vector>
+#include <memory>
+
+#include "common.h"
 #include "spider.h"
 
 inline void libsmbmm_guest_auth_smbc_get_data(const char *server,

@@ -34,15 +34,12 @@
 #endif  // #ifndef EXPAND_MY_SSQLS_STATICS
 
 #include <sys/time.h>
+
 #include <mysql++/mysql++.h>
 #include <mysql++/ssqls.h>
-#include <mysql++/result.h>
-#include <mysql++/row.h>
 #include <string>
 #include <memory>
 #include <vector>
-
-#include "common.h"
 
 sql_create_5(mss_parameters, 2, 5,
              mysqlpp::sql_int, attr_id,

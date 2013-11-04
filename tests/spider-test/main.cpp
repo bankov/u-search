@@ -24,6 +24,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <cppunit/ui/text/TestRunner.h>
+
 #include "spidertest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SpiderTest);

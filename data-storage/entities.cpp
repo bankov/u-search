@@ -26,6 +26,7 @@
 
 #define EXPAND_MY_SSQLS_STATICS
 #include "entities.h"
+#include "common.h"
 
 mysqlpp::TCPConnection DatabaseEntity::db_connection_;
 std::string DatabaseEntity::db_error_;

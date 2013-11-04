@@ -24,6 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "common.h"
 #include "datastoragetest.h"
 
 void FileEntryTest::setUp() {

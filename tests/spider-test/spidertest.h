@@ -27,16 +27,14 @@
 #ifndef TESTS_SPIDERTEST_H_
 #define TESTS_SPIDERTEST_H_
 
-#include <dirent.h>
-#include <cppunit/TestAssert.h>
+//#include <cppunit/TestAssert.h>
 #include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TestRunner.h>
+//
 #include <cppunit/extensions/HelperMacros.h>
-#include <iostream>
-#include <list>
+
+#include <string>
 
 #include "spider/spider.h"
-#include "common.h"
 
 class SpiderTest : public CppUnit::TestFixture, public Spider {
  public:

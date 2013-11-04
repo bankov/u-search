@@ -35,8 +35,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
 #include <syslog.h>
+
+#include <string>
 
 /**
  * A macro to disallow the copy constructor and operator= functions

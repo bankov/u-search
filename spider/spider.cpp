@@ -194,6 +194,7 @@ void Spider::Run() {
     if (UNLIKELY(ScanSMBDir("smb://" + server))) {
       MSS_DEBUG_ERROR(("ScanSMBDir smb://" + server).c_str(), error_);
     }
+    pserver_manager_->ReleaseServer();
     // Added content to data base.
     if (UNLIKELY(DumpToDataBase())) {
       MSS_DEBUG_ERROR(("DumpToDataBase smb://" + server).c_str(), error_);

@@ -14,13 +14,17 @@ spidertest:
 fulltest:
 	cd $(SRCDIR)/test/full-test && make
 
-test: cppsocketstest datastoragetest fulltest # spidertest
+serverqueuetest:
+	cd $(SRCDIR)/test/serverqueue-test && make
+
+test: cppsocketstest datastoragetest serverqueuetest fulltest # spidertest
 
 clean:
 	rm -rf $(DESTDIR)/test
 	cd cppsockets-test && make clean
 	cd datastorage-test && make clean
 	cd spider-test && make clean
+	cd serverqueue-test && make clean
 	cd full-test && make clean
 
-.PHONY: cppsocketstest datastoragetest spidertest fulltest
+.PHONY: cppsocketstest datastoragetest spidertest serverqueuetest fulltest

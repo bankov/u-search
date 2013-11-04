@@ -7,7 +7,7 @@
 
 #include "servermanager.h"
 
-ServerManager::ServerManager(const std::string &server, const std::string &service) {
+ServerManager::ServerManager(const std::string &server, const std::string &service) : keepalive_(0) {
   int e;
   struct addrinfo hints, *servinfo, *p;
 
@@ -72,5 +72,35 @@ std::string ServerManager::GetServer() {
     }
   } while (buf[0] == '\0');
 
-  return buf;
+  smbserver_ = buf;
+
+  keepalivemutex_.lock();
+  keepalive_ = 1;
+  keepalivemutex_.unlock();
+
+  // Send Keep Alive messages until server is released.
+  keepalivethread_ = std::thread([this]() {
+    while(1) {
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+      std::string cmd = "G" + smbserver_;
+      send(sockfd_, cmd.c_str(), cmd.size(), 0);
+
+      {
+        std::lock_guard<std::mutex> lock(keepalivemutex_);
+        if(!keepalive_)
+          return;
+      }
+    }
+  });
+  return smbserver_;
+}
+
+void ServerManager::ReleaseServer() {
+  keepalivemutex_.lock();
+  keepalive_ = 0;
+  keepalivemutex_.unlock();
+  keepalivethread_.join();
+
+  std::string cmd = "R" + smbserver_;
+  send(sockfd_, cmd.c_str(), cmd.size(), 0);
 }

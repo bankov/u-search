@@ -9,6 +9,8 @@ ServerQueue::ServerQueue() : servers_file_() {
     MSS_FATAL("", ENOMEM);
     return;
   }
+
+  ilast_server_ = servers_list_->begin();
 }
 
 ServerQueue::ServerQueue(const std::string &servers_file) : ServerQueue() {
@@ -24,13 +26,24 @@ ServerQueue::ServerQueue(const std::string &servers_file) : ServerQueue() {
     servers_list_ = NULL;
     return;
   }
-
-  ilast_server_ = servers_list_->begin();
 }
 
 ServerQueue::~ServerQueue() {
   if (servers_list_)
     delete servers_list_;
+}
+
+void ServerQueue::AddServer(std::string server_name) {
+  if (UNLIKELY(server_name.empty())) {
+    return;  // Do nothing if an empty server name is passed.
+  }
+ 
+  if (UNLIKELY(std::find(servers_list_->begin(), servers_list_->end(), server_name) != servers_list_->end())) {
+    MSS_WARN_MESSAGE(("Duplicated server: " + server_name).c_str());
+    return;  // Do nothing if server name is in servers_list_ yet.
+  }
+
+  ilast_server_ = servers_list_->insert(ilast_server_, server_name); //Add a new server before the head of the queue so that it will be returned by cmdGet() the next time
 }
 
 int ServerQueue::ReadServersList() {
@@ -54,14 +67,7 @@ int ServerQueue::ReadServersList() {
     if (UNLIKELY(temp.empty())) {
       continue;  // Do nothing if find an empthy string.
     }
-    if (UNLIKELY(std::find(servers_list_->begin(), servers_list_->end()
-, temp) != servers_list_->end())) {
-      MSS_WARN_MESSAGE(("Duplicated server: " + temp).c_str());
-      temp.clear();
-      continue;  // Do nothing if current server in servers_list_ yet.
-    }
-    // Add current server to the servers_list_.
-    servers_list_->push_back(temp);
+    AddServer(temp);
     temp.clear();
   }
   free(buf);

@@ -21,6 +21,8 @@ endif  # DEBUG
 INCLUDEPATH+=-I$(SRCDIR)
 LIBS+=-L$(DESTDIR)/lib
 
+CFLAGS+=-pthread
+
 ifeq ($(TEST_COVERAGE),yes)
 CFLAGS+=--coverage -O0 -ftest-coverage
 LIBS:=-lgcov

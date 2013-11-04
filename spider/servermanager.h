@@ -10,6 +10,8 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "common.h"
 #include "data-storage/entities.h"
@@ -34,7 +36,16 @@ class ServerManager {
    */
   std::string GetServer();
 
+  /**
+   * @brief Release server when indexing is finished.
+   */
+  void ReleaseServer();
+
  private:
+   std::mutex keepalivemutex_;
+   int keepalive_;
+   std::thread keepalivethread_;
+   std::string smbserver_;
    int sockfd_;
 };
 

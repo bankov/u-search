@@ -71,6 +71,11 @@ class Server {
   std::string get_servers_file() const { return servers_file_; }
 
   /**
+   * Add a server to the list
+   */
+  void AddServer(std::string address);
+
+  /**
    * @brief Get command handling, task query
    */
   std::string cmdGet();

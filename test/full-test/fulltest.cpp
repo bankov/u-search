@@ -24,9 +24,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <cppunit/TestAssert.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+#include <dirent.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <string>
+
+#include "common.h"
 #include "test/cppsockets-test/cppsocketstest.h"
 #include "test/datastorage-test/datastoragetest.h"
 #include "test/spider-test/spidertest.h"
+#include "smbtaskd/serverqueue.h"
+#include "test/serverqueue-test/serverqueuetest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SocketAddressTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(UDPSocketTest);
@@ -36,6 +57,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(AbstractSocketTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FileEntryTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FileAttributeTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FileParameterTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(ServerQueueTest);
 
 int main() {
   CppUnit::TextUi::TestRunner runner;

@@ -6,19 +6,18 @@ SOURCES=fulltest.cpp
 
 include ../../config.mk
 
-LDFLAGS+=-lcppunit -lmysqlpp -lmysqlclient -L$(BUILD)/lib -lcppsockets -lspider -ldata_storage -L$(BUILD)/tests/lib -lcppsocketstest -lspidertest -ldatastoragetest -lmagic
+LDFLAGS+=-lcppunit -lmysqlpp -lsmbclient -lmysqlclient -L$(DESTDIR)/lib -lcppsockets -ldata_storage -lmagic
 
-fulltest: $(SOURCES) libcppsocketstest libdatastoragetest libspidertest
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(BUILD)/tests/bin/fulltest $(SOURCES) $(LDFLAGS)
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-libcppsocketstest:
-	cd $(SRC_BASE)/tests make libcppsocketstest
+OBJECTS+=$(SRC_BASE)/tests/cppsockets-test/cppsocketstest.o
+OBJECTS+=$(SRC_BASE)/tests/spider-test/spidertest.o
+OBJECTS+=$(SRC_BASE)/tests/datastorage-test/datastoragetest.o
+OBJECTS+=$(SRC_BASE)/spider/spider.o
 
-libspidertest:
-	cd $(SRC_BASE)/tests make libspidertest
-
-libdatastoragetest:
-	cd $(SRC_BASE)/tests make libdatastoragetest
+fulltest: $(OBJECTS)
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/tests/bin/fulltest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(BUILD)/tests/bin/fulltest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/tests/bin/fulltest *.o *.d *.gcov *.gcda *.gcno

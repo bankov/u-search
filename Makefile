@@ -1,30 +1,27 @@
 # -*- makefile -*-
 include config.mk
 
-all: test spiderd
+all: test
 	@echo [FINISHED u-search]
 
 libcppsockets:
 	cd $(SRC_BASE)/cppsockets && make
 
-libspider:
-	cd $(SRC_BASE)/spider && make libspider
-
-spiderd: copyfiles
+spider: copyfiles libdata_storage
 	cd $(SRC_BASE)/spider && make
 
 libdata_storage:
 	cd $(SRC_BASE)/data-storage && make
 
-test:
+test: libcppsockets libdata_storage spider
 	cd $(SRC_BASE)/tests && make
 
 copyfiles: database.dat.example servers.dat.example
-	mkdir -p $(BUILD)/etc/u-search
-	cp database.dat.example $(BUILD)/etc/u-search
-	cp servers.dat.example $(BUILD)/etc/u-search
+	mkdir -p $(DESTDIR)/etc/u-search
+	cp database.dat.example $(DESTDIR)/etc/u-search
+	cp servers.dat.example $(DESTDIR)/etc/u-search
 
-docs:
+doc:
 	cd $(SRC_BASE)/doc && make
 
 help:
@@ -40,3 +37,5 @@ clean:
 	cd $(SRC_BASE)/data-storage && make clean
 	cd $(SRC_BASE)/tests && make clean
 	cd $(SRC_BASE)/doc && make clean
+
+.PHONY: help doc spider copyfiles test libdata_storage clean

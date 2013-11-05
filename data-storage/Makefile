@@ -15,8 +15,8 @@ LDFLAGS+=-lmysqlclient -lmysqlpp
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
 libdata_storage: $(OBJECTS)
-	mkdir -p $(BUILD)/lib
-	$(CC) $(CFLAGS) $(INCLUDEPATHS) $(DEFINES) -shared -o $(BUILD)/lib/libdata_storage.so $(OBJECTS) $(LDFLAGS)
+	mkdir -p $(DESTDIR)/lib
+	$(CC) $(CFLAGS) $(INCLUDEPATHS) $(DEFINES) -shared -o $(DESTDIR)/lib/libdata_storage.so $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf *.o $(BUILD)/lib/libdata_storage.so *.d *.gcov *.gcda *.gcno
+	rm -rf *.o $(DESRDIR)/lib/libdata_storage.so *.d *.gcov *.gcda *.gcno

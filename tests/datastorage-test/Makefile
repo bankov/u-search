@@ -7,23 +7,20 @@ HEADERS=datastoragetest.h
 
 include ../../config.mk
 
-LDFLAGS+=-lcppunit -lmysqlclient -lmysqlpp -L$(BUILD)/lib -ldata_storage
+LDFLAGS+=-lcppunit -lmysqlclient -lmysqlpp -L$(DESTDIR)/lib -ldata_storage
 
 .SUFFIXES: .cpp .o
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-libdatastoragetest: $(OBJECTS) libdata_storage
-	mkdir -p $(BUILD)/tests/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(BUILD)/tests/lib/libdatastoragetest.so datastoragetest.o $(LDFLAGS)
+libdatastoragetest: $(OBJECTS)
+	mkdir -p $(DESTDIR)/tests/lib
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/tests/lib/libdatastoragetest.so datastoragetest.o $(LDFLAGS)
 
 datastoragetest: libdatastoragetest
-	mkdir -p $(BUILD)/tests/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(BUILD)/tests/bin/datastoragetest $(OBJECTS) $(LDFLAGS)
-
-libdata_storage: $(SRC_BASE)/data-storage/*.h $(SRC_BASE)/data-storage/*.cpp
-	cd $(SRC_BASE) && make libdata_storage
+	mkdir -p $(DESTDIR)/tests/bin
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/tests/bin/datastoragetest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(BUILD)/tests/lib/libdatastoragetest.so $(BUILD)/tests/bin/datastoragetest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/tests/lib/libdatastoragetest.so $(DESTDIR)/tests/bin/datastoragetest *.o *.d *.gcov *.gcda *.gcno

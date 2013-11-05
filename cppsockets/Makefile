@@ -24,8 +24,8 @@ include ../config.mk
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
 libcppsockets.so: $(OBJECTS)
-	mkdir -p $(BUILD)/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(BUILD)/lib/libcppsockets.so $(OBJECTS)
+	mkdir -p $(DESTDIR)/lib
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/lib/libcppsockets.so $(OBJECTS)
 
 clean:
-	rm -rf *.o $(BUILD)/lib/libcppsockets.so *.d *.gcov *.gcda *.gcno
+	rm -rf *.o $(DESTDIR)/lib/libcppsockets.so *.d *.gcov *.gcda *.gcno

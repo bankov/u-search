@@ -17,7 +17,7 @@ fulltest: spidertest datastoragetest cppsocketstest
 	cd $(SRC_BASE)/tests/full-test && make
 
 clean:
-	rm -rf $(BUILD)/tests
+	rm -rf $(DESTDIR)/tests
 	cd cppsockets-test && make clean
 	cd datastorage-test && make clean
 	cd spider-test && make clean

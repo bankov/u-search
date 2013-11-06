@@ -7,16 +7,16 @@ HEADERS=cppsocketstest.h
 
 include ../../config.mk
 
-LDFLAGS+=-lcppunit -L$(DESTDIR)/lib -lcppsockets
+LIBS+=-lcppunit -lcppsockets
 
 .SUFFIXES: .cpp .o
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
 cppsocketstest: $(OBJECTS)
 	mkdir -p $(DESTDIR)/test
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/cppsocketstest $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/test/cppsocketstest $(OBJECTS) $(LIBS)
 
 clean:
 	rm -rf *.o $(DESTDIR)/test/cppsocketstest *.d *.gcov *.gcda *.gcno

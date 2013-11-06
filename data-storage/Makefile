@@ -7,16 +7,16 @@ HEADERS = entities.h
 
 include ../config.mk
 
-LDFLAGS+=-lmysqlclient -lmysqlpp
+LIBS+=-lmysqlclient -lmysqlpp
 
 .SUFFIXES: .cpp .o
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
 libdata_storage: $(OBJECTS)
 	mkdir -p $(DESTDIR)/lib
-	$(CC) $(CFLAGS) $(INCLUDEPATHS) $(DEFINES) -shared -o $(DESTDIR)/lib/libdata_storage.so $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -shared -o $(DESTDIR)/lib/libdata_storage.so $(OBJECTS) $(LIBS)
 
 clean:
 	rm -rf *.o $(DESRDIR)/lib/libdata_storage.so *.d *.gcov *.gcda *.gcno

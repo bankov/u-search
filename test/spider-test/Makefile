@@ -1,28 +1,23 @@
 # -*- makefile -*-
-all: libspidertest spidertest
+all: spidertest
 	@echo [FINISHED spider-test]
 
-SOURCES=spidertest.cpp main.cpp
 HEADERS=spidertest.h
+SOURCES=spidertest.cpp main.cpp
+SOURCES+=$(SRC_BASE)/spider/spider.cpp
 
 include ../../config.mk
 
-.SUFFIXES: .cpp .o
-
 LDFLAGS+=-lcppunit -lsmbclient -L$(DESTDIR)/lib -ldata_storage -lmagic
+
+.SUFFIXES: .cpp .o
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-OBJECTS+=$(SRC_BASE)/spider/spider.o
-
-libspidertest: $(OBJECTS)
-	mkdir -p $(DESTDIR)/test/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/test/lib/libspidertest.so spidertest.o $(LDFLAGS)
-
-spidertest: libspidertest $(OBJECTS)
-	mkdir -p $(DESTDIR)/test/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/spidertest $(OBJECTS) $(LDFLAGS)
+spidertest: $(OBJECTS)
+	mkdir -p $(DESTDIR)/test
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/spidertest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(DESTDIR)/test/lib/libspidertest.so $(DESTDIR)/test/bin/spidertest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/test/spidertest *.o *.d *.gcov *.gcda *.gcno

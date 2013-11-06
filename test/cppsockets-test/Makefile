@@ -1,5 +1,5 @@
 # -*- makefile -*-
-all: libcppsocketstest cppsocketstest
+all: cppsocketstest
 	@echo [FINISHED cppsockets-test]
 
 SOURCES=cppsocketstest.cpp main.cpp
@@ -14,13 +14,9 @@ LDFLAGS+=-lcppunit -L$(DESTDIR)/lib -lcppsockets
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-libcppsocketstest: $(OBJECTS)
-	mkdir -p $(DESTDIR)/test/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/test/lib/libcppsocketstest.so cppsocketstest.o $(LDFLAGS)
-
-cppsocketstest: libcppsocketstest
-	mkdir -p $(DESTDIR)/test/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/cppsocketstest $(OBJECTS) $(LDFLAGS)
+cppsocketstest: $(OBJECTS)
+	mkdir -p $(DESTDIR)/test
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/cppsocketstest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf *.o $(DESTDIR)/test/bin/cppsocketstest $(DESTDIR)/test/lib/libcppsocketstest *.d *.gcov *.gcda *.gcno
+	rm -rf *.o $(DESTDIR)/test/cppsocketstest *.d *.gcov *.gcda *.gcno

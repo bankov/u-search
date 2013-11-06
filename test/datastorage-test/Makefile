@@ -1,5 +1,5 @@
 # -*- makefile -*-
-all: libdatastoragetest datastoragetest
+all: datastoragetest
 	@echo [FINISHED data-storage-test]
 
 SOURCES=datastoragetest.cpp main.cpp
@@ -14,13 +14,9 @@ LDFLAGS+=-lcppunit -lmysqlclient -lmysqlpp -L$(DESTDIR)/lib -ldata_storage
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-libdatastoragetest: $(OBJECTS)
-	mkdir -p $(DESTDIR)/test/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/test/lib/libdatastoragetest.so datastoragetest.o $(LDFLAGS)
-
-datastoragetest: libdatastoragetest
-	mkdir -p $(DESTDIR)/test/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/datastoragetest $(OBJECTS) $(LDFLAGS)
+datastoragetest: $(OBJECTS)
+	mkdir -p $(DESTDIR)/test
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/datastoragetest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(DESTDIR)/test/lib/libdatastoragetest.so $(DESTDIR)/test/bin/datastoragetest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/test/datastoragetest *.o *.d *.gcov *.gcda *.gcno

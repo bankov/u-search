@@ -3,7 +3,7 @@ SUBDIRS +=          \
     cppsockets      \
     data-storage    \
     spider          \
-    tests
+    test
 HEADERS += common.h
 OTHER_FILES +=      \
     servers.dat     \

@@ -11,13 +11,13 @@ LDFLAGS+=-lcppunit -lmysqlpp -lsmbclient -lmysqlclient -L$(DESTDIR)/lib -lcppsoc
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
-OBJECTS+=$(SRC_BASE)/tests/cppsockets-test/cppsocketstest.o
-OBJECTS+=$(SRC_BASE)/tests/spider-test/spidertest.o
-OBJECTS+=$(SRC_BASE)/tests/datastorage-test/datastoragetest.o
+OBJECTS+=$(SRC_BASE)/test/cppsockets-test/cppsocketstest.o
+OBJECTS+=$(SRC_BASE)/test/spider-test/spidertest.o
+OBJECTS+=$(SRC_BASE)/test/datastorage-test/datastoragetest.o
 OBJECTS+=$(SRC_BASE)/spider/spider.o
 
 fulltest: $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/tests/bin/fulltest $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/fulltest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(DESTDIR)/tests/bin/fulltest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/test/bin/fulltest *.o *.d *.gcov *.gcda *.gcno

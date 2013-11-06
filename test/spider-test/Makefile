@@ -4,20 +4,20 @@ all: spidertest
 
 HEADERS=spidertest.h
 SOURCES=spidertest.cpp main.cpp
-SOURCES+=$(SRC_BASE)/spider/spider.cpp
+SOURCES+=$(SRCDIR)/spider/spider.cpp
 
 include ../../config.mk
 
-LDFLAGS+=-lcppunit -lsmbclient -L$(DESTDIR)/lib -ldata_storage -lmagic
+LIBS+=-lcppunit -lsmbclient -ldata_storage -lmagic
 
 .SUFFIXES: .cpp .o
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
 spidertest: $(OBJECTS)
 	mkdir -p $(DESTDIR)/test
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/spidertest $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/test/spidertest $(OBJECTS) $(LIBS)
 
 clean:
 	rm -rf $(DESTDIR)/test/spidertest *.o *.d *.gcov *.gcda *.gcno

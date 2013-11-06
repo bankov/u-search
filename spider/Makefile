@@ -7,16 +7,16 @@ SOURCES=spider.cpp main.cpp
 
 include ../config.mk
 
-LDFLAGS+=-lsmbclient -lmysqlpp -lmysqlclient -L$(DESTDIR)/lib -ldata_storage -lmagic
+LIBS+=-lsmbclient -lmysqlpp -lmysqlclient -ldata_storage -lmagic
 
 .SUFFIXES: .cpp .o
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
 spider: $(OBJECTS)
 	mkdir -p $(DESTDIR)/bin
-	$(CC) $(CFLAGS) $(INCLUDEPATHS) $(DEFINES) -o $(DESTDIR)/bin/spider $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/bin/spider $(OBJECTS) $(LIBS)
 
 clean:
 	rm -rf $(DESTDIR)/bin/spider *.o *.d *.gcov *.gcda *.gcno

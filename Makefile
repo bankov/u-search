@@ -5,16 +5,16 @@ all: test
 	@echo [FINISHED u-search]
 
 libcppsockets:
-	cd $(SRC_BASE)/cppsockets && make
+	cd $(SRCDIR)/cppsockets && make
 
 spider: copyfiles libdata_storage
-	cd $(SRC_BASE)/spider && make
+	cd $(SRCDIR)/spider && make
 
 libdata_storage:
-	cd $(SRC_BASE)/data-storage && make
+	cd $(SRCDIR)/data-storage && make
 
 test: libcppsockets libdata_storage spider
-	cd $(SRC_BASE)/test && make
+	cd $(SRCDIR)/test && make
 
 copyfiles: database.dat.example servers.dat.example
 	mkdir -p $(DESTDIR)/etc/u-search
@@ -22,7 +22,7 @@ copyfiles: database.dat.example servers.dat.example
 	cp servers.dat.example $(DESTDIR)/etc/u-search
 
 doc:
-	cd $(SRC_BASE)/doc && make
+	cd $(SRCDIR)/doc && make
 
 help:
 	@echo Available modules: libcppsockets libspider spiderd libdata_storage test copygiles docs
@@ -32,10 +32,10 @@ help:
 
 clean:
 	rm -rf build
-	cd $(SRC_BASE)/spider && make clean
-	cd $(SRC_BASE)/cppsockets && make clean
-	cd $(SRC_BASE)/data-storage && make clean
-	cd $(SRC_BASE)/test && make clean
-	cd $(SRC_BASE)/doc && make clean
+	cd $(SRCDIR)/spider && make clean
+	cd $(SRCDIR)/cppsockets && make clean
+	cd $(SRCDIR)/data-storage && make clean
+	cd $(SRCDIR)/test && make clean
+	cd $(SRCDIR)/doc && make clean
 
 .PHONY: help doc spider copyfiles test libdata_storage clean

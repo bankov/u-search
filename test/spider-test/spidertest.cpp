@@ -39,7 +39,7 @@ void SpiderTest::setUp() {
   CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
                          read_database_config(&name_, &server_, &user_,
                                               &password_,
-                                              "../../" DATABASE_CONFIG) == 0);
+                                              "../" DATABASE_CONFIG) == 0);
 }
 
 void SpiderTest::ConstructorsTestCase() {
@@ -176,10 +176,10 @@ void SpiderTest::DumpToFileTestCase() {
   path.push_back("test0");
   path.push_back("test1");
 
-  int result = DumpToFile("../test", &path);
+  int result = DumpToFile("test", &path);
   CPPUNIT_ASSERT_MESSAGE("Error in DumpToFile", !result);
 
-  FILE *f = fopen("../test", "r");
+  FILE *f = fopen("test", "r");
   CPPUNIT_ASSERT_MESSAGE("Input file not opened", f);
 
   char *buf = NULL;

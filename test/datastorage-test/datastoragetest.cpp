@@ -31,7 +31,7 @@ void FileEntryTest::setUp() {
   CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
                          read_database_config(&name_, &server_, &user_,
                                               &password_,
-                                              "../../" DATABASE_CONFIG) == 0);
+                                              "../" DATABASE_CONFIG) == 0);
 }
 
 void FileEntryTest::GetByPathOnServerTestCase() {
@@ -80,7 +80,7 @@ void FileAttributeTest::setUp() {
   CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
                          read_database_config(&name_, &server_, &user_,
                                               &password_,
-                                              "../../" DATABASE_CONFIG) == 0);
+                                              "../" DATABASE_CONFIG) == 0);
 }
 
 void FileAttributeTest::ConstructorsTestCase() {
@@ -101,7 +101,7 @@ void FileParameterTest::setUp() {
   CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
                          read_database_config(&name_, &server_, &user_,
                                               &password_,
-                                              "../../" DATABASE_CONFIG) == 0);
+                                              "../" DATABASE_CONFIG) == 0);
 }
 
 void FileParameterTest::ConstructorsTestCase() {

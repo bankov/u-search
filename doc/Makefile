@@ -1,4 +1,5 @@
 # -*- makefile -*-
+TARGET:=doc
 include ../config.mk
 all: pdf
 
@@ -17,5 +18,9 @@ pdf: parse copyfiles
 
 html: doxygen
 
+$(TARGET): pdf
+
 clean:
 	rm -rf latex html
+
+.PHONY: pdf parse copyfiles html doxygen

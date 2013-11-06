@@ -1,7 +1,5 @@
 # -*- makefile -*-
-all: libdata_storage
-	@echo [FINISHED data-storage]
-
+TARGET:=libdata_storage
 SOURCES = entities.cpp
 HEADERS = entities.h
 
@@ -14,7 +12,7 @@ LIBS+=-lmysqlclient -lmysqlpp
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-libdata_storage: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/lib
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -shared -o $(DESTDIR)/lib/libdata_storage.so $(OBJECTS) $(LIBS)
 

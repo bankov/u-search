@@ -1,7 +1,5 @@
 # -*- makefile -*-
-all: cppsocketstest
-	@echo [FINISHED cppsockets-test]
-
+TARGET:=cppsocketstest
 SOURCES=cppsocketstest.cpp main.cpp
 HEADERS=cppsocketstest.h
 
@@ -14,7 +12,7 @@ LIBS+=-lcppunit -lcppsockets
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-cppsocketstest: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/test
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/test/cppsocketstest $(OBJECTS) $(LIBS)
 

@@ -27,3 +27,8 @@ LIBS:=-lgcov
 endif  # TEST_COVERAGE
 
 OBJECTS:=$(SOURCES:.cpp=.o)
+
+all: $(TARGET)
+	@echo SUCCESS: $(TARGET)
+
+.PHONY: all $(TARGET) clean

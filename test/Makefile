@@ -5,19 +5,19 @@ all: cppsocketstest datastoragetest spidertest fulltest
 	@echo [FINISHED test]
 
 cppsocketstest:
-	cd $(SRC_BASE)/tests/cppsockets-test && make
+	cd $(SRC_BASE)/test/cppsockets-test && make
 
 datastoragetest:
-	cd $(SRC_BASE)/tests/datastorage-test && make
+	cd $(SRC_BASE)/test/datastorage-test && make
 
 spidertest:
-	cd $(SRC_BASE)/tests/spider-test && make
+	cd $(SRC_BASE)/test/spider-test && make
 
-fulltest: spidertest datastoragetest cppsocketstest
-	cd $(SRC_BASE)/tests/full-test && make
+fulltest:
+	cd $(SRC_BASE)/test/full-test && make
 
 clean:
-	rm -rf $(DESTDIR)/tests
+	rm -rf $(DESTDIR)/test
 	cd cppsockets-test && make clean
 	cd datastorage-test && make clean
 	cd spider-test && make clean

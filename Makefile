@@ -14,7 +14,7 @@ libdata_storage:
 	cd $(SRC_BASE)/data-storage && make
 
 test: libcppsockets libdata_storage spider
-	cd $(SRC_BASE)/tests && make
+	cd $(SRC_BASE)/test && make
 
 copyfiles: database.dat.example servers.dat.example
 	mkdir -p $(DESTDIR)/etc/u-search
@@ -35,7 +35,7 @@ clean:
 	cd $(SRC_BASE)/spider && make clean
 	cd $(SRC_BASE)/cppsockets && make clean
 	cd $(SRC_BASE)/data-storage && make clean
-	cd $(SRC_BASE)/tests && make clean
+	cd $(SRC_BASE)/test && make clean
 	cd $(SRC_BASE)/doc && make clean
 
 .PHONY: help doc spider copyfiles test libdata_storage clean

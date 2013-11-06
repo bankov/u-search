@@ -17,12 +17,12 @@ LDFLAGS+=-lcppunit -lsmbclient -L$(DESTDIR)/lib -ldata_storage -lmagic
 OBJECTS+=$(SRC_BASE)/spider/spider.o
 
 libspidertest: $(OBJECTS)
-	mkdir -p $(DESTDIR)/tests/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/tests/lib/libspidertest.so spidertest.o $(LDFLAGS)
+	mkdir -p $(DESTDIR)/test/lib
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/test/lib/libspidertest.so spidertest.o $(LDFLAGS)
 
 spidertest: libspidertest $(OBJECTS)
-	mkdir -p $(DESTDIR)/tests/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/tests/bin/spidertest $(OBJECTS) $(LDFLAGS)
+	mkdir -p $(DESTDIR)/test/bin
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/spidertest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(DESTDIR)/tests/lib/libspidertest.so $(DESTDIR)/tests/bin/spidertest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/test/lib/libspidertest.so $(DESTDIR)/test/bin/spidertest *.o *.d *.gcov *.gcda *.gcno

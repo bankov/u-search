@@ -24,9 +24,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "tests/cppsockets-test/cppsocketstest.h"
-#include "tests/datastorage-test/datastoragetest.h"
-#include "tests/spider-test/spidertest.h"
+#include "test/cppsockets-test/cppsocketstest.h"
+#include "test/datastorage-test/datastoragetest.h"
+#include "test/spider-test/spidertest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SocketAddressTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(UDPSocketTest);

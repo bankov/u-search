@@ -15,12 +15,12 @@ LDFLAGS+=-lcppunit -lmysqlclient -lmysqlpp -L$(DESTDIR)/lib -ldata_storage
 	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -fPIC -c -o $@ $<
 
 libdatastoragetest: $(OBJECTS)
-	mkdir -p $(DESTDIR)/tests/lib
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/tests/lib/libdatastoragetest.so datastoragetest.o $(LDFLAGS)
+	mkdir -p $(DESTDIR)/test/lib
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -shared -o $(DESTDIR)/test/lib/libdatastoragetest.so datastoragetest.o $(LDFLAGS)
 
 datastoragetest: libdatastoragetest
-	mkdir -p $(DESTDIR)/tests/bin
-	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/tests/bin/datastoragetest $(OBJECTS) $(LDFLAGS)
+	mkdir -p $(DESTDIR)/test/bin
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(DEFINES) -o $(DESTDIR)/test/bin/datastoragetest $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(DESTDIR)/tests/lib/libdatastoragetest.so $(DESTDIR)/tests/bin/datastoragetest *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/test/lib/libdatastoragetest.so $(DESTDIR)/test/bin/datastoragetest *.o *.d *.gcov *.gcda *.gcno

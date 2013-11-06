@@ -1,6 +1,5 @@
 # -*- makefile -*-
-all: spider
-	@echo [FINISHED spider]
+TARGET:=spider
 
 HEADERS=spider.h
 SOURCES=spider.cpp main.cpp
@@ -14,7 +13,7 @@ LIBS+=-lsmbclient -lmysqlpp -lmysqlclient -ldata_storage -lmagic
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-spider: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/bin
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/bin/spider $(OBJECTS) $(LIBS)
 

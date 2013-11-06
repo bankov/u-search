@@ -1,7 +1,5 @@
 # -*- makefile -*-
-all: spidertest
-	@echo [FINISHED spider-test]
-
+TARGET:=spidertest
 HEADERS=spidertest.h
 SOURCES=spidertest.cpp main.cpp
 SOURCES+=$(SRCDIR)/spider/spider.cpp
@@ -15,7 +13,7 @@ LIBS+=-lcppunit -lsmbclient -ldata_storage -lmagic
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-spidertest: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/test
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/test/spidertest $(OBJECTS) $(LIBS)
 

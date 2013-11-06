@@ -1,7 +1,5 @@
 # -*- makefile -*-
-all: datastoragetest
-	@echo [FINISHED data-storage-test]
-
+TARGET:=datastoragetest
 SOURCES=datastoragetest.cpp main.cpp
 HEADERS=datastoragetest.h
 
@@ -14,7 +12,7 @@ LIBS+=-lcppunit -lmysqlclient -lmysqlpp -ldata_storage
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-datastoragetest: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/test
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/test/datastoragetest $(OBJECTS) $(LIBS)
 

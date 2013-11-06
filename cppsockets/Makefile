@@ -1,6 +1,5 @@
 # -*- makefile -*-
-all: libcppsockets.so
-	@echo [FINISHED cppsockets]
+TARGET:=libcppsockets
 
 HEADERS = socketaddress.h	\
 		  abstractsocket.h	\
@@ -23,7 +22,7 @@ include ../config.mk
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-libcppsockets.so: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(DESTDIR)/lib
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -shared -o $(DESTDIR)/lib/libcppsockets.so $(OBJECTS)
 

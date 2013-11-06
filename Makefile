@@ -1,8 +1,6 @@
 # -*- makefile -*-
+TARGET:=u-search
 include config.mk
-
-all: test
-	@echo [FINISHED u-search]
 
 libcppsockets:
 	cd $(SRCDIR)/cppsockets && make
@@ -21,11 +19,13 @@ copyfiles: database.dat.example servers.dat.example
 	cp database.dat.example $(DESTDIR)/etc/u-search
 	cp servers.dat.example $(DESTDIR)/etc/u-search
 
+$(TARGET): test doc
+
 doc:
 	cd $(SRCDIR)/doc && make
 
 help:
-	@echo Available modules: libcppsockets libspider spiderd libdata_storage test copygiles docs
+	@echo Available modules: libcppsockets spider spider libdata_storage test copygiles doc
 	@echo Debug mode: DEBUG=yes
 	@echo Test coverage: TEST_COVERAGE=yes
 	@echo Show build commands: VERBOSE=yes
@@ -38,4 +38,4 @@ clean:
 	cd $(SRCDIR)/test && make clean
 	cd $(SRCDIR)/doc && make clean
 
-.PHONY: help doc spider copyfiles test libdata_storage clean
+.PHONY: help doc spider copyfiles libdata_storage libcppsockets test

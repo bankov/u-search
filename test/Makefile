@@ -1,8 +1,6 @@
 # -*- makefile -*-
+TARGET=test
 include ../config.mk
-
-all: cppsocketstest datastoragetest spidertest fulltest
-	@echo [FINISHED test]
 
 cppsocketstest:
 	cd $(SRCDIR)/test/cppsockets-test && make
@@ -16,9 +14,13 @@ spidertest:
 fulltest:
 	cd $(SRCDIR)/test/full-test && make
 
+test: cppsocketstest datastoragetest spidertest fulltest
+
 clean:
 	rm -rf $(DESTDIR)/test
 	cd cppsockets-test && make clean
 	cd datastorage-test && make clean
 	cd spider-test && make clean
 	cd full-test && make clean
+
+.PHONY: cppsocketstest datastoragetest spidertest fulltest

@@ -6,7 +6,7 @@ SOURCES+=$(SRCDIR)/spider/spider.cpp
 
 include ../../config.mk
 
-LIBS+=-lcppunit -lsmbclient -ldata_storage -lmagic
+LIBS+=-lcppunit -lsmbclient -lmysqlpp -ldata_storage -lmagic
 
 .SUFFIXES: .cpp .o
 

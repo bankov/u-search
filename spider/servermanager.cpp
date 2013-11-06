@@ -7,7 +7,7 @@
 
 #include "servermanager.h"
 
-ServerManager::ServerManager(const std::string &server, const std::string &service) : keepalive_(0) {
+ServerManager::ServerManager(const std::string &server) : keepalive_(0) {
   int e;
   struct addrinfo hints, *servinfo, *p;
 

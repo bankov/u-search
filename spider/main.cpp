@@ -39,7 +39,7 @@ int main() {
     MSS_DEBUG_MESSAGE("failed");
   }
 
-  Spider spider("localhost", "3050", name, server, user, password);
+  Spider spider("localhost", name, server, user, password);
   if (spider.get_error()) {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
     exit(EXIT_FAILURE);

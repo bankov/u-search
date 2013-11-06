@@ -100,17 +100,18 @@ Spider::Spider()
   error_ = 0;
 }
 
-Spider::Spider(const std::string &server, const std::string &service) : Spider() {
+Spider::Spider(const std::string &server) : Spider() {
   if (UNLIKELY(error_))
     return;
 
-  pserver_manager_ = new(std::nothrow) ServerManager(server, service);
+  pserver_manager_ = new(std::nothrow) ServerManager(server);
 }
 
-Spider::Spider(const std::string &server, const std::string &service,
+Spider::Spider(const std::string &server,
                const std::string &db_name,
-               const std::string &db_server, const std::string &db_user,
-               const std::string &db_password) : Spider(server, service) {
+               const std::string &db_server,
+               const std::string &db_user,
+               const std::string &db_password) : Spider(server) {
   if (UNLIKELY(error_))
     return;
 

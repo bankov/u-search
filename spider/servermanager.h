@@ -22,9 +22,8 @@ class ServerManager {
    * Constructor which inits all variables and connects to scheduler server.
    *
    * @param server Server address.
-   * @param service Service name or port number.
    */
-  ServerManager(const std::string &server, const std::string &service);
+  ServerManager(const std::string &server);
 
   /**
    * Destructor.

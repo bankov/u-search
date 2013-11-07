@@ -35,7 +35,7 @@ class ServerManager {
   std::string GetServer();
 
  private:
-   int wsockfd, rsockfd;
+   int sockfd_;
 };
 
 #endif // SERVERMANAGER_H

@@ -77,13 +77,18 @@ std::string ServerQueue::cmdGet() {
 
   time_t current = time(NULL);
   std::list<ServerQueue::Server>::iterator iprev_head = ilast_server_; //iterator pointing to the current head of the queue
-  
+
+  bool found = false;
   do {
-    if (current - ilast_server_->get_timestamp() > MAX_WAIT) //found a free server
+    found = current - ilast_server_->get_timestamp() > MAX_WAIT;
+    if (found)
       break;
     if (UNLIKELY(++ilast_server_ == servers_list_->end())) //if the last server is in the end of the list,
         ilast_server_ = servers_list_->begin();              //the next server to choose is from the beginning of the list
   } while(ilast_server_ != iprev_head);
+
+  if (!found)
+    return "";
 
   ilast_server_->refresh(); //the timestamp of the returned server is set to the current time
 

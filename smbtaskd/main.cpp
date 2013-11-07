@@ -33,7 +33,7 @@ SchedulerServer::SchedulerServer(const std::string service, const std::string se
   hints.ai_socktype = SOCK_DGRAM;
 
   struct addrinfo *res;
-  int error = getaddrinfo(NULL, service.c_str(), &hints, &res);
+  int error = getaddrinfo(NULL, TASKSERVICES, &hints, &res);
   if (error)
     errx(1, "getaddrinfo: %s\n", gai_strerror(error));
 
@@ -105,6 +105,6 @@ int main(int argc, char *argv[]) {
     fputs("usage: smbtaskd serversfile\n", stderr);
     return 1;
   }
-  SchedulerServer serv(TASKSERVICE, argv[1]);
+  SchedulerServer serv(TASKSERVICES, argv[1]);
   serv.Run();
 }

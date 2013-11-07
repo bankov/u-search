@@ -32,9 +32,6 @@
 #include "spider.h"
 
 int main() {
-  int hours;
-  int minutes;
-
   // Read config from database
   std::string name, server, user, password;
   if (UNLIKELY(read_database_config(&name, &server, &user, &password,
@@ -48,21 +45,7 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  struct timeval start, end;
-
-  // Looped indexation and print time of each iteration
-  while (true) {
-    gettimeofday(&start, NULL);
-
     spider.Run();
-
-    gettimeofday(&end, NULL);
-
-    hours = (end.tv_sec - start.tv_sec) / 3600;
-    minutes = ((end.tv_sec - start.tv_sec) % 3600) / 60;
-
-    printf("Iteration time: %d hourse, %d minutes.\n", hours, minutes);
-  }
 
   return 0;
 }

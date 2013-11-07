@@ -17,7 +17,7 @@ fulltest:
 serverqueuetest:
 	cd $(SRCDIR)/test/serverqueue-test && make
 
-test: cppsocketstest datastoragetest serverqueuetest fulltest # spidertest
+test: cppsocketstest datastoragetest serverqueuetest fulltest spidertest
 
 clean:
 	rm -rf $(DESTDIR)/test

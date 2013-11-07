@@ -2,7 +2,7 @@
 TARGET:=fulltest
 SOURCES=fulltest.cpp
 SOURCES+=$(SRCDIR)/test/cppsockets-test/cppsocketstest.cpp
-#SOURCES+=$(SRCDIR)/test/spider-test/spidertest.cpp
+SOURCES+=$(SRCDIR)/test/spider-test/spidertest.cpp
 SOURCES+=$(SRCDIR)/test/datastorage-test/datastoragetest.cpp
 SOURCES+=$(SRCDIR)/spider/spider.cpp
 SOURCES+=$(SRCDIR)/spider/servermanager.cpp

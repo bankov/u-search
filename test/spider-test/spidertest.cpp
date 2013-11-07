@@ -61,16 +61,6 @@ void SpiderTest::ConstructorsTestCase() {
 
   Spider *spider1 = new(std::nothrow) Spider("../server_test");
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider1->get_error());
-  CPPUNIT_ASSERT_MESSAGE("Error in servers_file_",
-                         spider1->get_servers_file() == "../server_test");
-  std::list<std::string> test = spider1->get_servers_list();
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
   fd = opendir(TMPDIR);
   CPPUNIT_ASSERT_MESSAGE("Error in create temporary directory", fd);
   CPPUNIT_ASSERT(closedir(fd) == 0);
@@ -79,8 +69,6 @@ void SpiderTest::ConstructorsTestCase() {
   Spider *spider2 = new(std::nothrow) Spider("../server_test", name_, server_,
                                              user_, password_);
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider2->get_error());
-  CPPUNIT_ASSERT_MESSAGE("Error in servers_file_",
-                         spider2->get_servers_file() == "../server_test");
   CPPUNIT_ASSERT_MESSAGE("Error in db_name_",
                          spider2->get_db_name() == name_);
   CPPUNIT_ASSERT_MESSAGE("Error in db_server_",
@@ -93,14 +81,6 @@ void SpiderTest::ConstructorsTestCase() {
                          spider2->get_mime_type_attr().get_name() ==
                              "mime-type");
 
-  test = spider2->get_servers_list();
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
   fd = opendir(TMPDIR);
   CPPUNIT_ASSERT_MESSAGE("Error in create temporary directory", fd);
   CPPUNIT_ASSERT(closedir(fd) == 0);
@@ -110,14 +90,6 @@ void SpiderTest::ConstructorsTestCase() {
 void SpiderTest::GetSetTestCase() {
   SpiderTest spider;
   CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
-
-  spider.set_servers_file("some_file");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_servers_file",
-                         spider.get_servers_file() == "some_file");
-
-  spider.set_servers_file("some_new_file");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_servers_file",
-                         spider.get_servers_file() == "some_new_file");
 
   spider.set_error(EACCES);
   CPPUNIT_ASSERT_MESSAGE("Error in set_error", spider.get_error() == EACCES);
@@ -137,38 +109,6 @@ void SpiderTest::GetSetTestCase() {
   spider.set_db_user("user");
   CPPUNIT_ASSERT_MESSAGE("Error in set_db_user",
                          spider.get_db_user() == "user");
-}
-
-void SpiderTest::ReadServersListTestCase() {
-  SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
-
-  spider.set_servers_file("../server_test");
-  int result = spider.ReadServersList();
-  std::list<std::string> test = spider.get_servers_list();
-
-  CPPUNIT_ASSERT_MESSAGE("Error in file reading", !result);
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
-  test.clear();
-
-  // Try to read servers_file_ again.
-  result = spider.ReadServersList();
-  test = spider.get_servers_list();
-
-  CPPUNIT_ASSERT_MESSAGE("Error in file reading", !result);
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
 }
 
 void SpiderTest::DumpToFileTestCase() {
@@ -257,97 +197,6 @@ void SpiderTest::DetectErrorTestCase() {
   errno = ENOENT;
   spider.DetectError();
   CPPUNIT_ASSERT_MESSAGE("Error in DetectError", spider.get_error() == ENOENT);
-}
-
-void SpiderTest::AddServerTestCase() {
-  SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
-
-  spider.set_servers_file("../server_test");
-
-  int result = spider.ReadServersList();
-  CPPUNIT_ASSERT_MESSAGE("Error in ReadServersList", !result);
-
-  std::string name("some.server");
-  result = spider.AddServer(name);
-  CPPUNIT_ASSERT_MESSAGE("Error in AddServer", !result);
-
-  // Check that new server added in servers_list_.
-  std::list<std::string> test = spider.get_servers_list();
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("some.server not in servers_list_",
-                         std::find(test.begin(), test.end(),
-                                   "some.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 3);
-
-  // Check that new server added in servers_file_.
-  FILE *fin = fopen(spider.get_servers_file().c_str(), "r");
-  CPPUNIT_ASSERT_MESSAGE("servers_file_ can't be open", fin);
-
-  char *buf = NULL;
-  size_t size = 0;
-  std::string test_str;
-  while (getline(&buf, &size, fin) != -1) {
-    test_str.insert(0, buf);
-    test_str.erase(test_str.end()-1);  // Delete '\n' symbol
-    if (test_str.empty())
-      continue;  // Ignore empthy strings.
-
-    CPPUNIT_ASSERT_MESSAGE("Error in comparing dumped file with search resault",
-                           std::find(test.begin(), test.end(),
-                                     test_str) != test.end());
-    test_str.clear();
-  }
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of files", test.size() == 3);
-
-  free(buf);
-  fclose(fin);
-}
-
-void SpiderTest::DelServerTestCase() {
-  SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
-  spider.set_servers_file("../server_test");
-
-  int result = spider.ReadServersList();
-  CPPUNIT_ASSERT_MESSAGE("Error in ReadServersList", !result);
-
-  std::string name("some.server");
-  result = spider.DelServer(name);
-  CPPUNIT_ASSERT_MESSAGE("Error in DelServer", !result);
-
-  // Check that server deleted from servers_list_.
-  std::list<std::string> test = spider.get_servers_list();
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
-
-  // Check that server deleted from servers_file_.
-  FILE *fin = fopen(spider.get_servers_file().c_str(), "r");
-  CPPUNIT_ASSERT_MESSAGE("servers_file_ can't be open", fin);
-
-  char *buf = NULL;
-  size_t size = 0;
-  while (getline(&buf, &size, fin) != -1) {
-    std::string test_str(buf);
-    test_str.erase(test_str.end()-1);  // Delete '\n' symbol
-    CPPUNIT_ASSERT_MESSAGE("Error in comparing dumped file with search result",
-                           std::find(test.begin(), test.end(),
-                                     test_str) != test.end());
-  }
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of files", test.size() == 2);
-
-  free(buf);
-  fclose(fin);
 }
 
 void SpiderTest::AddFileEntryInDataBaseTestCase() {

@@ -27,9 +27,9 @@
 #ifndef TESTS_SPIDERTEST_H_
 #define TESTS_SPIDERTEST_H_
 
-//#include <cppunit/TestAssert.h>
+#include <cppunit/TestAssert.h>
 #include <cppunit/TestFixture.h>
-//
+#include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <string>
@@ -43,13 +43,10 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   void ConstructorsTestCase();
   void GetSetTestCase();
   void DetectErrorTestCase();
-  void ReadServersListTestCase();
   void DumpToFileTestCase();
   void GetSMBDirContentTestCase();
   void ScanSMBDirTestCase();
   void NameParserTestCase();
-  void AddServerTestCase();
-  void DelServerTestCase();
   void AddFileEntryInDataBaseTestCase();
   void DetectMimeTypeTestCase();
   void DumpToDataBaseTestCase();
@@ -60,13 +57,10 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   CPPUNIT_TEST(ConstructorsTestCase);
   CPPUNIT_TEST(GetSetTestCase);
   CPPUNIT_TEST(DetectErrorTestCase);
-  CPPUNIT_TEST(ReadServersListTestCase);
   CPPUNIT_TEST(DumpToFileTestCase);
   CPPUNIT_TEST(GetSMBDirContentTestCase);
   CPPUNIT_TEST(ScanSMBDirTestCase);
   CPPUNIT_TEST(NameParserTestCase);
-  CPPUNIT_TEST(AddServerTestCase);
-  CPPUNIT_TEST(DelServerTestCase);
   CPPUNIT_TEST(AddFileEntryInDataBaseTestCase);
   CPPUNIT_TEST(DetectMimeTypeTestCase);
   CPPUNIT_TEST(DumpToDataBaseTestCase);

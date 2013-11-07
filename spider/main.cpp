@@ -39,13 +39,13 @@ int main() {
     MSS_DEBUG_MESSAGE("failed");
   }
 
-  Spider spider("/etc/u-search/servers.dat", name, server, user, password);
+  Spider spider("localhost", "3050", name, server, user, password);
   if (spider.get_error()) {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
     exit(EXIT_FAILURE);
   }
 
-    spider.Run();
+  spider.Run();
 
   return 0;
 }

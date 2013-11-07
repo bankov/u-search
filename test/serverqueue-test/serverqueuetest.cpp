@@ -1,22 +1,3 @@
-#include <cppunit/TestAssert.h>
-#include <cppunit/TestFixture.h>
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/extensions/HelperMacros.h>
-
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <dirent.h>
-#include <unistd.h>
-
-#include <algorithm>
-#include <iterator>
-#include <string>
-#include <list>
-
-#include "common.h"
-#include "smbtaskd/serverqueue.h"
 #include "serverqueuetest.h"
 
 ServerQueueTest::ServerQueueTest() : ServerQueue() {}

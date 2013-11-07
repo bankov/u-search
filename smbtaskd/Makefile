@@ -9,9 +9,9 @@ include ../config.mk
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -fPIC -c -o $@ $<
 
-$(PROG): $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(BUILD)/bin
-	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(BUILD)/bin/$(PROG) $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCLUDEPATH) $(DEFINES) -o $(DESTDIR)/bin/$(TARGET) $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -rf $(BUILD)/bin/$(PROG) *.o *.d *.gcov *.gcda *.gcno
+	rm -rf $(DESTDIR)/bin/$(TARGET) *.o *.d *.gcov *.gcda *.gcno

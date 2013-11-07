@@ -1,5 +1,5 @@
-#ifndef SERVERMANAGER_H
-#define SERVERMANAGER_H
+#ifndef SPIDER_SERVERMANAGER_H_
+#define SPIDER_SERVERMANAGER_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,4 +48,4 @@ class ServerManager {
    int sockfd_;
 };
 
-#endif // SERVERMANAGER_H
+#endif // SPIDER_SERVERMANAGER_H_

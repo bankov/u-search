@@ -1,3 +1,6 @@
+#ifndef SMBTASKD_SERVERQUEUE_H_
+#define SMBTASKD_SERVERQUEUE_H_
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -128,3 +131,5 @@ class Server {
    */
   const time_t MAX_WAIT = 60;
 };
+
+#endif // SMBTASKD_SERVERQUEUE_H_

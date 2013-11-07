@@ -14,7 +14,7 @@ spidertest:
 fulltest:
 	cd $(SRCDIR)/test/full-test && make
 
-test: cppsocketstest datastoragetest spidertest fulltest
+test: cppsocketstest datastoragetest fulltest # spidertest
 
 clean:
 	rm -rf $(DESTDIR)/test

@@ -53,16 +53,15 @@ inline void libsmbmm_guest_auth_smbc_get_data(const char *server,
 }
 
 Spider::Spider()
-    : servers_file_(),
-      db_name_(),
+    : db_name_(),
       db_server_(),
       db_user_(),
       db_password_() {
-  openlog("spider", LOG_CONS | LOG_ODELAY, LOG_USER);
+  openlog("spider", LOG_CONS | LOG_ODELAY | LOG_PERROR, LOG_USER);
 
   mime_type_attr_ = NULL;
-  servers_list_ = NULL;
   result_ = NULL;
+  pserver_manager_ = NULL;
 
   if (UNLIKELY(smbc_init(libsmbmm_guest_auth_smbc_get_data, 0) < 0)) {
     DetectError();
@@ -89,21 +88,11 @@ Spider::Spider()
     return;
   }
 
-  // Allocare memory to the servers list.
-  servers_list_ = new(std::nothrow) std::list<std::string>();
-  if (UNLIKELY(servers_list_ == NULL)) {
-    error_ = ENOMEM;
-    MSS_FATAL("", error_);
-    return;
-  }
-
   // Allocate memory to the result vector.
   result_ = new(std::nothrow) std::vector<std::string>(VECTOR_SIZE);
   if (UNLIKELY(result_ == NULL)) {
     error_ = ENOMEM;
     MSS_FATAL("result_", error_);
-    delete servers_list_;
-    servers_list_ = NULL;
     return;
   }
   last_ = result_->begin();
@@ -115,16 +104,8 @@ Spider::Spider(const std::string &servers_file) : Spider() {
   if (UNLIKELY(error_))
     return;
 
-  servers_file_ = servers_file;
+  pserver_manager_ = new(std::nothrow) ServerManager(servers_file);
 
-  // Read servers_file_.
-  if (UNLIKELY(ReadServersList())) {
-    MSS_DEBUG_ERROR("ReadServersList", error_);
-    delete servers_list_;
-    servers_list_ = NULL;
-    result_ = NULL;
-    return;
-  }
 }
 
 Spider::Spider(const std::string &servers_file, const std::string &db_name,
@@ -141,8 +122,6 @@ Spider::Spider(const std::string &servers_file, const std::string &db_name,
   if (UNLIKELY(ConnetToDataBase())) {
     MSS_FATAL_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
-    delete servers_list_;
-    servers_list_ = NULL;
     delete result_;
     result_ = NULL;
     return;
@@ -158,8 +137,6 @@ Spider::Spider(const std::string &servers_file, const std::string &db_name,
     if (UNLIKELY((!mime_type_attr_))) {
       MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
-      delete servers_list_;
-      servers_list_ = NULL;
       delete result_;
       result_ = NULL;
     }
@@ -175,59 +152,16 @@ Spider::~Spider() {
     MSS_DEBUG_ERROR("DeleteDir", error_);
   }
 
+  if (pserver_manager_ != NULL)
+    delete pserver_manager_;
+
   if (cookie_)
     magic_close(cookie_);
-
-  if (servers_list_)
-    delete servers_list_;
 
   if (result_)
     delete result_;
 
   closelog();
-}
-
-int Spider::ReadServersList() {
-  if (!servers_list_->empty()) {
-    return 0;  // Servers file was read earlier.
-  }
-
-  FILE *fin;
-  fin = fopen(servers_file_.c_str(), "r");
-  if (UNLIKELY(fin == NULL)) {
-    DetectError();
-    MSS_ERROR("fopen", error_);
-    return -1;
-  }
-
-  std::string temp;
-  char *buf = NULL;
-  size_t size = 0;
-  // Read lines from servers_file_ and put names servers names in servers_list_
-  while (getline(&buf, &size, fin) != -1) {
-    temp.insert(0, buf);
-    // Deleting '\n' symbols from the end of the string
-    temp.erase(temp.end() - 1);
-
-    if (UNLIKELY(temp.empty())) {
-      continue;  // Do nothing if find an empthy string.
-    }
-
-    if (UNLIKELY(std::find(servers_list_->begin(), servers_list_->end(),
-                           temp) != servers_list_->end())) {
-      MSS_WARN_MESSAGE(("Duplicated server: " + temp).c_str());
-      temp.clear();
-      continue;  // Do nothing if current server in servers_list_ yet.
-    }
-
-    // Add current server to the servers_list_.
-    servers_list_->push_back(temp);
-    temp.clear();
-  }
-
-  free(buf);
-  fclose(fin);
-  return 0;
 }
 
 int Spider::DumpToFile(const std::string &name,
@@ -254,74 +188,17 @@ int Spider::DumpToFile(const std::string &name,
 }
 
 void Spider::Run() {
-  for (std::list<std::string>::iterator itr = servers_list_->begin();
-       itr != servers_list_->end(); ++itr) {
+  while(1) {
+    std::string server = pserver_manager_->GetServer();
     // Scan each server for all files.
-    if (UNLIKELY(ScanSMBDir("smb://" + *itr))) {
-      MSS_DEBUG_ERROR(("ScanSMBDir smb://" + *itr).c_str(), error_);
+    if (UNLIKELY(ScanSMBDir("smb://" + server))) {
+      MSS_DEBUG_ERROR(("ScanSMBDir smb://" + server).c_str(), error_);
     }
     // Added content to data base.
     if (UNLIKELY(DumpToDataBase())) {
-      MSS_DEBUG_ERROR(("DumpToDataBase smb://" + *itr).c_str(), error_);
+      MSS_DEBUG_ERROR(("DumpToDataBase smb://" + server).c_str(), error_);
     }
   }
-}
-
-int Spider::AddServer(const std::string &name) {
-  if (std::find(servers_list_->begin(), servers_list_->end(),
-                name) != servers_list_->end()) {
-    MSS_WARN_MESSAGE(("Server " + name + "is in servers_list_").c_str());
-    return 0;
-  }
-
-  servers_list_->push_back(name);
-
-  FILE *fout = fopen(servers_file_.c_str(), "a");
-  if (UNLIKELY(!fout)) {
-    DetectError();
-    MSS_ERROR("fopen", error_);
-    return -1;
-  }
-
-  if (UNLIKELY(fprintf(fout, "%s\n", name.c_str()) < 0)) {
-    DetectError();
-    MSS_ERROR("fprintf", error_);
-    fclose(fout);
-    return -1;
-  }
-
-  fclose(fout);
-  return 0;
-}
-
-int Spider::DelServer(const std::string &name) {
-  if (std::find(servers_list_->begin(), servers_list_->end(),
-                name) == servers_list_->end()) {
-    MSS_WARN_MESSAGE(("Server " + name + "not in servers_list_").c_str());
-    return 0;
-  }
-
-  servers_list_->remove(name);
-
-  FILE *fout = fopen(servers_file_.c_str(), "w");
-  if (UNLIKELY(!fout)) {
-    DetectError();
-    MSS_ERROR("fopen", error_);
-    return -1;
-  }
-
-  for (std::list<std::string>::iterator itr = servers_list_->begin();
-       itr != servers_list_->end(); ++itr) {
-    if (UNLIKELY(fprintf(fout, "%s\n", itr->c_str()) < 0)) {
-      DetectError();
-      MSS_ERROR("fprintf", error_);
-      fclose(fout);
-      return -1;
-    }
-  }
-
-  fclose(fout);
-  return 0;
 }
 
 std::shared_ptr<std::list<std::string> > Spider::GetSMBDirContent(

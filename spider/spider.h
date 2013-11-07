@@ -35,6 +35,7 @@
 #include <memory>
 
 #include "common.h"
+#include "servermanager.h"
 #include "data-storage/entities.h"
 
 // Size of buffer which used to get smb directory entries.
@@ -97,15 +98,6 @@ class Spider {
   inline int get_error() const { return error_; }
 
   /**
-   * Get list of servers to be indexed.
-   *
-   * @return List of servers to be indexed.
-   */
-  inline std::list<std::string> get_servers_list() const {
-    return *servers_list_;
-  }
-
-  /**
    * Get set of indexed files which still don't dumped in data base.
    *
    * @return Get vector of indexed files.
@@ -118,13 +110,6 @@ class Spider {
    * @return iterator to the last indexed file.
    */
   inline std::vector<std::string>::iterator get_last() const { return last_; }
-
-  /**
-   * Get name of the files with list of servers.
-   *
-   * @return Name of config file with servers list.
-   */
-  inline std::string get_servers_file() const { return servers_file_; }
 
   /**
    * Get the name of the data base.
@@ -168,15 +153,6 @@ class Spider {
    * @param error Error code.
    */
   inline void set_error(const int error) { error_ = error; }
-
-  /**
-   * Set file with list of servers.
-   *
-   * @param servers_file Path to config file with servers list.
-   */
-  inline void set_servers_file(const std::string &servers_file) {
-    servers_file_ = servers_file;
-  }
 
   /**
    * Set the name of the data base.
@@ -231,26 +207,6 @@ class Spider {
   int DumpToDataBase();
 
   /**
-   * @brief Add server to the servers_list_ and write it in
-   * servers_file_.
-   *
-   * @param name Name of the server.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int AddServer(const std::string &name);
-
-  /**
-   * @brief Delete server from servers_list_ and delete it from
-   * servers_file_.
-   *
-   * @param name Name of the server.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int DelServer(const std::string &name);
-
-  /**
    * @brief Save last occured error in error_.
    */
   inline void DetectError() { error_ = errno; }
@@ -266,13 +222,6 @@ class Spider {
       return -1;
     return 0;
   }
-
-  /**
-    * @brief Read servers list from servers file.
-    *
-    * @return 0 on success, -1 otherwise.
-    */
-  int ReadServersList();
 
   /**
    * @brief Get content of the smb directory.
@@ -357,16 +306,6 @@ class Spider {
 
  private:
   /**
-   * @brief servers_file_ name of the file with list of servers.
-   */
-  std::string servers_file_;
-
-  /**
-   * @brief servers_list_ list of the servers.
-   */
-  std::list<std::string> *servers_list_ = NULL;
-
-  /**
    * @brief result_ Vector with scan results.
    */
   std::vector<std::string> *result_ = NULL;
@@ -407,6 +346,11 @@ class Spider {
    */
   std::shared_ptr<FileAttribute> mime_type_attr_;
 
+  /**
+   * @brief Server manager which is used to obtain server names to index
+   */
+  ServerManager *pserver_manager_;
+  
   /**
    * @brief error_ Last occured error.
    */

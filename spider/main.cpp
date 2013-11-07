@@ -39,7 +39,7 @@ int main() {
     MSS_DEBUG_MESSAGE("failed");
   }
 
-  Spider spider("../etc/u-search/servers.dat", name, server, user, password);
+  Spider spider("/etc/u-search/servers.dat", name, server, user, password);
   if (spider.get_error()) {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
     exit(EXIT_FAILURE);

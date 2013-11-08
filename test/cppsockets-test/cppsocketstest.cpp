@@ -133,6 +133,35 @@ void AbstractSocketTest::GetSetTestCase() {
   delete char_address;
 }
 
+void AbstractSocketTest::UseAddressAndPortTestCase() {
+  AbstractSocketTest socket;
+  
+  CPPUNIT_ASSERT_MESSAGE("Error in error_", !socket.get_error());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_.address_",
+                         !socket.get_local_address());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_.port_",
+                         !socket.get_local_port());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
+                         !socket.get_local_socket_address().GetAddressAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
+                         !socket.get_local_socket_address().GetPortAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_.address_",
+                         !socket.get_remote_address());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_.port_",
+                         !socket.get_remote_port());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_",
+                         !socket.get_remote_socket_address().GetAddressAsNet());
+  CPPUNIT_ASSERT_MESSAGE("Error in remote_address_",
+                         !socket.get_remote_socket_address().GetPortAsNet());
+  
+  socket.UseAddressAndPort((in_addr_t)0x0100007f, (in_port_t)0x1559);
+  
+  CPPUNIT_ASSERT_MESSAGE("Error in local_address_",
+                         socket.get_local_address() == 0x0100007f);
+  CPPUNIT_ASSERT_MESSAGE("Error in local_port_",
+                         socket.get_local_port() == 0x1559);
+}
+
 void SocketAddressTest::ConstructorsTestCase() {
   SocketAddress addr;
   CPPUNIT_ASSERT_MESSAGE("Error in error_", addr.get_error() == 0);

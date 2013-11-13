@@ -63,9 +63,9 @@
 
 \chapter{Description}
 
-u-search --- a fast software package for search in local networks. Our product can serve you to range search results and automatically filter out duplicates. Also mipt-smb-search has a light and absolutely friendly interface: a minimum of buttons, clear indications and for each file there is a preview.
+u-search --- a fast software package for search in local networks. Our product can serve you to range search results and automatically filter out duplicates. Also u-search has a light and absolutely friendly interface: a minimum of buttons, clear indications and for each file there is a preview.
 
-GIT: \url{https://code.google.com/p/mipt-smb-search/}
+GIT: \url{https://github.com/yulyugin/u-search}
 
 \section{Dependencies}
 
@@ -87,7 +87,6 @@ In the system there are four modules:
   \item Spider --- a indexing network module, climbs over the network, and writes the files into the database.
   \item Data-storage --- a database, which saves information about files and search required information.
   \item Face --- a web-interface for users.
-  \item Preview-maker --- a module for making previews for files.
 \end{itemize}
 
 
@@ -103,15 +102,15 @@ Preview-maker runs on another machine because it can use all memory space and pr
 By default project will build in git-workspace/build/release in release mode and in git-workspace/build/debug in debug mode.
 
 \begin{lstlisting}
-$ git clone https://code.google.com/p/mipt-smb-search/
-$ cd mipt-smb-search
-$ make install
+$ git clone https://github.com/yulyugin/u-search
+$ cd u-search
+$ make test
 \end{lstlisting}
 
 To build in debug mode you should use next command:
 
 \begin{lstlisting}
-$ make DEBUG=yes install
+$ make DEBUG=yes test
 \end{lstlisting}
 
 \section{How to run tests}\label{sec:tests}
@@ -119,5 +118,5 @@ $ make DEBUG=yes install
 Go to you git workspace and run next command
 
 \begin{lstlisting}
-$ ./tests/testing.sh <path_to_build_directory>
+$ ./test/testing.sh <path_to_build_directory>
 \end{lstlisting}

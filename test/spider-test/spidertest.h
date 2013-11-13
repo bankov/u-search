@@ -27,9 +27,7 @@
 #ifndef TESTS_SPIDERTEST_H_
 #define TESTS_SPIDERTEST_H_
 
-//#include <cppunit/TestAssert.h>
 #include <cppunit/TestFixture.h>
-//
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <string>

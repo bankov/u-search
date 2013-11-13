@@ -25,13 +25,13 @@
 */
 
 /**
- * @file common.h
+ * @file common-inl.h
  *
  * @brief File containing instruments common for all modules.
  */
 
-#ifndef U_SEARCH_COMMON_H_
-#define U_SEARCH_COMMON_H_
+#ifndef COMMON_INL_H_
+#define COMMON_INL_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -207,8 +207,8 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
  */
 #define DATABASE_CONFIG "/etc/u-search/database.dat"
 
-#define LIKELY(x)   __builtin_expect(!!(x),1)
-#define UNLIKELY(x) __builtin_expect(!!(x),0)
+#define LIKELY(x)   __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
 /**
  * Read database config file.
@@ -272,4 +272,4 @@ inline int read_database_config(std::string *database_name,
   return 0;
 }
 
-#endif  // U_SEARCH_COMMON_H_
+#endif  // COMMON_INL_H_

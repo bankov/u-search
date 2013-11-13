@@ -32,7 +32,7 @@
 #include <stdio.h>
 
 #include "socketaddress.h"
-#include "common.h"
+#include "common-inl.h"
 
 // The maximum size of message.
 #define MAX_SIZE 2048

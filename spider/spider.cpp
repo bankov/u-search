@@ -36,7 +36,7 @@
 #include <vector>
 #include <memory>
 
-#include "common.h"
+#include "common-inl.h"
 #include "spider.h"
 
 inline void libsmbmm_guest_auth_smbc_get_data(const char *server,

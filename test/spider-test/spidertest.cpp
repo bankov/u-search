@@ -31,6 +31,7 @@
 
 #include <algorithm>
 
+#include "common-inl.h"
 #include "spidertest.h"
 
 SpiderTest::SpiderTest() : Spider() {}

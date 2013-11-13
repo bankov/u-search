@@ -25,8 +25,12 @@
 */
 
 #define EXPAND_MY_SSQLS_STATICS
+
+#include <string>
+#include <vector>
+
 #include "entities.h"
-#include "common.h"
+#include "common-inl.h"
 
 mysqlpp::TCPConnection DatabaseEntity::db_connection_;
 std::string DatabaseEntity::db_error_;
@@ -193,8 +197,8 @@ std::shared_ptr<FileAttribute> FileAttribute::GetByNameAndType(
                                                 "and attr.type = %1q:type");
 
     query.parse();
-    mysqlpp::StoreQueryResult findedRows = 
-      query.store(name, AttrTypeToString(type));
+    mysqlpp::StoreQueryResult findedRows
+        = query.store(name, AttrTypeToString(type));
     if (findedRows.num_rows() < 1)
       return nullptr;
     mss_attributes row(findedRows[0]);

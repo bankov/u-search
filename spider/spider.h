@@ -34,7 +34,7 @@
 #include <vector>
 #include <memory>
 
-#include "common.h"
+#include "common-inl.h"
 #include "data-storage/entities.h"
 
 // Size of buffer which used to get smb directory entries.

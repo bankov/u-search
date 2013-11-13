@@ -37,7 +37,7 @@
 #include <ostream>
 #include <string>
 
-#include "common.h"
+#include "common-inl.h"
 
 /**
  * @brief The class allows you to store and work with IPv4 addresses.

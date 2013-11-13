@@ -15,3 +15,5 @@
 */classes/*
 *.class
 *.jar
+*.bak
+*.tmp

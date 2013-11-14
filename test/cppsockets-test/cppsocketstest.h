@@ -24,8 +24,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef TESTS_CPPSOCKETSTEST_H_
-#define TESTS_CPPSOCKETSTEST_H_
+#ifndef TEST_CPPSOCKETSTEST_H_
+#define TEST_CPPSOCKETSTEST_H_
 
 #include <cppunit/TestAssert.h>
 #include <cppunit/TestFixture.h>
@@ -94,4 +94,4 @@ class UDPSocketTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 };
 
-#endif  // TESTS_CPPSOCKETSTEST_H_
+#endif  // TEST_CPPSOCKETSTEST_H_

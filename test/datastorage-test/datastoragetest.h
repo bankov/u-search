@@ -24,8 +24,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef TESTS_DATASTORAGETEST_H_
-#define TESTS_DATASTORAGETEST_H_
+#ifndef TEST_DATASTORAGETEST_H_
+#define TEST_DATASTORAGETEST_H_
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -81,4 +81,4 @@ class FileParameterTest : public CppUnit::TestFixture {
   std::string password_;
 };
 
-#endif  // TESTS_DATASTORAGETEST_H_
+#endif  // TEST_DATASTORAGETEST_H_

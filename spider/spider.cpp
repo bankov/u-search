@@ -138,7 +138,7 @@ Spider::Spider(const std::string &servers_file, const std::string &db_name,
   db_user_ = db_user;
   db_password_ = db_password;
 
-  if (UNLIKELY(ConnetToDataBase())) {
+  if (UNLIKELY(ConnectToDataBase())) {
     MSS_FATAL_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
     delete servers_list_;
@@ -717,7 +717,7 @@ int Spider::InitMimeTypeAttr()  {
   if (mime_type_attr_)
     return 0;
 
-  if (ConnetToDataBase()) {
+  if (ConnectToDataBase()) {
     MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
     return -1;

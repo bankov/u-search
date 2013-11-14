@@ -260,7 +260,7 @@ class Spider {
    *
    * @return 0 if success -1 otherwise.
    */
-  inline int ConnetToDataBase() {
+  inline int ConnectToDataBase() {
     if (!DatabaseEntity::ConnectToServer(db_name_, db_server_, db_user_,
                                          db_password_, false))
       return -1;

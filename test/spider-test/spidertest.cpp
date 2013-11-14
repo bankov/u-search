@@ -220,7 +220,7 @@ void SpiderTest::ScanSMBDirTestCase() {
   spider.set_db_server(server_);
   spider.set_db_user(user_);
 
-  int result = spider.ConnetToDataBase();
+  int result = spider.ConnectToDataBase();
   CPPUNIT_ASSERT_MESSAGE("Error in ConnectToDataBase", !result);
   std::string dir("smb://helena.ilab.mipt.ru/incoming/mipt-smb-search-test");
 

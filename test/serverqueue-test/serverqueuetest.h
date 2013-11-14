@@ -22,29 +22,49 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
-#include "test/cppsockets-test/cppsocketstest.h"
-#include "test/datastorage-test/datastoragetest.h"
-#include "test/spider-test/spidertest.h"
-#include "test/serverqueue-test/serverqueuetest.h"
+#ifndef TEST_SERVERQUEUETEST_H_
+#define TEST_SERVERQUEUETEST_H_
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SocketAddressTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(UDPSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(SpiderTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(AbstractSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileEntryTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileAttributeTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileParameterTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(ServerQueueTest);
+#include <cppunit/TestFixture.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-int main() {
-  CppUnit::TextUi::TestRunner runner;
-  CppUnit::TestFactoryRegistry &registry =
-      CppUnit::TestFactoryRegistry::getRegistry();
-  runner.addTest( registry.makeTest() );
-  runner.run();
+#include "scheduler/serverqueue.h"
 
-  return 0;
-}
+#define SERVERQUEUETEMPLATE "/tmp/u-search.XXXXXXXXXX"
+
+class ServerQueueTest : public CppUnit::TestFixture, public ServerQueue {
+ public:
+  ServerQueueTest();
+  void ReadDevNull();
+  void ReadTestFile();
+  void ReadNonexistingFile();
+  void GetFromEmptyQueue();
+  void GetOnQueueWithFreeServer();
+  void GetOnQueueWithoutFreeServer();
+  void ReleaseOfBusyServer();
+  void GetNonExistentServer();
+  void ReleaseNonExistentServer();
+  void GetAfterRelease();
+
+  void setUp();
+  void tearDown();
+
+ private:
+  CPPUNIT_TEST_SUITE(ServerQueueTest);
+  CPPUNIT_TEST(ReadDevNull);
+  CPPUNIT_TEST(ReadTestFile);
+  CPPUNIT_TEST(ReadNonexistingFile);
+  CPPUNIT_TEST(GetFromEmptyQueue);
+  CPPUNIT_TEST(GetOnQueueWithFreeServer);
+  CPPUNIT_TEST(GetOnQueueWithoutFreeServer);
+  CPPUNIT_TEST(ReleaseOfBusyServer);
+  CPPUNIT_TEST(GetNonExistentServer);
+  CPPUNIT_TEST(ReleaseNonExistentServer);
+  CPPUNIT_TEST(GetAfterRelease);
+  CPPUNIT_TEST_SUITE_END();
+
+  char buf_[sizeof SERVERQUEUETEMPLATE];
+};
+#endif  // TEST_SERVERQUEUETEST_H_

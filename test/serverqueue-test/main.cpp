@@ -22,29 +22,19 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
-#include "test/cppsockets-test/cppsocketstest.h"
-#include "test/datastorage-test/datastoragetest.h"
-#include "test/spider-test/spidertest.h"
-#include "test/serverqueue-test/serverqueuetest.h"
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/ui/text/TestRunner.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SocketAddressTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(UDPSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(SpiderTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(AbstractSocketTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileEntryTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileAttributeTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(FileParameterTest);
+#include "serverqueuetest.h"
+
 CPPUNIT_TEST_SUITE_REGISTRATION(ServerQueueTest);
 
 int main() {
   CppUnit::TextUi::TestRunner runner;
-  CppUnit::TestFactoryRegistry &registry =
-      CppUnit::TestFactoryRegistry::getRegistry();
+  CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
   runner.addTest( registry.makeTest() );
   runner.run();
-
   return 0;
 }

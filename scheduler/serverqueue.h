@@ -28,18 +28,10 @@
 #define SCHEDULER_SERVERQUEUE_H_
 
 #include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <dirent.h>
-#include <unistd.h>
 
-#include <algorithm>
 #include <iterator>
 #include <string>
 #include <list>
-
-#include "common-inl.h"
 
 class ServerQueue {
   /**
@@ -49,7 +41,7 @@ class ServerQueue {
    public:
     Server() : name_() { timestamp_ = 0; }
     Server(const std::string name, const time_t timestamp = 0) : name_(name),
-           timestamp_(timestamp) {};
+           timestamp_(timestamp) {}
 
     /**
      * Getter for server name.

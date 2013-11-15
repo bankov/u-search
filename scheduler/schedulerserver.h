@@ -27,18 +27,9 @@
 #ifndef SCHEDULER_SCHEDULERSERVER_H_
 #define SCHEDULER_SCHEDULERSERVER_H_
 
-#include "scheduler/schedulerserver.h"
-
-#include <sys/socket.h>
-#include <sys/types.h>
-
-#include <netdb.h>
-#include <string.h>
-#include <unistd.h>
-
-#include <list>
 #include <string>
 
+#include "scheduler/schedulerserver.h"
 #include "scheduler/serverqueue.h"
 
 /**

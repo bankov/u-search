@@ -5,7 +5,7 @@ SUBDIRS +=          \
     spider          \
     scheduler       \
     test
-HEADERS += common.h
+HEADERS += common-inl.h
 OTHER_FILES +=      \
     servers.dat     \
     database.dat    \

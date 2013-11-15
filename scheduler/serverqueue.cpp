@@ -24,10 +24,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdio.h>
+
 #include <list>
 #include <string>
+#include <algorithm>
+#include <iterator>
 
 #include "scheduler/serverqueue.h"
+#include "common-inl.h"
 
 ServerQueue::ServerQueue() : servers_file_() {
   servers_list_ = NULL;
@@ -123,7 +128,7 @@ std::string ServerQueue::CmdGet() {
     if (UNLIKELY(++ilast_server_ == servers_list_->end())) {
       // If the last server is in the end of the list,
       // the next server to choose is from the beginning of the list.
-        ilast_server_ = servers_list_->begin();
+      ilast_server_ = servers_list_->begin();
     }
   } while (ilast_server_ != iprev_head);
 

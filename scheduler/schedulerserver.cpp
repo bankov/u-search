@@ -36,9 +36,10 @@
 
 #include "scheduler/schedulerserver.h"
 #include "scheduler/serverqueue.h"
+#include "common-inl.h"
 
-SchedulerServer::SchedulerServer(const std::string serversfile) :
-    queue_(serversfile) {
+SchedulerServer::SchedulerServer(const std::string serversfile)
+    : queue_(serversfile) {
   // Prepare hists for getaddrinfo.
   struct addrinfo hints;
   memset(&hints, 0, sizeof hints);
@@ -68,11 +69,15 @@ SchedulerServer::SchedulerServer(const std::string serversfile) :
     }
 
     int val = 1;
-    setsockopt(sockfd_, SOL_SOCKET, SO_REUSEADDR, &val, sizeof val);
+    if (setsockopt(sockfd_, SOL_SOCKET, SO_REUSEADDR, &val, sizeof val)) {
+      MSS_ERROR("setsockopt", errno);
+      close(sockfd_);
+      continue;
+    }
 
     if (bind(sockfd_, p->ai_addr, p->ai_addrlen) == -1) {
-      close(sockfd_);
       MSS_ERROR("bind", errno);
+      close(sockfd_);
       continue;
     }
 
@@ -98,7 +103,8 @@ void SchedulerServer::Run() {
 
   while (1) {
     // Commands consist of one-byte command and, possibly, domain name.
-    // Domain name length is no greater than 255 (see https://tools.ietf.org/html/rfc1035)
+    // Domain name length is no greater than 255
+    // See https://tools.ietf.org/html/rfc1035
     // One byte is for '\0'.
     char buf[257];
     memset(buf, '\0', sizeof buf);
@@ -125,8 +131,9 @@ void SchedulerServer::Run() {
       if (server.empty()) {
         server = queue_.CmdGet();
         if (!server.empty())
-          sendto(sockfd_, server.c_str(), server.size(), 0,
-            (struct sockaddr *)&theiraddr, salen);
+          if (UNLIKELY(sendto(sockfd_, server.c_str(), server.size(), 0,
+                              (struct sockaddr *)&theiraddr, salen) == -1))
+            MSS_ERROR("sendto", errno);
       } else {
         queue_.CmdGet(server);
       }

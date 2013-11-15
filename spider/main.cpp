@@ -24,8 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <sys/time.h>
-
 #include <string>
 
 #include "common-inl.h"
@@ -42,10 +40,9 @@ int main() {
   Spider spider("../etc/u-search/servers.dat", name, server, user, password);
   if (spider.get_error()) {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
-    exit(EXIT_FAILURE);
+    return 1;
   }
 
-    spider.Run();
-
+  spider.Run();
   return 0;
 }

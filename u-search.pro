@@ -3,6 +3,7 @@ SUBDIRS +=          \
     cppsockets      \
     data-storage    \
     spider          \
+    scheduler       \
     test
 HEADERS += common.h
 OTHER_FILES +=      \

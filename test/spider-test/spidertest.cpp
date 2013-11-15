@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <stdio.h>
 
 #include <algorithm>
 
@@ -60,23 +61,6 @@ void SpiderTest::ConstructorsTestCase() {
   CPPUNIT_ASSERT(closedir(fd) == 0);
   delete spider;
 
-  Spider *spider1 = new(std::nothrow) Spider("../server_test");
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider1->get_error());
-  CPPUNIT_ASSERT_MESSAGE("Error in servers_file_",
-                         spider1->get_servers_file() == "../server_test");
-  std::list<std::string> test = spider1->get_servers_list();
-  CPPUNIT_ASSERT_MESSAGE("test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("another.test.server not readen",
-                         std::find(test.begin(), test.end(),
-                                   "another.test.server") != test.end());
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
-  fd = opendir(TMPDIR);
-  CPPUNIT_ASSERT_MESSAGE("Error in create temporary directory", fd);
-  CPPUNIT_ASSERT(closedir(fd) == 0);
-  delete spider1;
-
   Spider *spider2 = new(std::nothrow) Spider("../server_test", name_, server_,
                                              user_, password_);
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider2->get_error());
@@ -94,7 +78,7 @@ void SpiderTest::ConstructorsTestCase() {
                          spider2->get_mime_type_attr().get_name() ==
                              "mime-type");
 
-  test = spider2->get_servers_list();
+  std::list<std::string> test = spider2->get_servers_list();
   CPPUNIT_ASSERT_MESSAGE("test.server not readen",
                          std::find(test.begin(), test.end(),
                                    "test.server") != test.end());

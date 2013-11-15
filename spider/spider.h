@@ -59,13 +59,6 @@ class Spider {
    */
   Spider();
   /**
-   * Constructor which init all variables and read file with servers to
-   * scan.
-   *
-   * @param servers_file File with list of servers.
-   */
-  explicit Spider(const std::string &servers_file);
-  /**
    * Constructor which create an object, init all variables, connect to
    * data base, create a mimt type attribute if it doesn't exists.
    *

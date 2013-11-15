@@ -111,10 +111,16 @@ Spider::Spider()
   error_ = 0;
 }
 
-Spider::Spider(const std::string &servers_file) : Spider() {
+Spider::Spider(const std::string &servers_file, const std::string &db_name,
+               const std::string &db_server, const std::string &db_user,
+               const std::string &db_password) : Spider() {
   if (UNLIKELY(error_))
     return;
 
+  db_name_ = db_name;
+  db_server_ = db_server;
+  db_user_ = db_user;
+  db_password_ = db_password;
   servers_file_ = servers_file;
 
   // Read servers_file_.
@@ -125,18 +131,6 @@ Spider::Spider(const std::string &servers_file) : Spider() {
     result_ = NULL;
     return;
   }
-}
-
-Spider::Spider(const std::string &servers_file, const std::string &db_name,
-               const std::string &db_server, const std::string &db_user,
-               const std::string &db_password) : Spider(servers_file) {
-  if (UNLIKELY(error_))
-    return;
-
-  db_name_ = db_name;
-  db_server_ = db_server;
-  db_user_ = db_user;
-  db_password_ = db_password;
 
   if (UNLIKELY(ConnectToDataBase())) {
     MSS_FATAL_MESSAGE(DatabaseEntity::get_db_error().c_str());

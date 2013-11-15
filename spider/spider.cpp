@@ -39,7 +39,7 @@
 #include "common-inl.h"
 #include "spider.h"
 
-inline void libsmbmm_guest_auth_smbc_get_data(const char *server,
+static void libsmbmm_guest_auth_smbc_get_data(const char *server,
                                               const char *share,
                                               char *workgroup, int wgmaxlen,
                                               char *username, int unmaxlen,
@@ -64,26 +64,26 @@ Spider::Spider()
   servers_list_ = NULL;
   result_ = NULL;
 
-  if (UNLIKELY(smbc_init(libsmbmm_guest_auth_smbc_get_data, 0) < 0)) {
+  if (smbc_init(libsmbmm_guest_auth_smbc_get_data, 0) < 0) {
     DetectError();
     MSS_FATAL("smbc_init", error_);
     return;
   }
 
   // Create a directory to store file headers.
-  if (UNLIKELY(mkdir(TMPDIR, 00744 /* rwxr--r-- */) && errno != EEXIST)) {
+  if (mkdir(TMPDIR, 00744 /* rwxr--r-- */) && errno != EEXIST) {
     DetectError();
     MSS_ERROR("mkdir", error_);
     return;
   }
 
   // Prepare to work with libmagic
-  if (UNLIKELY((cookie_ = magic_open(MAGIC_MIME_TYPE | MAGIC_ERROR)) == NULL)) {
+  if ((cookie_ = magic_open(MAGIC_MIME_TYPE | MAGIC_ERROR)) == NULL) {
     error_ = magic_errno(cookie_);
     MSS_ERROR("magic_open", error_);
     return;
   }
-  if (UNLIKELY(magic_load(cookie_, NULL) == -1)) {
+  if (magic_load(cookie_, NULL) == -1) {
     error_ = magic_errno(cookie_);
     MSS_ERROR("magic_open", error_);
     return;
@@ -91,7 +91,7 @@ Spider::Spider()
 
   // Allocare memory to the servers list.
   servers_list_ = new(std::nothrow) std::list<std::string>();
-  if (UNLIKELY(servers_list_ == NULL)) {
+  if (servers_list_ == NULL) {
     error_ = ENOMEM;
     MSS_FATAL("", error_);
     return;
@@ -99,11 +99,9 @@ Spider::Spider()
 
   // Allocate memory to the result vector.
   result_ = new(std::nothrow) std::vector<std::string>(VECTOR_SIZE);
-  if (UNLIKELY(result_ == NULL)) {
+  if (result_ == NULL) {
     error_ = ENOMEM;
     MSS_FATAL("result_", error_);
-    delete servers_list_;
-    servers_list_ = NULL;
     return;
   }
   last_ = result_->begin();
@@ -114,48 +112,37 @@ Spider::Spider()
 Spider::Spider(const std::string &servers_file, const std::string &db_name,
                const std::string &db_server, const std::string &db_user,
                const std::string &db_password) : Spider() {
-  if (UNLIKELY(error_))
+  if (error_)
     return;
 
+  servers_file_ = servers_file;
   db_name_ = db_name;
   db_server_ = db_server;
   db_user_ = db_user;
   db_password_ = db_password;
-  servers_file_ = servers_file;
 
   // Read servers_file_.
-  if (UNLIKELY(ReadServersList())) {
+  if (ReadServersList()) {
     MSS_DEBUG_ERROR("ReadServersList", error_);
-    delete servers_list_;
-    servers_list_ = NULL;
-    result_ = NULL;
     return;
   }
 
-  if (UNLIKELY(ConnectToDataBase())) {
+  if (ConnectToDataBase()) {
     MSS_FATAL_MESSAGE(DatabaseEntity::get_db_error().c_str());
     error_ = ENOMSG;
-    delete servers_list_;
-    servers_list_ = NULL;
-    delete result_;
-    result_ = NULL;
     return;
   }
 
   // Detect an attribute to store mime types
   mime_type_attr_ = FileAttribute::GetByNameAndType("mime-type",
                                                     FileAttribute::faString);
-  if (UNLIKELY(!mime_type_attr_)) {
+  if (!mime_type_attr_) {
     // Create attribute if it doesn't exists
     mime_type_attr_ = std::shared_ptr<FileAttribute>(
         new(std::nothrow) FileAttribute("mime-type", FileAttribute::faString));
-    if (UNLIKELY((!mime_type_attr_))) {
+    if ((!mime_type_attr_)) {
       MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
-      delete servers_list_;
-      servers_list_ = NULL;
-      delete result_;
-      result_ = NULL;
     }
   }
 }

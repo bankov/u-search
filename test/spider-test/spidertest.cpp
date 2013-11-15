@@ -28,7 +28,6 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <dirent.h>
-#include <stdio.h>
 
 #include <algorithm>
 

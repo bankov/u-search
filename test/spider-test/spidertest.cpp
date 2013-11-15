@@ -435,7 +435,6 @@ void SpiderTest::DeleteDirTestCase() {
   CPPUNIT_ASSERT(!mkdir("../test_dir", 00744));
   CPPUNIT_ASSERT(creat("../test_dir/file1", 00744) != -1);
   CPPUNIT_ASSERT(creat("../test_dir/file2", 00744) != -1);
-  CPPUNIT_ASSERT(!mkdir("../test_dir/empty_dir", 00744));
 
   // Delete tested directory with content
   CPPUNIT_ASSERT_MESSAGE("DeleteDir failed", !DeleteDir("../test_dir"));

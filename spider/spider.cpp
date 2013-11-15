@@ -149,10 +149,10 @@ Spider::Spider(const std::string &servers_file, const std::string &db_name,
 
 Spider::~Spider() {
   // Close connection with data base
-  if (UNLIKELY(!DatabaseEntity::Disconnect()))
+  if (!DatabaseEntity::Disconnect())
     MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
 
-  if (UNLIKELY(DeleteDir(TMPDIR))) {
+  if (DeleteDir(TMPDIR)) {
     MSS_DEBUG_ERROR("DeleteDir", error_);
   }
 
@@ -743,6 +743,7 @@ int Spider::DeleteDir(const std::string &dir) {
   struct dirent entry;
   struct dirent *result = NULL;
 
+  // Remove all content of the tmp directory
   while (true) {
     if (UNLIKELY(readdir_r(dirfd, &entry, &result))) {
       DetectError();
@@ -759,16 +760,8 @@ int Spider::DeleteDir(const std::string &dir) {
     }
 
     if (unlink((dir + "/" + entry.d_name).c_str())) {
-      if (LIKELY(errno == EISDIR)) {
-        if (UNLIKELY(DeleteDir(dir + "/" + entry.d_name))) {
-          MSS_DEBUG_ERROR("DeleteDir", error_);
-          break;
-        }
-      } else {
-        DetectError();
-        MSS_ERROR("unlink", error_);
-        break;
-      }
+      DetectError();
+      MSS_ERROR("unlink", error_);
     }
   }
 

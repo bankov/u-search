@@ -236,6 +236,7 @@ class SocketAddress {
    */
   inline int GetPortAsHost() { return ntohs(port_); }
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**
    * Makes a copy of the object argument.
    *
@@ -266,7 +267,7 @@ class SocketAddress {
    * @return ostream object for given SocketAddress.
    */
   friend std::ostream& operator<<(std::ostream& __cout, SocketAddress *obj);
-
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
  private:
   inline void DetectError() { error_ = errno; }
 

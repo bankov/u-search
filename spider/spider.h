@@ -72,16 +72,19 @@ class Spider {
          const std::string &db_server, const std::string &db_user,
          const std::string &db_password);
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**
    * Destructor.
    */
   ~Spider();
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @brief Index all servers from servers list.
    */
   void Run();
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**
    * Get last occured error.
    *
@@ -125,8 +128,9 @@ class Spider {
    * @return Mime type attribute.
    */
   inline FileAttribute get_mime_type_attr() const { return *mime_type_attr_; }
-
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
  protected:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**
    * Set file with list of servers.
    *
@@ -169,6 +173,7 @@ class Spider {
   inline void set_db_password(const std::string &db_password) {
     db_password_ = db_password;
   }
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @brief Dump the result vector in file.

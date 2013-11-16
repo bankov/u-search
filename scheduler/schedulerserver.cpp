@@ -37,6 +37,7 @@
 #include "scheduler/schedulerserver.h"
 #include "scheduler/serverqueue.h"
 #include "common-inl.h"
+#include "config.h"
 
 SchedulerServer::SchedulerServer(const std::string serversfile)
     : queue_(serversfile) {

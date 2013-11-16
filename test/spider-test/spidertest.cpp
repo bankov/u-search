@@ -65,14 +65,6 @@ void SpiderTest::ConstructorsTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider2->get_error());
   CPPUNIT_ASSERT_MESSAGE("Error in servers_file_",
                          spider2->get_servers_file() == "../server_test");
-  CPPUNIT_ASSERT_MESSAGE("Error in db_name_",
-                         spider2->get_db_name() == name_);
-  CPPUNIT_ASSERT_MESSAGE("Error in db_server_",
-                         spider2->get_db_server() == server_);
-  CPPUNIT_ASSERT_MESSAGE("Error in db_user_",
-                         spider2->get_db_user() == user_);
-  CPPUNIT_ASSERT_MESSAGE("Error in db_password_",
-                         spider2->get_db_password() == password_);
   CPPUNIT_ASSERT_MESSAGE("Error in mime_type_attr_",
                          spider2->get_mime_type_attr().get_name() ==
                              "mime-type");
@@ -107,20 +99,6 @@ void SpiderTest::GetSetTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Error in set_error", spider.get_error() == EACCES);
 
   spider.set_db_name("name");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_db_name",
-                         spider.get_db_name() == "name");
-
-  spider.set_db_password("pass");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_db_password",
-                         spider.get_db_password() == "pass");
-
-  spider.set_db_server("server");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_db_server",
-                         spider.get_db_server() == "server");
-
-  spider.set_db_user("user");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_db_user",
-                         spider.get_db_user() == "user");
 }
 
 void SpiderTest::ReadServersListTestCase() {

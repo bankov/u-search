@@ -120,34 +120,6 @@ class Spider {
   inline std::string get_servers_file() const { return servers_file_; }
 
   /**
-   * Get the name of the data base.
-   *
-   * @return Name of the dasta base.
-   */
-  inline std::string get_db_name() const { return db_name_; }
-
-  /**
-   * Get the name of the server with data base.
-   *
-   * @return Name of the server with data base.
-   */
-  inline std::string get_db_server() const { return db_server_; }
-
-  /**
-   * Get the user of data base.
-   *
-   * @return Data base user.
-   */
-  inline std::string get_db_user() const { return db_user_; }
-
-  /**
-   * Get the password of data base.
-   *
-   * @return Data base password.
-   */
-  inline std::string get_db_password() const { return db_password_; }
-
-  /**
    * Get a mime type attribute.
    *
    * @return Mime type attribute.

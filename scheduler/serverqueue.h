@@ -33,6 +33,8 @@
 #include <string>
 #include <list>
 
+#include "common-inl.h"
+
 class ServerQueue {
   /**
    * Represents server in the queue.
@@ -156,6 +158,7 @@ class ServerQueue {
   int ReadServersList();
 
  private:
+  DISALLOW_COPY_AND_ASSIGN(ServerQueue);
   /**
    * @brief servers_file_ name of the file with list of servers.
    */

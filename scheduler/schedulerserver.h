@@ -31,6 +31,7 @@
 
 #include "scheduler/schedulerserver.h"
 #include "scheduler/serverqueue.h"
+#include "common-inl.h"
 
 /**
  * @brief Scheduler server, used to distribute jobs among spiders.
@@ -60,6 +61,7 @@ class SchedulerServer {
   bool is_error() const { return error_; }
 
  private:
+  DISALLOW_COPY_AND_ASSIGN(SchedulerServer);
   /**
    * @brief Some queue to get servers from.
    */

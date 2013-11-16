@@ -209,11 +209,6 @@ class Spider {
   int DelServer(const std::string &name);
 
   /**
-   * @brief Save last occured error in error_.
-   */
-  inline void DetectError() { error_ = errno; }
-
-  /**
    * @brief Connect to data base server.
    *
    * @return 0 if success -1 otherwise.
@@ -305,6 +300,11 @@ class Spider {
   int InitMimeTypeAttr();
 
  private:
+  /**
+   * @brief Save last occured error in error_.
+   */
+  inline void DetectError() { error_ = errno; }
+
   /**
    * @brief servers_file_ name of the file with list of servers.
    */

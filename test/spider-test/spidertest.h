@@ -40,7 +40,6 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   void setUp();
   void ConstructorsTestCase();
   void GetSetTestCase();
-  void DetectErrorTestCase();
   void ReadServersListTestCase();
   void DumpToFileTestCase();
   void GetSMBDirContentTestCase();
@@ -56,7 +55,6 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   CPPUNIT_TEST_SUITE(SpiderTest);
   CPPUNIT_TEST(ConstructorsTestCase);
   CPPUNIT_TEST(GetSetTestCase);
-  CPPUNIT_TEST(DetectErrorTestCase);
   CPPUNIT_TEST(ReadServersListTestCase);
   CPPUNIT_TEST(DumpToFileTestCase);
   CPPUNIT_TEST(GetSMBDirContentTestCase);

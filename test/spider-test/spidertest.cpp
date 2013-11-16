@@ -193,15 +193,6 @@ void SpiderTest::NameParserTestCase() {
   CPPUNIT_ASSERT(spider.get_error() == EINVAL);
 }
 
-void SpiderTest::DetectErrorTestCase() {
-  SpiderTest spider;
-  CPPUNIT_ASSERT(!spider.get_error());
-
-  errno = ENOENT;
-  spider.DetectError();
-  CPPUNIT_ASSERT_MESSAGE("Error in DetectError", spider.get_error() == ENOENT);
-}
-
 void SpiderTest::AddServerTestCase() {
   SpiderTest spider;
   CPPUNIT_ASSERT(!spider.get_error());

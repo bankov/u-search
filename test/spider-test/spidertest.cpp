@@ -146,20 +146,6 @@ void SpiderTest::DumpToFileTestCase() {
   free(buf);
 }
 
-void SpiderTest::GetSMBDirContentTestCase() {
-  std::string dir("smb://helena.ilab.mipt.ru/incoming/mipt-smb-search-test");
-  std::shared_ptr<std::list<std::string> > list = GetSMBDirContent(dir);
-
-  CPPUNIT_ASSERT_MESSAGE("Error in GetSMBDirContent", list);
-  CPPUNIT_ASSERT_MESSAGE("Wrong size", list->size() == 2);
-  CPPUNIT_ASSERT_MESSAGE("test_file not found",
-                         std::find(list->begin(), list->end(),
-                                   dir + "/test_file") != list->end());
-  CPPUNIT_ASSERT_MESSAGE("test_folder not found",
-                         std::find(list->begin(), list->end(),
-                                   dir + "/test_folder") != list->end());
-}
-
 void SpiderTest::ScanSMBDirTestCase() {
   SpiderTest spider;
   CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());

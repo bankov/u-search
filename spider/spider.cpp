@@ -304,66 +304,6 @@ int Spider::DelServer(const std::string &name) {
   return 0;
 }
 
-std::shared_ptr<std::list<std::string> > Spider::GetSMBDirContent(
-    const std::string &dir) {
-  int directory_handler = 0, dirc = 0, dsize = 0;
-  char *dirp = NULL;
-  char buf[BUF_SIZE];
-
-  // Open given smb directory.
-  if (UNLIKELY((directory_handler = smbc_opendir(dir.c_str())) < 0)) {
-    DetectError();
-    MSS_ERROR(("smbc_opendir " + dir).c_str(), error_);
-    return nullptr;
-  }
-
-  std::shared_ptr<std::list<std::string> > content(
-      new(std::nothrow) std::list<std::string>());
-
-  // Getting content of the directory.
-  // smbc_getdents() returns the readen size.
-  // When no more content in the directory smbc_getdents() returns 0.
-  // Use smbc_getdents() while returned value not equal 0.
-  while (true) {
-    dirp = static_cast<char *>(buf);
-
-    // Get dir content which can placed in buf.
-    if (UNLIKELY((dirc = smbc_getdents(directory_handler,
-                                       (struct smbc_dirent *)dirp,
-                                       sizeof(buf)))) < 0) {
-      DetectError();
-      MSS_ERROR("smbc_getdents", error_);
-      return nullptr;
-    }
-
-    // Break if no more content in this directory.
-    if (dirc == 0)
-      break;
-
-    // Put readen content in list
-    while (dirc > 0) {
-      dsize = ((struct smbc_dirent *)dirp)->dirlen;
-
-      // Ignoring "." and ".."
-      if ((strcmp(((struct smbc_dirent *)dirp)->name, ".") != 0) &&
-          (strcmp(((struct smbc_dirent *)dirp)->name, "..") != 0)) {
-        content->push_back(dir+"/"+((struct smbc_dirent *)dirp)->name);
-      }
-
-      dirp += dsize;  // Promote pointer
-      dirc -= dsize;  // Decrease size
-    }
-  }
-
-  // Close given smb directory
-  if (UNLIKELY(smbc_closedir(directory_handler) < 0)) {
-    DetectError();
-    MSS_ERROR(("smbc_closedir " + dir).c_str(), error_);
-  }
-
-  return content;
-}
-
 int Spider::ScanSMBDir(const std::string &dir) {
   int directory_handler = 0, dirc = 0, dsize = 0;
   char *dirp = NULL;

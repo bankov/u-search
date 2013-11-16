@@ -228,16 +228,6 @@ class Spider {
   int ReadServersList();
 
   /**
-   * @brief Get content of the smb directory.
-   *
-   * @param dir URL to the directory. For example "smb://server/share".
-   *
-   * @return list of files in directory.
-   */
-  std::shared_ptr<std::list<std::string> > GetSMBDirContent(
-      const std::string &dir);
-
-  /**
    * @brief AddFileEntryInDataBase Added new file entry in data base.
    *
    * @param file Full path to file in network which should be added in data

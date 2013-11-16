@@ -89,11 +89,6 @@ void SpiderTest::GetSetTestCase() {
   spider.set_servers_file("some_new_file");
   CPPUNIT_ASSERT_MESSAGE("Error in set_servers_file",
                          spider.get_servers_file() == "some_new_file");
-
-  spider.set_error(EACCES);
-  CPPUNIT_ASSERT_MESSAGE("Error in set_error", spider.get_error() == EACCES);
-
-  spider.set_db_name("name");
 }
 
 void SpiderTest::ReadServersListTestCase() {

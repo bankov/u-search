@@ -128,13 +128,6 @@ class Spider {
 
  protected:
   /**
-   * Set a error.
-   *
-   * @param error Error code.
-   */
-  inline void set_error(const int error) { error_ = error; }
-
-  /**
    * Set file with list of servers.
    *
    * @param servers_file Path to config file with servers list.

@@ -54,7 +54,7 @@ void SpiderTest::ConstructorsTestCase() {
   fclose(f);
 
   Spider *spider = new(std::nothrow) Spider();
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider->get_error());
+  CPPUNIT_ASSERT(!spider->get_error());
   DIR *fd = opendir(TMPDIR);
   CPPUNIT_ASSERT_MESSAGE("Error in create temporary directory", fd);
   CPPUNIT_ASSERT(closedir(fd) == 0);
@@ -62,13 +62,9 @@ void SpiderTest::ConstructorsTestCase() {
 
   Spider *spider2 = new(std::nothrow) Spider("../server_test", name_, server_,
                                              user_, password_);
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider2->get_error());
-  CPPUNIT_ASSERT_MESSAGE("Error in servers_file_",
-                         spider2->get_servers_file() == "../server_test");
-  CPPUNIT_ASSERT_MESSAGE("Error in mime_type_attr_",
-                         spider2->get_mime_type_attr().get_name() ==
-                             "mime-type");
-
+  CPPUNIT_ASSERT(!spider2->get_error());
+  CPPUNIT_ASSERT(spider2->get_servers_file() == "../server_test");
+  CPPUNIT_ASSERT(spider2->get_mime_type_attr().get_name() == "mime-type");
   std::list<std::string> test = spider2->get_servers_list();
   CPPUNIT_ASSERT_MESSAGE("test.server not readen",
                          std::find(test.begin(), test.end(),
@@ -85,11 +81,10 @@ void SpiderTest::ConstructorsTestCase() {
 
 void SpiderTest::GetSetTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
 
   spider.set_servers_file("some_file");
-  CPPUNIT_ASSERT_MESSAGE("Error in set_servers_file",
-                         spider.get_servers_file() == "some_file");
+  CPPUNIT_ASSERT(spider.get_servers_file() == "some_file");
 
   spider.set_servers_file("some_new_file");
   CPPUNIT_ASSERT_MESSAGE("Error in set_servers_file",
@@ -106,10 +101,9 @@ void SpiderTest::ReadServersListTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
 
   spider.set_servers_file("../server_test");
-  int result = spider.ReadServersList();
+  CPPUNIT_ASSERT(!spider.ReadServersList());
   std::list<std::string> test = spider.get_servers_list();
 
-  CPPUNIT_ASSERT_MESSAGE("Error in file reading", !result);
   CPPUNIT_ASSERT_MESSAGE("test.server not readen",
                          std::find(test.begin(), test.end(),
                                    "test.server") != test.end());
@@ -120,10 +114,9 @@ void SpiderTest::ReadServersListTestCase() {
   test.clear();
 
   // Try to read servers_file_ again.
-  result = spider.ReadServersList();
+  CPPUNIT_ASSERT(!spider.ReadServersList());
   test = spider.get_servers_list();
 
-  CPPUNIT_ASSERT_MESSAGE("Error in file reading", !result);
   CPPUNIT_ASSERT_MESSAGE("test.server not readen",
                          std::find(test.begin(), test.end(),
                                    "test.server") != test.end());
@@ -138,8 +131,7 @@ void SpiderTest::DumpToFileTestCase() {
   path.push_back("test0");
   path.push_back("test1");
 
-  int result = DumpToFile("test", &path);
-  CPPUNIT_ASSERT_MESSAGE("Error in DumpToFile", !result);
+  CPPUNIT_ASSERT(!DumpToFile("test", &path));
 
   FILE *f = fopen("test", "r");
   CPPUNIT_ASSERT_MESSAGE("Input file not opened", f);
@@ -181,13 +173,10 @@ void SpiderTest::ScanSMBDirTestCase() {
   spider.set_db_server(server_);
   spider.set_db_user(user_);
 
-  int result = spider.ConnectToDataBase();
-  CPPUNIT_ASSERT_MESSAGE("Error in ConnectToDataBase", !result);
+  CPPUNIT_ASSERT(!spider.ConnectToDataBase());
   std::string dir("smb://helena.ilab.mipt.ru/incoming/mipt-smb-search-test");
 
-  result = spider.ScanSMBDir(dir);
-
-  CPPUNIT_ASSERT_MESSAGE("Error in ScanSMBDir", !result);
+  CPPUNIT_ASSERT(!spider.ScanSMBDir(dir));
   std::vector<std::string> files = spider.get_result();
   CPPUNIT_ASSERT_MESSAGE("test_file not found", files[0] == dir + "/test_file");
   CPPUNIT_ASSERT_MESSAGE("test_folder/test_file not found",
@@ -199,22 +188,19 @@ void SpiderTest::ScanSMBDirTestCase() {
 void SpiderTest::NameParserTestCase() {
   std::string str("some_short_string");
   std::string empthy_str;
-  int result = NameParser(&str);
-
-  CPPUNIT_ASSERT_MESSAGE("Error in NameParser", !result);
+  CPPUNIT_ASSERT(!NameParser(&str));
   CPPUNIT_ASSERT_MESSAGE("Wrong parsing", !strcmp(str.c_str(),
                                                   "some short string"));
 
   SpiderTest spider;
   // Try to parse empthy string
-  result = spider.NameParser(&empthy_str);
-  CPPUNIT_ASSERT_MESSAGE("Error in NameParser", result == -1);
-  CPPUNIT_ASSERT_MESSAGE("Error in NameParser", spider.get_error() == EINVAL);
+  CPPUNIT_ASSERT(spider.NameParser(&empthy_str) == -1);
+  CPPUNIT_ASSERT(spider.get_error() == EINVAL);
 }
 
 void SpiderTest::DetectErrorTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
 
   errno = ENOENT;
   spider.DetectError();
@@ -223,16 +209,14 @@ void SpiderTest::DetectErrorTestCase() {
 
 void SpiderTest::AddServerTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
 
   spider.set_servers_file("../server_test");
 
-  int result = spider.ReadServersList();
-  CPPUNIT_ASSERT_MESSAGE("Error in ReadServersList", !result);
+  CPPUNIT_ASSERT(!spider.ReadServersList());
 
   std::string name("some.server");
-  result = spider.AddServer(name);
-  CPPUNIT_ASSERT_MESSAGE("Error in AddServer", !result);
+  CPPUNIT_ASSERT(!spider.AddServer(name));
 
   // Check that new server added in servers_list_.
   std::list<std::string> test = spider.get_servers_list();
@@ -273,15 +257,13 @@ void SpiderTest::AddServerTestCase() {
 
 void SpiderTest::DelServerTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
   spider.set_servers_file("../server_test");
 
-  int result = spider.ReadServersList();
-  CPPUNIT_ASSERT_MESSAGE("Error in ReadServersList", !result);
+  CPPUNIT_ASSERT(!spider.ReadServersList());
 
   std::string name("some.server");
-  result = spider.DelServer(name);
-  CPPUNIT_ASSERT_MESSAGE("Error in DelServer", !result);
+  CPPUNIT_ASSERT(!spider.DelServer(name));
 
   // Check that server deleted from servers_list_.
   std::list<std::string> test = spider.get_servers_list();
@@ -314,14 +296,13 @@ void SpiderTest::DelServerTestCase() {
 
 void SpiderTest::AddFileEntryInDataBaseTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
   spider.set_db_name(name_);
   spider.set_db_server(server_);
   spider.set_db_user(user_);
   spider.set_db_password(password_);
 
-  int result = spider.InitMimeTypeAttr();
-  CPPUNIT_ASSERT_MESSAGE("Error in InitMimeTypeFileAttr", !result);
+  CPPUNIT_ASSERT(!spider.InitMimeTypeAttr());
 
   std::string server("some.server");
   std::string name("file");
@@ -331,8 +312,7 @@ void SpiderTest::AddFileEntryInDataBaseTestCase() {
   struct timeval current_time;
   gettimeofday(&current_time, NULL);
 
-  result = spider.AddFileEntryInDataBase(file, server);
-  CPPUNIT_ASSERT_MESSAGE("Error in AddFileEntryInDataBase", !result);
+  CPPUNIT_ASSERT(!spider.AddFileEntryInDataBase(file, server));
 
   auto db_file = FileEntry::GetByPathOnServer(path, server);
   CPPUNIT_ASSERT_MESSAGE("No such entry in data base", db_file);
@@ -350,18 +330,16 @@ void SpiderTest::AddFileEntryInDataBaseTestCase() {
 
 void SpiderTest::DumpToDataBaseTestCase() {
   SpiderTest spider;
-  CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());
+  CPPUNIT_ASSERT(!spider.get_error());
   spider.set_db_name(name_);
   spider.set_db_server(server_);
   spider.set_db_user(user_);
   spider.set_db_password(password_);
 
-  int result = spider.InitMimeTypeAttr();
-  CPPUNIT_ASSERT_MESSAGE("Error in InitMimeTypeFileAttr", !result);
+  CPPUNIT_ASSERT(!spider.InitMimeTypeAttr());
 
   // Try to dump an empty vector
-  result = spider.DumpToDataBase();
-  CPPUNIT_ASSERT_MESSAGE("Error in DumpToDataBase", !result);
+  CPPUNIT_ASSERT(!spider.DumpToDataBase());
 
   spider.AddSMBFile("smb://some.server/path/to/file1");
   spider.AddSMBFile("smb://some.server/path/to/file2");
@@ -369,8 +347,7 @@ void SpiderTest::DumpToDataBaseTestCase() {
   struct timeval current_time;
   gettimeofday(&current_time, NULL);
 
-  result = spider.DumpToDataBase();
-  CPPUNIT_ASSERT_MESSAGE("Error in DumpToDataBase", !result);
+  CPPUNIT_ASSERT(!spider.DumpToDataBase());
 
   auto db_file = FileEntry::GetByPathOnServer("path/to/file1", "some.server");
   CPPUNIT_ASSERT_MESSAGE("No such entry in data base", db_file);

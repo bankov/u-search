@@ -53,16 +53,6 @@ class AbstractSocket {
   virtual ~AbstractSocket();
 
   /**
-   * @brief The NetworkLayerProtocol enum describes the network layer protocol
-   * values
-   */
-  enum NetworkLayerProtocol {
-    Other = 0,
-    IPv4,
-    IPv6
-  };
-
-  /**
    * @brief The SocketState enum describes the different states in which a
    * socket can be
    */

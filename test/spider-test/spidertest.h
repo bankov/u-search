@@ -51,7 +51,6 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   void AddFileEntryInDataBaseTestCase();
   void DetectMimeTypeTestCase();
   void DumpToDataBaseTestCase();
-  void DeleteDirTestCase();
 
  private:
   CPPUNIT_TEST_SUITE(SpiderTest);
@@ -68,7 +67,6 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   CPPUNIT_TEST(AddFileEntryInDataBaseTestCase);
   CPPUNIT_TEST(DetectMimeTypeTestCase);
   CPPUNIT_TEST(DumpToDataBaseTestCase);
-  CPPUNIT_TEST(DeleteDirTestCase);
   CPPUNIT_TEST_SUITE_END();
 
   std::string name_;

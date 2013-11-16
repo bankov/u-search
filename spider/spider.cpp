@@ -140,7 +140,7 @@ Spider::Spider(const std::string &servers_file, const std::string &db_name,
     // Create attribute if it doesn't exists
     mime_type_attr_ = std::shared_ptr<FileAttribute>(
         new(std::nothrow) FileAttribute("mime-type", FileAttribute::faString));
-    if ((!mime_type_attr_)) {
+    if (!mime_type_attr_) {
       MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
       error_ = ENOMSG;
     }
@@ -152,9 +152,8 @@ Spider::~Spider() {
   if (!DatabaseEntity::Disconnect())
     MSS_DEBUG_MESSAGE(DatabaseEntity::get_db_error().c_str());
 
-  if (DeleteDir(TMPDIR)) {
-    MSS_DEBUG_ERROR("DeleteDir", error_);
-  }
+  if (rmdir(TMPDIR))
+    MSS_ERROR("rmdir", errno);
 
   if (cookie_)
     magic_close(cookie_);
@@ -715,72 +714,6 @@ int Spider::InitMimeTypeAttr()  {
       error_ = ENOMSG;
       return -1;
     }
-  }
-
-  return 0;
-}
-
-int Spider::DeleteDir(const std::string &dir) {
-  // Try to delete directory
-  if (rmdir(dir.c_str())) {
-    if (UNLIKELY(errno != ENOTEMPTY)) {
-      DetectError();
-      MSS_ERROR("rmdir", error_);
-      return -1;
-    }
-  } else {
-    return 0;
-  }
-
-  // Delete all content of the directory if it's noe empty and then delete it
-  DIR *dirfd = opendir(dir.c_str());
-  if (UNLIKELY(!dirfd)) {
-    DetectError();
-    MSS_ERROR("opendir", error_);
-    return -1;
-  }
-
-  struct dirent entry;
-  struct dirent *result = NULL;
-
-  // Remove all content of the tmp directory
-  while (true) {
-    if (UNLIKELY(readdir_r(dirfd, &entry, &result))) {
-      DetectError();
-      MSS_ERROR("readdir_r", error_);
-      break;
-    }
-
-    if (result == NULL) {
-      break;  // No more content in this directory
-    }
-
-    if (!strcmp(entry.d_name, ".") || !strcmp(entry.d_name, "..")) {
-      continue;  // Don't try to delete "." and ".."
-    }
-
-    if (unlink((dir + "/" + entry.d_name).c_str())) {
-      DetectError();
-      MSS_ERROR("unlink", error_);
-    }
-  }
-
-  if (UNLIKELY(closedir(dirfd))) {
-    DetectError();
-    MSS_ERROR("closedir", error_);
-    return -1;
-  }
-
-  // Don't try to remove directory again
-  // if an error occurs during content removing
-  if (LIKELY(error_ == 0)) {
-    if (UNLIKELY(rmdir(dir.c_str()))) {
-      DetectError();
-      MSS_ERROR("rmdir", error_);
-      return -1;
-    }
-  } else {
-    return -1;
   }
 
   return 0;

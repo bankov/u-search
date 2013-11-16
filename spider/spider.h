@@ -339,15 +339,6 @@ class Spider {
    */
   int InitMimeTypeAttr();
 
-  /**
-   * @brief Delete directory and all it's content.
-   *
-   * @param dir Name of the directory.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int DeleteDir(const std::string &dir);
-
  private:
   /**
    * @brief servers_file_ name of the file with list of servers.

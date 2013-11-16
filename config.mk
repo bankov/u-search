@@ -23,7 +23,7 @@ LIBS+=-L$(DESTDIR)/lib
 
 ifeq ($(TEST_COVERAGE),yes)
 CFLAGS+=--coverage -O0 -ftest-coverage
-LIBS:=-lgcov
+LIBS+=-lgcov
 endif  # TEST_COVERAGE
 
 OBJECTS:=$(SOURCES:.cpp=.o)

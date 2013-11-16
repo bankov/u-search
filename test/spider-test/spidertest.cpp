@@ -429,17 +429,3 @@ void SpiderTest::DetectMimeTypeTestCase() {
   CPPUNIT_ASSERT_MESSAGE("PDF file not recognized",
                          !strcmp(type, "application/pdf"));
 }
-
-void SpiderTest::DeleteDirTestCase() {
-  // Create content to delete in tested function
-  CPPUNIT_ASSERT(!mkdir("../test_dir", 00744));
-  CPPUNIT_ASSERT(creat("../test_dir/file1", 00744) != -1);
-  CPPUNIT_ASSERT(creat("../test_dir/file2", 00744) != -1);
-
-  // Delete tested directory with content
-  CPPUNIT_ASSERT_MESSAGE("DeleteDir failed", !DeleteDir("../test_dir"));
-
-  // Test if folder removed
-  CPPUNIT_ASSERT(!opendir("../test_dir"));
-  CPPUNIT_ASSERT(errno == ENOENT);
-}

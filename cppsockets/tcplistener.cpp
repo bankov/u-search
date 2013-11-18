@@ -87,10 +87,6 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
   set_type(Listener);
 }
 
-TCPListener::~TCPListener() {
-  Abort();
-}
-
 DataSocket *TCPListener::AcceptNoWait() {
   // Reading the socket status flags
   int temp = fcntl(get_socket(), F_GETFL, NULL);

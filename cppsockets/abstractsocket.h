@@ -144,22 +144,11 @@ class AbstractSocket {
   inline SocketAddress &get_remote_socket_address() { return remote_address_; }
 
   /**
-   * @brief Abort the socket connection immediately and reset socket,
-   * free resources.
-   */
-  void Abort();
-
-  /**
-   * @brief Close socket, free all attached resources.
+   * @brief Close the socket.
    *
    * @return 0 if success, -1 otherwise.
    */
   int Close();
-
-  /**
-   * @brief Disconect from host.
-   */
-  void Disconnect();
 
  protected:
   /**

@@ -64,11 +64,6 @@ class TCPListener : public AbstractSocket {
   TCPListener(SocketAddress *local_address, int backlog);
 
   /**
-   * Destructor.
-   */
-  ~TCPListener();
-
-  /**
    * @brief AcceptNoWait accept a new connection on a socket. If connection is
    * not set AcceptNoWait() shall not block.
    *

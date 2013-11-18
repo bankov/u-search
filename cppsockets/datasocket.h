@@ -54,11 +54,6 @@ class DataSocket : public AbstractSocket {
              SocketAddress &remote_address, SocketType type);
 
   /**
-   * Destructor.
-   */
-  ~DataSocket();
-
-  /**
    * @brief Flush socket buffer (incoming buffer will be empty after call).
    */
   void Flush();

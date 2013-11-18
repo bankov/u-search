@@ -40,10 +40,6 @@ DataSocket::DataSocket(int socket, SocketAddress &local_address,
     set_state(ConnectedState);
 }
 
-DataSocket::~DataSocket() {
-  Abort();
-}
-
 void DataSocket::Flush() {
   int socket = get_socket();
 

@@ -37,7 +37,7 @@ AbstractSocket::AbstractSocket()
 }
 
 AbstractSocket::~AbstractSocket() {
-  Abort();
+  Close();
   closelog();
 }
 
@@ -73,15 +73,8 @@ void AbstractSocket::UseAddressAndPort(in_addr_t address, in_port_t port) {
   set_local_port(port);
 }
 
-void AbstractSocket::Abort() {
-  if (Close()) {
-    MSS_DEBUG_ERROR("Close", error_);
-  }
-  InitAllVariables();
-}
-
 int AbstractSocket::Close() {
-  if (socket_ > 0) {
+  if (socket_ > 0 && state_ != UnconnectedState) {
     if (close(socket_) == -1) {
       DetectError();
       MSS_DEBUG_ERROR("close", error_);
@@ -90,11 +83,6 @@ int AbstractSocket::Close() {
     state_ = UnconnectedState;
   }
 
-  socket_ = 0;
+  InitAllVariables();
   return 0;
-}
-
-void AbstractSocket::Disconnect() {
-  if (state_ != UnconnectedState)
-    Close();
 }

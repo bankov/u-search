@@ -45,10 +45,6 @@ TCPSocket::TCPSocket(SocketAddress *local_address,
   Connect();
 }
 
-TCPSocket::~TCPSocket() {
-  Abort();
-}
-
 int TCPSocket::CreateSocket() {
   // Creating socket
   int temp = socket(PF_INET, SOCK_STREAM, 0);

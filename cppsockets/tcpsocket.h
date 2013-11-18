@@ -59,11 +59,6 @@ class TCPSocket : public DataSocket {
   TCPSocket(SocketAddress *local_address, SocketAddress *remote_address);
 
   /**
-   * Destructor.
-   */
-  ~TCPSocket();
-
-  /**
    * @brief Connect the socket to host with specified address and port.
    *
    * @param address Address.

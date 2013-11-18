@@ -32,7 +32,7 @@
 #include "abstractsocket.h"
 
 /**
- * @brief Socket which can send and receive data.
+ * Socket which can send and receive data.
  */
 class DataSocket : public AbstractSocket {
  public:
@@ -54,12 +54,12 @@ class DataSocket : public AbstractSocket {
              SocketAddress &remote_address, SocketType type);
 
   /**
-   * @brief Flush socket buffer (incoming buffer will be empty after call).
+   * Flush socket buffer (incoming buffer will be empty after call).
    */
   void Flush();
 
   /**
-   * @brief Read not more than size bytes from socket.
+   * Read not more than size bytes from socket.
    *
    * @param data Buffer.
    * @param size Size of buffer.
@@ -69,7 +69,7 @@ class DataSocket : public AbstractSocket {
   virtual size_t ReadData(void *data, size_t size);
 
   /**
-   * @brief Write size data from data to socket.
+   * Write size data from data to socket.
    *
    * @param data Buffer.
    * @param size Size of buffer.

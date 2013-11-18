@@ -77,11 +77,11 @@ class ServerQueue {
 
    private:
     /**
-     * @brief Server hostname or address.
+     * Server hostname or address.
      */
     std::string name_;
     /**
-     * @brief Last time server was scanned.
+     * Last time server was scanned.
      */
     time_t timestamp_;
   };
@@ -127,17 +127,17 @@ class ServerQueue {
   void AddServer(std::string address);
 
   /**
-   * @brief Get command handling, task query
+   * Get command handling, task query
    */
   std::string CmdGet();
 
   /**
-   * @brief Get command handling, keepalive
+   * Get command handling, keepalive
    */
   void CmdGet(const std::string address);
 
   /**
-   * @brief Release command handling
+   * Release command handling
    */
   void CmdRelease(const std::string address);
 
@@ -151,7 +151,7 @@ class ServerQueue {
   }
 
   /**
-    * @brief Read servers list from servers file.
+    * Read servers list from servers file.
     *
     * @return 0 on success, -1 otherwise.
     */
@@ -160,22 +160,22 @@ class ServerQueue {
  private:
   DISALLOW_COPY_AND_ASSIGN(ServerQueue);
   /**
-   * @brief servers_file_ name of the file with list of servers.
+   * name of the file with list of servers.
    */
   std::string servers_file_;
 
   /**
-   * @brief servers_list_ list of the servers.
+   * list of the servers.
    */
   std::list<ServerQueue::Server> *servers_list_ = NULL;
 
   /**
-   * @brief iterator pointing to the next server
+   * iterator pointing to the next server
    */
   std::list<ServerQueue::Server>::iterator ilast_server_;
 
   /**
-   * @brief Maximum time between keepalive messages
+   * Maximum time between keepalive messages
    */
   const time_t kMaxWait = 60;
 };

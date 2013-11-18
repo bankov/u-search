@@ -38,7 +38,7 @@
 #define MAX_SIZE 2048
 
 /**
- * @brief Class to work with abstract socket.
+ * Class to work with abstract socket.
  */
 class AbstractSocket {
  public:
@@ -53,7 +53,7 @@ class AbstractSocket {
   virtual ~AbstractSocket();
 
   /**
-   * @brief The SocketState enum describes the different states in which a
+   * The SocketState enum describes the different states in which a
    * socket can be
    */
   enum SocketState {
@@ -67,7 +67,7 @@ class AbstractSocket {
   };
 
   /**
-   * @brief The SocketType enum describes transport layer protocol.
+   * The SocketType enum describes transport layer protocol.
    */
   enum SocketType {
     Raw = 0,
@@ -144,7 +144,7 @@ class AbstractSocket {
   inline SocketAddress &get_remote_socket_address() { return remote_address_; }
 
   /**
-   * @brief Close the socket.
+   * Close the socket.
    *
    * @return 0 if success, -1 otherwise.
    */
@@ -259,7 +259,7 @@ class AbstractSocket {
   virtual void UseAddressAndPort(in_addr_t address, in_port_t port);
 
   /**
-   * @brief Puts errno into object's error_.
+   * Puts errno into object's error_.
    */
   inline void DetectError() { error_ = errno; }
 
@@ -267,7 +267,7 @@ class AbstractSocket {
   DISALLOW_COPY_AND_ASSIGN(AbstractSocket);
 
   /**
-   * @brief Init all private variables by NULL, 0, e.t.c.
+   * Init all private variables by NULL, 0, e.t.c.
    */
   void InitAllVariables();
 

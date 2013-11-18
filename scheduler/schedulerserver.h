@@ -34,7 +34,7 @@
 #include "common-inl.h"
 
 /**
- * @brief Scheduler server, used to distribute jobs among spiders.
+ * Scheduler server, used to distribute jobs among spiders.
  */
 class SchedulerServer {
  public:
@@ -63,15 +63,15 @@ class SchedulerServer {
  private:
   DISALLOW_COPY_AND_ASSIGN(SchedulerServer);
   /**
-   * @brief Some queue to get servers from.
+   * Some queue to get servers from.
    */
   ServerQueue queue_;
   /**
-   * @brief socket file descriptor
+   * socket file descriptor
    */
   int sockfd_;
   /**
-   * @brief If error occured.
+   * If error occured.
    */
   bool error_;
 };

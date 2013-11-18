@@ -37,7 +37,7 @@
 #include "socketaddress.h"
 
 /**
- * @brief The TCPListener class allows you to listen TCP connections.
+ * The TCPListener class allows you to listen TCP connections.
  */
 class TCPListener : public AbstractSocket {
  public:
@@ -47,7 +47,7 @@ class TCPListener : public AbstractSocket {
   TCPListener();
 
   /**
-   * @brief TCPListener create an object with specified address and port.
+   * Create an object with specified address and port.
    *
    * @param local_address instance of class SocketAddress which contain
    * address and port to be listened.
@@ -64,7 +64,7 @@ class TCPListener : public AbstractSocket {
   TCPListener(SocketAddress *local_address, int backlog);
 
   /**
-   * @brief AcceptNoWait accept a new connection on a socket. If connection is
+   * Accept a new connection on a socket. If connection is
    * not set AcceptNoWait() shall not block.
    *
    * @return Accepted instance of class DataSocket.
@@ -72,7 +72,7 @@ class TCPListener : public AbstractSocket {
   DataSocket *AcceptNoWait();
 
   /**
-   * @brief Accept accept a new connection on a socket. If connection is not
+   * Accept a new connection on a socket. If connection is not
    * set Accept() shall block until a connection is present.
    *
    * @return Accepted instance of class DataSocket.

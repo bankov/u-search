@@ -27,7 +27,7 @@
 /**
  * @file common-inl.h
  *
- * @brief File containing instruments common for all modules.
+ * File containing instruments common for all modules.
  */
 
 #ifndef COMMON_INL_H_

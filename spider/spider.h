@@ -38,7 +38,7 @@
 #include "data-storage/entities.h"
 
 /**
- * @brief Class to index files located in local network.
+ * Class to index files located in local network.
  */
 class Spider {
  public:
@@ -68,7 +68,7 @@ class Spider {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
-   * @brief Index all servers from servers list.
+   * Index all servers from servers list.
    */
   void Run();
 
@@ -164,7 +164,7 @@ class Spider {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
-   * @brief Dump the result vector in file.
+   * Dump the result vector in file.
    * Each entry should started at new line.
    *
    * @param name Name of the file.
@@ -175,14 +175,14 @@ class Spider {
   int DumpToFile(const std::string &name, std::vector<std::string> *files);
 
   /**
-   * @brief Dump the result vector to data base.
+   * Dump the result vector to data base.
    *
    * @return 0 on success, -1 otherwise.
    */
   int DumpToDataBase();
 
   /**
-   * @brief Add server to the servers_list_ and write it in
+   * Add server to the servers_list_ and write it in
    * servers_file_.
    *
    * @param name Name of the server.
@@ -192,7 +192,7 @@ class Spider {
   int AddServer(const std::string &name);
 
   /**
-   * @brief Delete server from servers_list_ and delete it from
+   * Delete server from servers_list_ and delete it from
    * servers_file_.
    *
    * @param name Name of the server.
@@ -202,7 +202,7 @@ class Spider {
   int DelServer(const std::string &name);
 
   /**
-   * @brief Connect to data base server.
+   * Connect to data base server.
    *
    * @return 0 if success -1 otherwise.
    */
@@ -214,14 +214,14 @@ class Spider {
   }
 
   /**
-    * @brief Read servers list from servers file.
+    * Read servers list from servers file.
     *
     * @return 0 on success, -1 otherwise.
     */
   int ReadServersList();
 
   /**
-   * @brief AddFileEntryInDataBase Added new file entry in data base.
+   * Add new file entry in data base.
    *
    * @param file Full path to file in network which should be added in data
    * base.
@@ -238,7 +238,7 @@ class Spider {
                              const std::string &server);
 
   /**
-   * @brief Search files in smb directory and all subdirectories.
+   * Search files in smb directory and all subdirectories.
    *
    * @param dir name of the smb directory.
    *
@@ -247,7 +247,7 @@ class Spider {
   int ScanSMBDir(const std::string &dir);
 
   /**
-   * @brief Parsing the given name.
+   * Parsing the given name.
    *
    * Now just replace '_' symbols with spaces.
    *
@@ -258,7 +258,7 @@ class Spider {
   int NameParser(std::string *name);
 
   /**
-   * @brief Add a file to result vector and if it full - dump it to data base.
+   * Add a file to result vector and if it full - dump it to data base.
    *
    * @param name Name to be added.
    *
@@ -267,7 +267,7 @@ class Spider {
   void AddSMBFile(const std::string &name);
 
   /**
-   * @brief Detect mime type of given file.
+   * Detect mime type of given file.
    *
    * @param name Name of the file to be observed.
    *
@@ -276,7 +276,7 @@ class Spider {
   const char *DetectMimeType(const std::string &name);
 
   /**
-   * @brief Initilize file attribute to store mime type in data base.
+   * Initilize file attribute to store mime type in data base.
    *
    * @return 0 on success, -1 otherwise.
    */
@@ -284,63 +284,63 @@ class Spider {
 
  private:
   /**
-   * @brief Save last occured error in error_.
+   * Save last occured error in error_.
    */
   inline void DetectError() { error_ = errno; }
 
   /**
-   * @brief servers_file_ name of the file with list of servers.
+   * name of the file with list of servers.
    */
   std::string servers_file_;
 
   /**
-   * @brief servers_list_ list of the servers.
+   * list of the servers.
    */
   std::list<std::string> *servers_list_ = NULL;
 
   /**
-   * @brief result_ Vector with scan results.
+   * result_ Vector with scan results.
    */
   std::vector<std::string> *result_ = NULL;
 
   /**
-   * @brief last Iterator on last valid element in result vector.
+   * last Iterator on last valid element in result vector.
    */
   std::vector<std::string>::iterator last_;
 
   /**
-   * @brief db_name_ Name of the database on the server where data is stored.
+   * Name of the database on the server where data is stored.
    */
   std::string db_name_;
 
   /**
-   * @brief db_server_ Domain name or ip address of server where data is stored.
+   * Domain name or ip address of server where data is stored.
    */
   std::string db_server_;
 
   /**
-   * @brief db_user_ Username with access to connect to the specified data base
+   * Username with access to connect to the specified data base
    * on specified server.
    */
   std::string db_user_;
 
   /**
-   * @brief db_password_ Password for specifed user.
+   * Password for specifed user.
    */
   std::string db_password_;
 
   /**
-   * @brief cookie_ Cookie for magic library to detect mime-types.
+   * Cookie for magic library to detect mime-types.
    */
   magic_t cookie_;
 
   /**
-   * @brief mime_type_attr_ Id of attribute to store mime type in data base.
+   * Id of attribute to store mime type in data base.
    */
   std::shared_ptr<FileAttribute> mime_type_attr_;
 
   /**
-   * @brief error_ Last occured error.
+   * Last occured error.
    */
   int error_;
 

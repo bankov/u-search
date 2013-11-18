@@ -33,7 +33,7 @@
 #include "datasocket.h"
 
 /**
- * @brief Class to work with TCP.
+ * Class to work with TCP.
  */
 class TCPSocket : public DataSocket {
  public:
@@ -59,7 +59,7 @@ class TCPSocket : public DataSocket {
   TCPSocket(SocketAddress *local_address, SocketAddress *remote_address);
 
   /**
-   * @brief Connect the socket to host with specified address and port.
+   * Connect the socket to host with specified address and port.
    *
    * @param address Address.
    * @param port Port.
@@ -69,7 +69,7 @@ class TCPSocket : public DataSocket {
   int ConnectToHost(const in_addr_t address, const in_port_t port);
 
   /**
-   * @brief Connect the socket to host with specified address and port.
+   * Connect the socket to host with specified address and port.
    *
    * @param address Address.
    * @param port Port.
@@ -79,7 +79,7 @@ class TCPSocket : public DataSocket {
   int ConnectToHost(const char *address, const unsigned short port);
 
   /**
-   * @brief Connect the socket to host with specified address and port.
+   * Connect the socket to host with specified address and port.
    *
    * @param address Address.
    * @param port Port.
@@ -89,14 +89,14 @@ class TCPSocket : public DataSocket {
   int ConnectToHost(const std::string *address, const unsigned short port);
 
   /**
-   * @brief Connect the socket to host with specified address and port.
+   * Connect the socket to host with specified address and port.
    *
    * @return 0 on success, -1 otherwise.
    */
   int Connect();
 
   /**
-   * @brief WriteData Write size data from data to socket.
+   * Write no more than size bytes to socket.
    *
    * @param buffer Buffer.
    * @param size Size of buffer.
@@ -107,7 +107,7 @@ class TCPSocket : public DataSocket {
   ssize_t WriteInSocket(void *buffer, const size_t size);
 
   /**
-   * @brief ReadData Read not more than size bytes from socket.
+   * Read not more than size bytes from socket.
    *
    * @param buffer Buffer.
    * @param size Size of buffer.

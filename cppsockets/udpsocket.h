@@ -30,7 +30,7 @@
 #include "datasocket.h"
 
 /**
- * @brief Class to work with UDP.
+ * Class to work with UDP.
  */
 class UDPSocket : public DataSocket {
  public:
@@ -48,21 +48,21 @@ class UDPSocket : public DataSocket {
   explicit UDPSocket(const SocketAddress *listenSocketAddress);
 
   /**
-   * @brief Tell socket allow transmiting broadcast message.
+   * Tell socket allow transmiting broadcast message.
    *
    * @return Return true on success, or false on fail.
    */
   bool AllowBroadcast();
 
   /**
-   * @brief Tell socket reject transmiting broadcast message. Default state.
+   * Tell socket reject transmiting broadcast message. Default state.
    *
    * @return Return true on success, or false on fail.
    */
   bool RejectBroadcast();
 
   /**
-   * @brief Suspend thread which call her until some data for recive
+   * Suspend thread which call her until some data for recive
    * would be avialible.
    *
    * @return Return 0 on success, -1 otherwise.
@@ -70,7 +70,7 @@ class UDPSocket : public DataSocket {
   int WaitDatagram();
 
   /**
-   * @brief Bind socket to address bindAddress, after this socket
+   * Bind socket to address bindAddress, after this socket
    * can read data from network, sended on address and port matches with binded.
    *
    * @param address Address to bind.
@@ -80,7 +80,7 @@ class UDPSocket : public DataSocket {
   int Bind(const SocketAddress &address);
 
   /**
-   * @brief Receive datagram.
+   * Receive datagram.
    *
    * Receive datagram no larger then maxSize storage point on begin at *buf,
    * write source of datagram to address. If datagram message is larger then
@@ -95,7 +95,7 @@ class UDPSocket : public DataSocket {
   ssize_t ReceiveDatagram(void **buf, SocketAddress *address, ssize_t size);
 
   /**
-   * @brief Receive datagram.
+   * Receive datagram.
    *
    * Recieve datagram and storage point on begin of datagram data at buf,
    * write source to address.
@@ -108,7 +108,7 @@ class UDPSocket : public DataSocket {
   ssize_t ReceiveDatagram(void **buf, SocketAddress *address);
 
   /**
-   * @brief Receive datagram and storage begin of them in *buf.
+   * Receive datagram and storage begin of them in *buf.
    *
    * @param buf Buffer.
    * @return Return count of recived bytes or -1.
@@ -116,7 +116,7 @@ class UDPSocket : public DataSocket {
   ssize_t ReceiveDatagram(void **buf);
 
   /**
-   * @brief Receive datagram
+   * Receive datagram.
    *
    * Receive datagram no larger then size storage point on begin at *buf. If
    * datagram message is larger then size, the excess bytes will be discarded.
@@ -128,7 +128,7 @@ class UDPSocket : public DataSocket {
   ssize_t ReceiveDatagram(void **buf, ssize_t size);
 
   /**
-   * @brief Send data of size bytes in datagram to specified address and port.
+   * Send data of size bytes in datagram to specified address and port.
    *
    * @param data Datagram.
    * @param address Destination address.

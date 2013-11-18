@@ -61,11 +61,11 @@ sql_create_5(mss_files, 1, 4,
              mysqlpp::sql_timestamp, last_seen);
 
 /**
- * @brief Class to work with data base.
+ * Class to work with data base.
  */
 class DatabaseEntity {
   public:
-    /** @brief Create an object immediately connected to a database and
+    /** Create an object immediately connected to a database and
       * meet to receive the data and store them in the database. This method
       * must be called with success for properly work of entities objects.
       *
@@ -86,14 +86,14 @@ class DatabaseEntity {
                                 const bool reconnect);
 
     /**
-     * @brief Disconnect from connected server.
+     * Disconnect from connected server.
      *
      * @return true on success, false otherwise.
      */
     static bool Disconnect();
 
     /**
-     * @brief Stores the object in the database.
+     * Stores the object in the database.
      * If this object is new and it still does not correspond to any record in
      * the database, created by appropriate record in the database table.
      *
@@ -102,7 +102,7 @@ class DatabaseEntity {
     virtual bool Commit() = 0;
 
     /**
-     * @brief Removes the record from the database corresponding to the
+     * Removes the record from the database corresponding to the
      * current object.
      *
      * If you try to delete a record that does not exist in the database (for
@@ -114,7 +114,7 @@ class DatabaseEntity {
     virtual bool Delete() = 0;
 
     /**
-     * @brief Start transaction for opened connection, all next quires will
+     * Start transaction for opened connection, all next quires will
      * executed in this transaction, until it would be commited or rollbacked.
      *
      * @return true on success, false otherwise.
@@ -122,21 +122,21 @@ class DatabaseEntity {
     static bool StartTransaction();
 
     /**
-     * @brief Commit opened transaction.
+     * Commit opened transaction.
      *
      * @return True if transaction opened or false on error.
      */
     static bool CommitTransaction();
 
     /**
-     * @brief Rolling back opened transaction.
+     * Rolling back opened transaction.
      *
      * @return true on success, false otherwise.
      */
     static bool RollbackTransaction();
 
     /**
-     * @brief Returns last occures data base error.
+     * Returns last occures data base error.
      *
      * @return error string.
      */
@@ -144,19 +144,19 @@ class DatabaseEntity {
 
   protected:
     /**
-     * @brief Get connection with data base.
+     * Get connection with data base.
      *
      * @return Connection with data base.
      */
     static mysqlpp::TCPConnection & get_db_connection();
 
     /**
-     * @brief Connection with data base.
+     * Connection with data base.
      */
     static mysqlpp::TCPConnection db_connection_;
 
     /**
-     * @brief Last occured error.
+     * Last occured error.
      */
     static std::string db_error_;
 
@@ -172,7 +172,7 @@ class DatabaseEntity {
 };
 
 /**
- * @brief One instance of this class corresponds to a single row in the database
+ * One instance of this class corresponds to a single row in the database
  * mss_attributes table.
  *
  * mss_attributes - it's a table containing a records of the possible file
@@ -184,7 +184,7 @@ class FileAttribute : DatabaseEntity {
     virtual bool Delete() { return false; }
 
     /**
-     * @brief Enum defines avialible type of value for attribute
+     * Enum defines avialible type of value for attribute
      */
     enum AttributeType {
       faString,
@@ -194,7 +194,7 @@ class FileAttribute : DatabaseEntity {
     };
 
     /**
-     * @brief Constructor which create entry with specifed parameters at the
+     * Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
      *
      * @param name name of new attribute.
@@ -204,7 +204,7 @@ class FileAttribute : DatabaseEntity {
     FileAttribute(const std::string &name, const AttributeType type);
 
     /**
-     * @brief Finds the attribyte entry with specifed id.
+     * Finds the attribyte entry with specifed id.
      *
      * @param id id of needed row at the database.
      *
@@ -214,7 +214,7 @@ class FileAttribute : DatabaseEntity {
     static std::shared_ptr<FileAttribute> GetById(const int id);
 
     /**
-     * @brief Find attribute entries with the name exactly matches with
+     * Find attribute entries with the name exactly matches with
      * specified.
      *
      * @param name name to search.
@@ -225,7 +225,7 @@ class FileAttribute : DatabaseEntity {
     static std::shared_ptr<FileAttribute> GetByName(const std::string &name);
 
     /**
-     * @brief Find attribute entries with the name and type exactly matches with
+     * Find attribute entries with the name and type exactly matches with
      * specified.
      *
      * @param name name to search
@@ -284,7 +284,7 @@ class FileAttribute : DatabaseEntity {
 
   protected:
     /**
-     * @brief Convert attributes type to string.
+     * Convert attributes type to string.
      *
      * @param type Type of the attribute as AttributeType.
      *
@@ -293,7 +293,7 @@ class FileAttribute : DatabaseEntity {
     static std::string AttrTypeToString(const AttributeType type);
 
     /**
-     * @brief Convert attributes type to AttributeType.
+     * Convert attributes type to AttributeType.
      *
      * @param string Type of the attribute as string.
      *
@@ -311,7 +311,7 @@ class FileAttribute : DatabaseEntity {
 };
 
 /**
- * @brief One instance of this class corresponds to a single row in the database
+ * One instance of this class corresponds to a single row in the database
  * mss_files table.
  *
  * mss_files - a table containing information about the files found on the net.
@@ -322,7 +322,7 @@ class FileEntry : DatabaseEntity {
     virtual bool Delete() { return false; }
 
     /**
-     * @brief Constructor which create entry with specifed parameters at the
+     * Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
      *
      * @param file_name name of new entry.
@@ -333,7 +333,7 @@ class FileEntry : DatabaseEntity {
               const std::string &server_name);
 
     /**
-     * @brief The function finds the file entry by name. Insensitive comparison.
+     * The function finds the file entry by name. Insensitive comparison.
      *
      * The search is performed on a %quered_name% template. If you request a
      * search for "Vladimir", the result will be records "Vladimir Visotsky",
@@ -357,7 +357,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find file entries with the name exactly matches with specified.
+     * Find file entries with the name exactly matches with specified.
      *
      * @param name name to search.
      * @param min_rownum Limits founded rows from the top, rows from 1 to
@@ -373,7 +373,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find the entries relevant to file located on specified server.
+     * Find the entries relevant to file located on specified server.
      *
      * @param server_name name or ip address of server from which files should
      * be found
@@ -390,7 +390,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find record which path matches with specifed.
+     * Find record which path matches with specifed.
      *
      * @param path path of aimed entry.
      * @param min_rownum Limits founded rows from the top, rows from 1 to
@@ -406,7 +406,7 @@ class FileEntry : DatabaseEntity {
         const int max_rownum = 0);
 
     /**
-     * @brief Find row with specifed server and path
+     * Find row with specifed server and path
      *
      * @param path path to file on server
      * @param server server where file is located
@@ -418,7 +418,7 @@ class FileEntry : DatabaseEntity {
         const std::string &path, const std::string &server);
 
     /**
-     * @brief Find the file entry with specifed id.
+     * Find the file entry with specifed id.
      *
      * @param id id of needed row at the database.
      *
@@ -520,7 +520,7 @@ class FileEntry : DatabaseEntity {
 };
 
 /**
- * @brief One instance of this class corresponds to a single row in the database
+ * One instance of this class corresponds to a single row in the database
  * mss_parameters table.
  *
  * mss_parameters
@@ -530,7 +530,7 @@ class FileParameter : DatabaseEntity {
     virtual bool Commit() { return false; }
     virtual bool Delete() { return false; }
     /**
-     * @brief Constructor which create entry with specifed parameters at the
+     * Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
      *
      * @param file file that corresponds to the parameter.
@@ -544,7 +544,7 @@ class FileParameter : DatabaseEntity {
                   const bool bool_value);
 
     /**
-     * @brief Constructor which create entry with specifed parameters at the
+     * Constructor which create entry with specifed parameters at the
      * database and return object corresponding to this entry.
      *
      * @param file_id od of file that corresponds to the parameter.
@@ -558,7 +558,7 @@ class FileParameter : DatabaseEntity {
                   const bool bool_value);
 
     /**
-     * @brief Find entry by file and attribute.
+     * Find entry by file and attribute.
      *
      * @param file_id id of corresponding file to aimed parameter.
      * @param attr_id id of corresponding attribute to aimed parameter.
@@ -570,7 +570,7 @@ class FileParameter : DatabaseEntity {
         GetByFileAndAttribute(const int file_id, const int attr_id);
 
     /**
-     * @brief Find entry by file and attribute.
+     * Find entry by file and attribute.
      *
      * @param file file object corresponding to aimed parameter.
      * @param attribute attribute object corresponding to aimed parameter.
@@ -583,7 +583,7 @@ class FileParameter : DatabaseEntity {
                               const FileAttribute &attribute);
 
     /**
-     * @brief Method returns all parameters associated with specifed file.
+     * Method returns all parameters associated with specifed file.
      *
      * @param file_id id of specifed file.
      *
@@ -594,7 +594,7 @@ class FileParameter : DatabaseEntity {
         GetByFile(const int file_id);
 
     /**
-     * @brief Method returns all parameters associated with specifed file.
+     * Method returns all parameters associated with specifed file.
      *
      * @param file object corresponding to specifed file.
      *
@@ -605,7 +605,7 @@ class FileParameter : DatabaseEntity {
         GetByFile(const FileEntry &file);
 
     /**
-     * @brief Method search entries with specifed string value.
+     * Method search entries with specifed string value.
      *
      * @param str_value String value that should have records.
      * @param attr_id Optionally we can search only by specifed attribute.
@@ -617,7 +617,7 @@ class FileParameter : DatabaseEntity {
         GetByValue(const std::string &str_value, const int attr_id = -1);
 
     /**
-     * @brief Method search entries with specifed numerical value.
+     * Method search entries with specifed numerical value.
      *
      * @param num_value value that should have records.
      * @param attr_id optionally we can search only by specifed attribute.
@@ -629,7 +629,7 @@ class FileParameter : DatabaseEntity {
         GetByValue(const int num_value, const int attr_id = -1);
 
     /**
-     * @brief Method search entries with specifed boolean value.
+     * Method search entries with specifed boolean value.
      *
      * @param bool_value value that should have records.
      * @param attr_id optionally we can search only by specifed attribute.

@@ -40,7 +40,7 @@
 #include "common-inl.h"
 
 /**
- * @brief The class allows you to store and work with IPv4 addresses.
+ * The class allows you to store and work with IPv4 addresses.
  *
  * The class allows you to store and work with full IPv4 addresses. Class allows
  * you to store and retrieve IPv4 address (IP address and port) formats: string,
@@ -151,7 +151,7 @@ class SocketAddress {
   inline int get_error() { return error_; }
 
   /**
-   * @brief Convert saved address in array of characters.
+   * Convert saved address in array of characters.
    *
    * Function convert saved address to human readable char array and return
    * it. After the call internal format of the data in the object does not
@@ -162,7 +162,7 @@ class SocketAddress {
   char *GetAddressAsChar();
 
   /**
-   * @brief Convert saved address in std::string.
+   * Convert saved address in std::string.
    *
    * Function convert saved address to std::string human readable format and
    * return it. After the call internal format of the data in the object does
@@ -172,7 +172,8 @@ class SocketAddress {
    */
   std::string GetAddressAsString();
 
-  /** @brief Convert saved address to network byte order.
+  /**
+   * Convert saved address to network byte order.
    *
    * Function convert saved address to network byte order and
    * return it. After the call internal format of the data in the object does
@@ -183,7 +184,7 @@ class SocketAddress {
   inline in_addr_t GetAddressAsNet() { return address_; }
 
   /**
-   * @brief Convert saved address to network byte order.
+   * Convert saved address to network byte order.
    *
    * Function convert saved address to host byte order and
    * return it. After the call internal format of the data in the object does
@@ -194,7 +195,7 @@ class SocketAddress {
   inline int GetAddressAsHost() { return ntohl(address_); }
 
   /**
-   * @brief Convert saved port to network byte order.
+   * Convert saved port to network byte order.
    *
    * Function convert saved port to network byte order and
    * return it. After the call internal format of the data in the object does
@@ -205,7 +206,7 @@ class SocketAddress {
   inline in_port_t GetPortAsNet() { return port_; }
 
   /**
-   * @brief Convert saved port to host byte order.
+   * Convert saved port to host byte order.
    *
    * Function convert saved port to network byte order and
    * return it. After the call internal format of the data in the object does

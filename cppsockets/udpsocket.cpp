@@ -26,7 +26,9 @@
 
 #include "udpsocket.h"
 
-UDPSocket::UDPSocket() : DataSocket() {}
+UDPSocket::UDPSocket() : DataSocket() {
+  set_type(UDP);
+}
 
 
 UDPSocket::UDPSocket(const SocketAddress *listenSocketAddress) : DataSocket() {

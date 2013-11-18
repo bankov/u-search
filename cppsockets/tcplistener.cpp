@@ -28,6 +28,7 @@
 
 TCPListener::TCPListener() : AbstractSocket() {
   backlog_ = 0;
+  set_type(Listener);
 }
 
 TCPListener::TCPListener(SocketAddress *local_address, int backlog)
@@ -84,7 +85,6 @@ TCPListener::TCPListener(SocketAddress *local_address, int backlog)
   set_local_port(serverAddress.sin_port);
   set_socket(temp);
   set_state(ListeningState);
-  set_type(Listener);
 }
 
 DataSocket *TCPListener::AcceptNoWait() {

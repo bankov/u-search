@@ -49,11 +49,6 @@
 class SocketAddress {
  public:
   /**
-   * Standart constructor, create empty object.
-  */
-  SocketAddress();
-
-  /**
    * Copy constructor. Create the same object as sock.
    *
    * @param address a copy of the object that want to be.
@@ -88,7 +83,7 @@ class SocketAddress {
    * @param port Port, in the network byte order, to be
    * stored in the new object.
    */
-  SocketAddress(const in_addr_t address, const in_port_t port = 0);
+  SocketAddress(const in_addr_t address = 0, const in_port_t port = 0);
 
   /**
    * Create object with specified address and empty port.
@@ -99,22 +94,6 @@ class SocketAddress {
    * stored in the new object.
    */
   SocketAddress(const int address, const short port = 0);
-
-  /**
-   * Create object with specified port and empty address.
-   *
-   * @param port Port, in the network byte order, to be
-   * stored in the new object.
-   */
-  explicit SocketAddress(const in_port_t port);
-
-  /**
-   * Create object with specified port and empty address.
-   *
-   * @param port Port, in the host byte order, to be
-   * stored in the new object.
-   */
-  explicit SocketAddress(const short port);
 
   /**
    * Set addess.
@@ -268,6 +247,7 @@ class SocketAddress {
    */
   friend std::ostream& operator<<(std::ostream& __cout, SocketAddress *obj);
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
+
  private:
   inline void DetectError() { error_ = errno; }
 

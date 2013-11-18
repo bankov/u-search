@@ -217,16 +217,6 @@ void SocketAddressTest::ConstructorsTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Error in port_", addr9.GetPortAsNet() == 0x5915);
   CPPUNIT_ASSERT_MESSAGE("Error in address_",
                          addr9.GetAddressAsNet() == 0x0100007f);
-
-  SocketAddress addr10((in_port_t)0x5915);
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", addr10.get_error() == 0);
-  CPPUNIT_ASSERT_MESSAGE("Error in port_", addr10.GetPortAsNet() == 0x5915);
-  CPPUNIT_ASSERT_MESSAGE("Error in address_", addr10.GetAddressAsNet() == 0);
-
-  SocketAddress addr11((short)0x1559);
-  CPPUNIT_ASSERT_MESSAGE("Error in error_", addr11.get_error() == 0);
-  CPPUNIT_ASSERT_MESSAGE("Error in port_", addr11.GetPortAsNet() == 0x5915);
-  CPPUNIT_ASSERT_MESSAGE("Error in address_", addr11.GetAddressAsNet() == 0);
 }
 
 void SocketAddressTest::GetSetTestCase() {

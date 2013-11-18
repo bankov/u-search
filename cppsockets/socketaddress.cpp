@@ -26,8 +26,6 @@
 
 #include "socketaddress.h"
 
-SocketAddress::SocketAddress() : error_(0), address_(0), port_(0) {}
-
 SocketAddress::SocketAddress(const SocketAddress &address)
     : error_(0), address_(address.address_), port_(address.port_) {}
 
@@ -48,12 +46,6 @@ SocketAddress::SocketAddress(const in_addr_t address, const in_port_t port)
 
 SocketAddress::SocketAddress(const int address, const short port)
     : error_(0), address_(htonl(address)), port_(htons(port)) {}
-
-SocketAddress::SocketAddress(const in_port_t port)
-    : error_(0), address_(0), port_(port) {}
-
-SocketAddress::SocketAddress(const short port)
-    : error_(0), address_(0), port_(htons(port)) {}
 
 int SocketAddress::set_address(const char *address) {
   if (UNLIKELY(address == NULL)) {

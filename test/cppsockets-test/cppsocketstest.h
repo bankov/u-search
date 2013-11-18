@@ -49,12 +49,10 @@ class AbstractSocketTest : public CppUnit::TestFixture, public AbstractSocket {
  public:
   void ConstructorsTestCase();
   void GetSetTestCase();
-  void UseAddressAndPortTestCase();
  private:
   CPPUNIT_TEST_SUITE(AbstractSocketTest);
   CPPUNIT_TEST(ConstructorsTestCase);
   CPPUNIT_TEST(GetSetTestCase);
-  CPPUNIT_TEST(UseAddressAndPortTestCase);
   CPPUNIT_TEST_SUITE_END();
 };
 

@@ -251,14 +251,6 @@ class AbstractSocket {
   virtual void set_remote_address(SocketAddress *address);
 
   /**
-   * Set port and address.
-   *
-   * @param address Address.
-   * @param port Port.
-   */
-  virtual void UseAddressAndPort(in_addr_t address, in_port_t port);
-
-  /**
    * Puts errno into object's error_.
    */
   inline void DetectError() { error_ = errno; }

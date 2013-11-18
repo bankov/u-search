@@ -68,11 +68,6 @@ void AbstractSocket::set_remote_address(SocketAddress *address) {
   remote_address_ = *address;
 }
 
-void AbstractSocket::UseAddressAndPort(in_addr_t address, in_port_t port) {
-  set_local_address(address);
-  set_local_port(port);
-}
-
 int AbstractSocket::Close() {
   if (socket_ > 0 && state_ != UnconnectedState) {
     if (close(socket_) == -1) {

@@ -36,6 +36,7 @@
 #include <vector>
 #include <memory>
 
+#include "config.h"
 #include "common-inl.h"
 #include "spider.h"
 

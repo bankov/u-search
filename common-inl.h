@@ -201,12 +201,6 @@ template <class mType> mType *CopyToHeap(const mType &obj) {
   return new mType(obj);
 }
 
-/**
- * @def DATABASE_CONFIG
- * A macro to define path to the database config file.
- */
-#define DATABASE_CONFIG "/etc/u-search/database.dat"
-
 #define LIKELY(x)   __builtin_expect(!!(x), 1)
 #define UNLIKELY(x) __builtin_expect(!!(x), 0)
 

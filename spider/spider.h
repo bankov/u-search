@@ -37,18 +37,6 @@
 #include "common-inl.h"
 #include "data-storage/entities.h"
 
-// Size of buffer which used to get smb directory entries.
-#define BUF_SIZE 512
-
-// Maximum size of vector with scan results.
-#define VECTOR_SIZE 2048
-
-// Name of directory to store headrs of files.
-#define TMPDIR "/tmp/u-search"
-
-// The size of file header to copy in TMPDIR to detect mime type of file.
-#define HEADERSIZE 1024
-
 /**
  * @brief Class to index files located in local network.
  */

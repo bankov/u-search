@@ -31,6 +31,7 @@
 
 #include <algorithm>
 
+#include "config.h"
 #include "common-inl.h"
 #include "spidertest.h"
 

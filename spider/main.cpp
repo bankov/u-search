@@ -27,6 +27,7 @@
 #include <string>
 
 #include "common-inl.h"
+#include "config.h"
 #include "spider.h"
 
 int main() {

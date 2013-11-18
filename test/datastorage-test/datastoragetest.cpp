@@ -24,6 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "config.h"
 #include "common-inl.h"
 #include "datastoragetest.h"
 

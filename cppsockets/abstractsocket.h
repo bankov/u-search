@@ -251,11 +251,6 @@ class AbstractSocket {
   virtual void set_remote_address(SocketAddress *address);
 
   /**
-   * @brief Init all private variables by NULL, 0, e.t.c.
-   */
-  void InitAllVariables();
-
-  /**
    * Set port and address.
    *
    * @param address Address.
@@ -270,6 +265,11 @@ class AbstractSocket {
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AbstractSocket);
+
+  /**
+   * @brief Init all private variables by NULL, 0, e.t.c.
+   */
+  void InitAllVariables();
 
   /**
    * File descruptor associated with socket.

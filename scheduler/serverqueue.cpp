@@ -34,9 +34,7 @@
 #include "scheduler/serverqueue.h"
 #include "common-inl.h"
 
-ServerQueue::ServerQueue() : servers_file_() {
-  servers_list_ = NULL;
-
+ServerQueue::ServerQueue() {
   servers_list_ = new(std::nothrow) std::list<Server>();
   if (UNLIKELY(servers_list_ == NULL)) {
     MSS_FATAL("servers_list_", ENOMEM);
@@ -47,15 +45,8 @@ ServerQueue::ServerQueue() : servers_file_() {
 }
 
 ServerQueue::ServerQueue(const std::string &servers_file) : ServerQueue() {
-  servers_file_ = servers_file;
-
-  // Read servers_file_.
-  if (UNLIKELY(ReadServersList())) {
+  if (ReadServersList(servers_file))
     MSS_DEBUG_ERROR("ReadServersList", errno);
-    delete servers_list_;
-    servers_list_ = NULL;
-    return;
-  }
 }
 
 ServerQueue::~ServerQueue() {
@@ -79,33 +70,30 @@ void ServerQueue::AddServer(std::string server_name) {
   ilast_server_ = servers_list_->insert(ilast_server_, server_name);
 }
 
-int ServerQueue::ReadServersList() {
-  if (!servers_list_->empty()) {
-    return 0;  // Servers file was read earlier.
-  }
-
-  FILE *fin = fopen(servers_file_.c_str(), "r");
+int ServerQueue::ReadServersList(std::string servers_file) {
+  FILE *fin = fopen(servers_file.c_str(), "r");
   if (UNLIKELY(fin == NULL)) {
-    MSS_ERROR(("fopen: " + servers_file_).c_str(), errno);
+    MSS_ERROR(("fopen: " + servers_file).c_str(), errno);
     return -1;
   }
 
   std::string temp;
   char *buf = NULL;
   size_t size = 0;
-  // Read lines from servers_file_ and put names servers names in servers_list_
+  // Read lines from servers_file and put names servers names in servers_list_
   while (getline(&buf, &size, fin) != -1) {
     temp.insert(0, buf);
     // Deleting '\n' symbols from the end of the string
     temp.erase(temp.end() - 1);
     if (UNLIKELY(temp.empty())) {
-      continue;  // Do nothing if find an empthy string.
+      continue;  // Do nothing if find an empty string.
     }
     AddServer(temp);
     temp.clear();
   }
   free(buf);
   fclose(fin);
+
   return 0;
 }
 

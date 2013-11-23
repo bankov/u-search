@@ -115,13 +115,6 @@ class ServerQueue {
   }
 
   /**
-   * Get name of the file with list of servers.
-   *
-   * @return Name of config file with servers list.
-   */
-  std::string get_servers_file() const { return servers_file_; }
-
-  /**
    * Add a server to the list
    */
   void AddServer(std::string address);
@@ -142,27 +135,14 @@ class ServerQueue {
   void CmdRelease(const std::string address);
 
   /**
-   * Set file with list of servers.
-   *
-   * @param servers_file Path to config file with servers list.
-   */
-  void set_servers_file(const std::string &servers_file) {
-    servers_file_ = servers_file;
-  }
-
-  /**
     * Read servers list from servers file.
     *
     * @return 0 on success, -1 otherwise.
     */
-  int ReadServersList();
+  int ReadServersList(std::string servers_file);
 
  private:
   DISALLOW_COPY_AND_ASSIGN(ServerQueue);
-  /**
-   * name of the file with list of servers.
-   */
-  std::string servers_file_;
 
   /**
    * list of the servers.

@@ -1,8 +1,8 @@
 # -*- makefile -*-
 TARGET:=spider
 
-HEADERS=spider.h
-SOURCES=spider.cpp main.cpp
+HEADERS=spider.h servermanager.h
+SOURCES=spider.cpp servermanager.cpp main.cpp
 
 include ../config.mk
 

@@ -39,13 +39,9 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   SpiderTest();
   void setUp();
   void ConstructorsTestCase();
-  void GetSetTestCase();
-  void ReadServersListTestCase();
   void DumpToFileTestCase();
   void ScanSMBDirTestCase();
   void NameParserTestCase();
-  void AddServerTestCase();
-  void DelServerTestCase();
   void AddFileEntryInDataBaseTestCase();
   void DetectMimeTypeTestCase();
   void DumpToDataBaseTestCase();
@@ -53,13 +49,9 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
  private:
   CPPUNIT_TEST_SUITE(SpiderTest);
   CPPUNIT_TEST(ConstructorsTestCase);
-  CPPUNIT_TEST(GetSetTestCase);
-  CPPUNIT_TEST(ReadServersListTestCase);
   CPPUNIT_TEST(DumpToFileTestCase);
   CPPUNIT_TEST(ScanSMBDirTestCase);
   CPPUNIT_TEST(NameParserTestCase);
-  CPPUNIT_TEST(AddServerTestCase);
-  CPPUNIT_TEST(DelServerTestCase);
   CPPUNIT_TEST(AddFileEntryInDataBaseTestCase);
   CPPUNIT_TEST(DetectMimeTypeTestCase);
   CPPUNIT_TEST(DumpToDataBaseTestCase);

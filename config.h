@@ -9,6 +9,14 @@
 // Scheduler server port.
 #define SCHEDULERPORT "2050"
 
+// Scheduler hostname for spider
+#define SCHEDULERHOST "localhost"
+
+// Client can choose any source port.
+// It is better not to use SCHEDULERPORT so scheduler and spider can
+// run on the same machine.
+#define SPIDERPORT "2051"
+
 /**
  * @def DATABASE_CONFIG
  * A macro to define path to the database config file.

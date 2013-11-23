@@ -22,28 +22,48 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
+
+#ifndef SPIDER_SERVERMANAGER_H_
+#define SPIDER_SERVERMANAGER_H_
 
 #include <string>
+#include <thread>
+#include <mutex>
 
 #include "common-inl.h"
-#include "config.h"
-#include "spider.h"
 
-int main() {
-  // Read config from database
-  std::string name, server, user, password;
-  if (UNLIKELY(read_database_config(&name, &server, &user, &password,
-                                    "../" DATABASE_CONFIG))) {
-    MSS_DEBUG_MESSAGE("failed");
-  }
+class ServerManager {
+ public:
+  /**
+   * Constructor which inits all variables and connects to scheduler server.
+   *
+   * @param server Server address.
+   */
+  explicit ServerManager(const std::string &server);
 
-  Spider spider(SCHEDULERHOST, name, server, user, password);
-  if (spider.get_error()) {
-    MSS_DEBUG_ERROR("Spider", spider.get_error());
-    return 1;
-  }
+  /**
+   * Destructor.
+   */
+  ~ServerManager();
 
-  spider.Run();
-  return 0;
-}
+  /**
+   * @brief Get server to be indexed.
+   */
+  std::string GetServer();
+
+  /**
+   * @brief Release server when indexing is finished.
+   */
+  void ReleaseServer();
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(ServerManager);
+  std::mutex keepalivemutex_;
+  int keepalive_;
+  std::thread keepalivethread_;
+  std::string smbserver_;
+  int sockfd_;
+};
+
+#endif  // SPIDER_SERVERMANAGER_H_

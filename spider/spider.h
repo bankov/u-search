@@ -35,6 +35,7 @@
 #include <memory>
 
 #include "common-inl.h"
+#include "spider/servermanager.h"
 #include "data-storage/entities.h"
 
 /**
@@ -47,17 +48,25 @@ class Spider {
    */
   Spider();
   /**
+   * Constructor which inits all variables and connects to scheduler server.
+   *
+   * @param server Scheduler server address.
+   */
+  explicit Spider(const std::string &server);
+  /**
    * Constructor which create an object, init all variables, connect to
    * data base, create a mimt type attribute if it doesn't exists.
    *
-   * @param servers_file File with list of servers.
+   * @param server Scheduler server address.
    * @param db_name Name of the data base.
    * @param db_server Name of the data base server.
    * @param db_user Name of the data base user.
    * @param db_password Password to data base.
    */
-  Spider(const std::string &servers_file, const std::string &db_name,
-         const std::string &db_server, const std::string &db_user,
+  Spider(const std::string &server,
+         const std::string &db_name,
+         const std::string &db_server,
+         const std::string &db_user,
          const std::string &db_password);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -81,15 +90,6 @@ class Spider {
   inline int get_error() const { return error_; }
 
   /**
-   * Get list of servers to be indexed.
-   *
-   * @return List of servers to be indexed.
-   */
-  inline std::list<std::string> get_servers_list() const {
-    return *servers_list_;
-  }
-
-  /**
    * Get set of indexed files which still don't dumped in data base.
    *
    * @return Get vector of indexed files.
@@ -104,13 +104,6 @@ class Spider {
   inline std::vector<std::string>::iterator get_last() const { return last_; }
 
   /**
-   * Get name of the files with list of servers.
-   *
-   * @return Name of config file with servers list.
-   */
-  inline std::string get_servers_file() const { return servers_file_; }
-
-  /**
    * Get a mime type attribute.
    *
    * @return Mime type attribute.
@@ -119,15 +112,6 @@ class Spider {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
  protected:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  /**
-   * Set file with list of servers.
-   *
-   * @param servers_file Path to config file with servers list.
-   */
-  inline void set_servers_file(const std::string &servers_file) {
-    servers_file_ = servers_file;
-  }
-
   /**
    * Set the name of the data base.
    *
@@ -171,26 +155,6 @@ class Spider {
   int DumpToDataBase();
 
   /**
-   * Add server to the servers_list_ and write it in
-   * servers_file_.
-   *
-   * @param name Name of the server.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int AddServer(const std::string &name);
-
-  /**
-   * Delete server from servers_list_ and delete it from
-   * servers_file_.
-   *
-   * @param name Name of the server.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int DelServer(const std::string &name);
-
-  /**
    * Connect to data base server.
    *
    * @return 0 if success -1 otherwise.
@@ -201,13 +165,6 @@ class Spider {
       return -1;
     return 0;
   }
-
-  /**
-    * Read servers list from servers file.
-    *
-    * @return 0 on success, -1 otherwise.
-    */
-  int ReadServersList();
 
   /**
    * Add new file entry in data base.
@@ -278,17 +235,7 @@ class Spider {
   inline void DetectError() { error_ = errno; }
 
   /**
-   * name of the file with list of servers.
-   */
-  std::string servers_file_;
-
-  /**
-   * list of the servers.
-   */
-  std::list<std::string> *servers_list_ = NULL;
-
-  /**
-   * result_ Vector with scan results.
+   * Vector with scan results.
    */
   std::vector<std::string> *result_ = NULL;
 
@@ -327,6 +274,11 @@ class Spider {
    * Id of attribute to store mime type in data base.
    */
   std::shared_ptr<FileAttribute> mime_type_attr_;
+
+  /**
+   * Server manager which is used to obtain server names to index
+   */
+  ServerManager *pserver_manager_;
 
   /**
    * Last occured error.

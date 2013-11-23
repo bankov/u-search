@@ -1,4 +1,4 @@
 TEMPLATE = lib
-SOURCES += spider.cpp main.cpp
-HEADERS += spider.h
+SOURCES += spider.cpp main.cpp servermanager.cpp
+HEADERS += spider.h servermanager.h
 OTHER_FILES += Makefile

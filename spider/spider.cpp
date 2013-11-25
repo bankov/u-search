@@ -211,29 +211,6 @@ int Spider::ReadServersList() {
   return 0;
 }
 
-int Spider::DumpToFile(const std::string &name,
-                       std::vector<std::string> *files) {
-  FILE *fout;
-  if (UNLIKELY((fout = fopen(name.c_str(), "w")) == NULL)) {
-    DetectError();
-    MSS_ERROR("fopen", error_);
-    return -1;
-  }
-
-  for (std::vector<std::string>::iterator itr = files->begin();
-       itr != files->end(); ++itr) {
-    if (UNLIKELY(fprintf(fout, "%s\n", itr->c_str()) < 0)) {
-      DetectError();
-      MSS_ERROR("fprintf", error_);
-      fclose(fout);
-      return -1;
-    }
-  }
-
-  fclose(fout);
-  return 0;
-}
-
 void Spider::Run() {
   for (std::list<std::string>::iterator itr = servers_list_->begin();
        itr != servers_list_->end(); ++itr) {

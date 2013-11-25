@@ -122,31 +122,6 @@ void SpiderTest::ReadServersListTestCase() {
   CPPUNIT_ASSERT_MESSAGE("Wrong number of servers", test.size() == 2);
 }
 
-void SpiderTest::DumpToFileTestCase() {
-  std::vector<std::string> path;
-  path.push_back("test0");
-  path.push_back("test1");
-
-  CPPUNIT_ASSERT(!DumpToFile("test", &path));
-
-  FILE *f = fopen("test", "r");
-  CPPUNIT_ASSERT_MESSAGE("Input file not opened", f);
-
-  char *buf = NULL;
-  size_t size = 0;
-  while (getline(&buf, &size, f) != -1) {
-    std::string test(buf);
-    test.erase(test.end()-1);  // Delete '\n' symbol
-    CPPUNIT_ASSERT_MESSAGE("Error in comparing dumped file with search resault",
-                           std::find(path.begin(), path.end(),
-                                     test) != path.end());
-  }
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of files", path.size() == 2);
-
-  fclose(f);
-  free(buf);
-}
-
 void SpiderTest::ScanSMBDirTestCase() {
   SpiderTest spider;
   CPPUNIT_ASSERT_MESSAGE("Error in constructor.", !spider.get_error());

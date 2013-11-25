@@ -164,17 +164,6 @@ class Spider {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
-   * Dump the result vector in file.
-   * Each entry should started at new line.
-   *
-   * @param name Name of the file.
-   * @param files Vector with scan results to be dumped to data base.
-   *
-   * @return 0 on success, -1 otherwise.
-   */
-  int DumpToFile(const std::string &name, std::vector<std::string> *files);
-
-  /**
    * Dump the result vector to data base.
    *
    * @return 0 on success, -1 otherwise.

@@ -41,7 +41,7 @@ ServerManager::ServerManager(const std::string &server) : keepalive_(0) {
    */
   struct addrinfo hints;
   memset(&hints, 0, sizeof hints);
-  hints.ai_family = AF_UNSPEC;
+  hints.ai_family = FAMILY;
   hints.ai_socktype = SOCK_DGRAM;
 
   struct addrinfo *servinfo;

@@ -63,11 +63,18 @@ class Spider {
    * @param db_user Name of the data base user.
    * @param db_password Password to data base.
    */
-  Spider(const std::string &server,
+  Spider(const std::string &config,
          const std::string &db_name,
          const std::string &db_server,
          const std::string &db_user,
          const std::string &db_password);
+
+  /**
+   * Read configuration file.
+   *
+   * @param config Configuration file name.
+   */
+  int ReadConfig(const std::string &config);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**
@@ -274,6 +281,11 @@ class Spider {
    * Id of attribute to store mime type in data base.
    */
   std::shared_ptr<FileAttribute> mime_type_attr_;
+
+  /*
+   * Scheduler hostname.
+   */
+  std::string scheduler_;
 
   /**
    * Server manager which is used to obtain server names to index

@@ -9,8 +9,8 @@
 // Scheduler server port.
 #define SCHEDULERPORT "2050"
 
-// Scheduler hostname for spider
-#define SCHEDULERHOST "localhost"
+// Spider configuration file.
+#define SPIDER_CONFIG "/etc/u-search/spider.dat"
 
 // Client can choose any source port.
 // It is better not to use SCHEDULERPORT so scheduler and spider can

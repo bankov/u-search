@@ -101,12 +101,41 @@ Spider::Spider()
   error_ = 0;
 }
 
-Spider::Spider(const std::string &server,
+int Spider::ReadConfig(const std::string &config) {
+  FILE *fin = fopen(config.c_str(), "r");
+
+  if (!fin) {
+    DetectError();
+    MSS_FATAL("fopen", errno);
+    return -1;
+  }
+
+  char *buf = NULL;
+  size_t size = 0;
+
+  if (getline(&buf, &size, fin) < 0) {
+    DetectError();
+    MSS_FATAL("getline", errno);
+    return -1;
+  }
+
+  scheduler_.assign(buf);
+  scheduler_.erase(scheduler_.end() - 1);
+
+  free(buf);
+  fclose(fin);
+  return 0;
+}
+
+Spider::Spider(const std::string &config,
                const std::string &db_name,
                const std::string &db_server,
                const std::string &db_user,
                const std::string &db_password) {
-  pserver_manager_ = new(std::nothrow) ServerManager(server);
+  if (ReadConfig(config) == -1)
+    return;
+
+  pserver_manager_ = new(std::nothrow) ServerManager(scheduler_);
   if (UNLIKELY(pserver_manager_ == NULL)) {
     error_ = ENOMEM;
     MSS_FATAL("pserver_manager_", error_);

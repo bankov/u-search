@@ -34,11 +34,13 @@
 
 #include "spider/spider.h"
 
+#define SPIDERTESTTEMPLATE "/tmp/u-search.XXXXXXXXXX"
+
 class SpiderTest : public CppUnit::TestFixture, public Spider {
  public:
   SpiderTest();
-  void setUp();
   void ConstructorsTestCase();
+  void ServerInteractionTestCase();
   void DumpToFileTestCase();
   void ScanSMBDirTestCase();
   void NameParserTestCase();
@@ -46,21 +48,27 @@ class SpiderTest : public CppUnit::TestFixture, public Spider {
   void DetectMimeTypeTestCase();
   void DumpToDataBaseTestCase();
 
+  void setUp();
+  void tearDown();
  private:
   CPPUNIT_TEST_SUITE(SpiderTest);
   CPPUNIT_TEST(ConstructorsTestCase);
+  CPPUNIT_TEST(ServerInteractionTestCase);
   CPPUNIT_TEST(DumpToFileTestCase);
-  CPPUNIT_TEST(ScanSMBDirTestCase);
   CPPUNIT_TEST(NameParserTestCase);
   CPPUNIT_TEST(AddFileEntryInDataBaseTestCase);
   CPPUNIT_TEST(DetectMimeTypeTestCase);
   CPPUNIT_TEST(DumpToDataBaseTestCase);
+  CPPUNIT_TEST(ScanSMBDirTestCase);
   CPPUNIT_TEST_SUITE_END();
 
   std::string name_;
   std::string server_;
   std::string user_;
   std::string password_;
+
+  char buf_[sizeof SPIDERTESTTEMPLATE];
+  pid_t pid_;
 };
 
 #endif  // TEST_SPIDERTEST_H_

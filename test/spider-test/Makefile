@@ -4,6 +4,8 @@ HEADERS=spidertest.h
 SOURCES=spidertest.cpp main.cpp
 SOURCES+=$(SRCDIR)/spider/spider.cpp
 SOURCES+=$(SRCDIR)/spider/servermanager.cpp
+SOURCES+=$(SRCDIR)/scheduler/schedulerserver.cpp
+SOURCES+=$(SRCDIR)/scheduler/serverqueue.cpp
 
 include ../../config.mk
 

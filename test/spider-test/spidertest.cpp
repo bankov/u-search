@@ -27,39 +27,64 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#include <dirent.h>
+#include <unistd.h>
+#include <signal.h>
 
 #include <algorithm>
 
 #include "config.h"
 #include "common-inl.h"
 #include "spidertest.h"
+#include "scheduler/schedulerserver.h"
 
 SpiderTest::SpiderTest() : Spider() {}
 
 void SpiderTest::setUp() {
+  memcpy(buf_, SPIDERTESTTEMPLATE, sizeof buf_);
+
   CPPUNIT_ASSERT_MESSAGE("Error in reading configuration files",
                          read_database_config(&name_, &server_, &user_,
                                               &password_,
                                               "../" DATABASE_CONFIG) == 0);
+  int fd = mkstemp(buf_);
+  CPPUNIT_ASSERT(fd != -1);
+
+  FILE *fp = fdopen(fd, "w+");
+  CPPUNIT_ASSERT(fp != NULL);
+
+  CPPUNIT_ASSERT(fputs("test1\n", fp) > 0);
+  CPPUNIT_ASSERT(fputs("test2\n", fp) > 0);
+  CPPUNIT_ASSERT(fclose(fp) == 0);
+
+  pid_ = 0;
+}
+
+void SpiderTest::tearDown() {
+  unlink(buf_);
+  if (pid_ != 0)
+  	kill(pid_, SIGKILL);
 }
 
 void SpiderTest::ConstructorsTestCase() {
-  // Create a simple file with list of servers
-  FILE *f=fopen("../server_test", "w");
-  CPPUNIT_ASSERT(f);
-  CPPUNIT_ASSERT(fprintf(f, "%s\n", "test.server") > 0);
-  CPPUNIT_ASSERT(fprintf(f, "%s\n", "another.test.server") > 0);
-  CPPUNIT_ASSERT(fprintf(f, "\n") > 0);
-  CPPUNIT_ASSERT(fprintf(f, "%s\n", "test.server") > 0);
-  fclose(f);
+  Spider spider;
+  CPPUNIT_ASSERT(!spider.get_error());
+}
 
-  Spider *spider = new(std::nothrow) Spider();
-  CPPUNIT_ASSERT(!spider->get_error());
-  DIR *fd = opendir(TMPDIR);
-  CPPUNIT_ASSERT_MESSAGE("Error in create temporary directory", fd);
-  CPPUNIT_ASSERT(closedir(fd) == 0);
-  delete spider;
+void SpiderTest::ServerInteractionTestCase() {
+  CPPUNIT_ASSERT((pid_ = fork()) != -1);
+
+  if (pid_ == 0) {
+    SchedulerServer serv(buf_);
+    CPPUNIT_ASSERT(serv.is_error() == 0);
+    serv.Run();
+  } else {
+    ServerManager pserver_manager("localhost");
+    
+    CPPUNIT_ASSERT(pserver_manager.GetServer() == "test2");
+    pserver_manager.ReleaseServer();
+    CPPUNIT_ASSERT(pserver_manager.GetServer() == "test1");
+    pserver_manager.ReleaseServer();
+  }
 }
 
 void SpiderTest::ScanSMBDirTestCase() {
@@ -78,7 +103,7 @@ void SpiderTest::ScanSMBDirTestCase() {
   CPPUNIT_ASSERT_MESSAGE("test_file not found", files[0] == dir + "/test_file");
   CPPUNIT_ASSERT_MESSAGE("test_folder/test_file not found",
                          files[1] == dir + "/test_folder/test_file");
-  CPPUNIT_ASSERT_MESSAGE("Wrong number of serach elements",
+  CPPUNIT_ASSERT_MESSAGE("Wrong number of search elements",
                          *get_last() == files[2]);
 }
 

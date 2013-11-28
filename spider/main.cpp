@@ -38,7 +38,7 @@ int main() {
     MSS_DEBUG_MESSAGE("failed");
   }
 
-  Spider spider(SCHEDULERHOST, name, server, user, password);
+  Spider spider("../" SPIDER_CONFIG, name, server, user, password);
   if (spider.get_error()) {
     MSS_DEBUG_ERROR("Spider", spider.get_error());
     return 1;

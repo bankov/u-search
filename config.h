@@ -17,10 +17,7 @@
 // run on the same machine.
 #define SPIDERPORT "2051"
 
-/**
- * @def DATABASE_CONFIG
- * A macro to define path to the database config file.
- */
+// Database configuration file.
 #define DATABASE_CONFIG "/etc/u-search/database.dat"
 
 // Size of buffer which used to get smb directory entries.

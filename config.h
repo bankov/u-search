@@ -32,4 +32,7 @@
 // The size of file header to copy in TMPDIR to detect mime type of file.
 #define HEADERSIZE 10
 
+// The address family
+#define FAMILY AF_INET
+
 #endif  // CONFIG_H_

@@ -7,6 +7,7 @@ SOURCES+=$(SRCDIR)/test/datastorage-test/datastoragetest.cpp
 SOURCES+=$(SRCDIR)/spider/spider.cpp
 SOURCES+=$(SRCDIR)/test/serverqueue-test/serverqueuetest.cpp
 SOURCES+=$(SRCDIR)/scheduler/serverqueue.cpp
+SOURCES+=$(SRCDIR)/scheduler/schedulerserver.cpp
 SOURCES+=$(SRCDIR)/spider/servermanager.cpp
 
 include ../../config.mk

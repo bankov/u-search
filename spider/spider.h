@@ -55,7 +55,7 @@ class Spider {
   explicit Spider(const std::string &server);
   /**
    * Constructor which create an object, init all variables, connect to
-   * data base, create a mimt type attribute if it doesn't exists.
+   * data base, create a MIME type attribute if it doesn't exists.
    *
    * @param server Scheduler server address.
    * @param db_name Name of the data base.
@@ -111,9 +111,9 @@ class Spider {
   inline std::vector<std::string>::iterator get_last() const { return last_; }
 
   /**
-   * Get a mime type attribute.
+   * Get a MIME type attribute.
    *
-   * @return Mime type attribute.
+   * @return MIME type attribute.
    */
   inline FileAttribute get_mime_type_attr() const { return *mime_type_attr_; }
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
@@ -220,7 +220,7 @@ class Spider {
   void AddSMBFile(const std::string &name);
 
   /**
-   * Detect mime type of given file.
+   * Detect MIME type of given file.
    *
    * @param name Name of the file to be observed.
    *
@@ -229,7 +229,7 @@ class Spider {
   const char *DetectMimeType(const std::string &name);
 
   /**
-   * Initilize file attribute to store mime type in data base.
+   * Initilize file attribute to store MIME type in data base.
    *
    * @return 0 on success, -1 otherwise.
    */
@@ -273,12 +273,12 @@ class Spider {
   std::string db_password_;
 
   /**
-   * Cookie for magic library to detect mime-types.
+   * Cookie for magic library to detect MIME-types.
    */
   magic_t cookie_;
 
   /**
-   * Id of attribute to store mime type in data base.
+   * Id of attribute to store MIME type in data base.
    */
   std::shared_ptr<FileAttribute> mime_type_attr_;
 

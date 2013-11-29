@@ -48,14 +48,9 @@ class Spider {
    */
   Spider();
   /**
-   * Constructor which inits all variables and connects to scheduler server.
-   *
-   * @param server Scheduler server address.
-   */
-  explicit Spider(const std::string &server);
-  /**
-   * Constructor which create an object, init all variables, connect to
-   * data base, create a MIME type attribute if it doesn't exists.
+   * Constructor which creates an object, initializes all variables,
+   * connects to scheduler server and database and creates a MIME
+   * type attribute if it doesn't exists.
    *
    * @param server Scheduler server address.
    * @param db_name Name of the data base.

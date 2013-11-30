@@ -48,12 +48,12 @@ class ServerManager {
   ~ServerManager();
 
   /**
-   * @brief Get server to be indexed.
+   * Get server to be indexed.
    */
   std::string GetServer();
 
   /**
-   * @brief Release server when indexing is finished.
+   * Release server when indexing is finished.
    */
   void ReleaseServer();
 

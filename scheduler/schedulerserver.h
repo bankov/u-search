@@ -61,7 +61,6 @@ class SchedulerServer {
   bool is_error() const { return error_; }
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(SchedulerServer);
   /**
    * Some queue to get servers from.
    */
@@ -74,6 +73,8 @@ class SchedulerServer {
    * If error occured.
    */
   bool error_;
+
+  DISALLOW_COPY_AND_ASSIGN(SchedulerServer);
 };
 
 #endif  // SCHEDULER_SCHEDULERSERVER_H_

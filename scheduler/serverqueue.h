@@ -142,8 +142,6 @@ class ServerQueue {
   int ReadServersList(std::string servers_file);
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(ServerQueue);
-
   /**
    * list of the servers.
    */
@@ -158,6 +156,8 @@ class ServerQueue {
    * Maximum time between keepalive messages
    */
   const time_t kMaxWait = 60;
+
+  DISALLOW_COPY_AND_ASSIGN(ServerQueue);
 };
 
 #endif  // SCHEDULER_SERVERQUEUE_H_

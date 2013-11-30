@@ -112,6 +112,7 @@ class Spider {
    */
   inline FileAttribute get_mime_type_attr() const { return *mime_type_attr_; }
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
+
  protected:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   /**

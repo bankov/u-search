@@ -340,18 +340,12 @@ int Spider::AddFileEntryInDataBase(const std::string &file,
     return -1;
   }
 
-  // Try to find this entry in database
-  auto db_file = FileEntry::GetByPathOnServer(path, server);
+  // TODO(yulyugin): Not detect parameter for existing entry
+  // after issue #5 will fixed.
 
   // Add new entry or updaste existing
   FileEntry entry(name, path, server);
-  // TODO(yulyugin): Add error check
-
-  if (db_file == nullptr) {
-    // No such entry in database so we need to add a mime type information
-    FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
-    // TODO(yulyugin): Add error check
-  }
+  FileParameter(entry, *mime_type_attr_, DetectMimeType(file), 0, true);
 
   return 0;
 }

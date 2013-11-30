@@ -58,12 +58,12 @@ class ServerManager {
   void ReleaseServer();
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(ServerManager);
   std::mutex keepalivemutex_;
   int keepalive_;
   std::thread keepalivethread_;
   std::string smbserver_;
   int sockfd_;
+  DISALLOW_COPY_AND_ASSIGN(ServerManager);
 };
 
 #endif  // SPIDER_SERVERMANAGER_H_

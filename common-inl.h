@@ -33,7 +33,9 @@
 #ifndef COMMON_INL_H_
 #define COMMON_INL_H_
 
+#include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <syslog.h>
 

@@ -67,7 +67,7 @@ void ServerQueue::AddServer(std::string server_name) {
 
   // Add a new server before the head of the queue so that it will be
   // returned by CmdGet() the next time
-  ilast_server_ = servers_list_->insert(ilast_server_, server_name);
+  ilast_server_ = servers_list_->emplace(ilast_server_, server_name);
 }
 
 int ServerQueue::ReadServersList(std::string servers_file) {

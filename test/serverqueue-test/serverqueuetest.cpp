@@ -107,7 +107,7 @@ void ServerQueueTest::ReleaseOfBusyServer() {
                          CmdGet() == "foo");
   CmdRelease("bar");
   CPPUNIT_ASSERT_MESSAGE("Misbehaviour when releasing a server",
-                         get_servers_list().begin()->get_timestamp() == 0);
+                         servers_list_->begin()->get_timestamp() == 0);
 }
 
 void ServerQueueTest::GetNonExistentServer() {
@@ -116,7 +116,7 @@ void ServerQueueTest::GetNonExistentServer() {
   CmdGet("bar");
   CPPUNIT_ASSERT_MESSAGE("Timestamp updated for the wrong server when trying"
                          " to get non-existent server",
-                         get_servers_list().begin()->get_timestamp() == 0);
+                         servers_list_->begin()->get_timestamp() == 0);
 }
 
 void ServerQueueTest::ReleaseNonExistentServer() {
@@ -126,7 +126,7 @@ void ServerQueueTest::ReleaseNonExistentServer() {
                          CmdGet() == "foo");
   CmdRelease("bar");
   CPPUNIT_ASSERT_MESSAGE("Wrong behaviour when releasing a non-existent server",
-                          get_servers_list().begin()->get_timestamp() != 0);
+                          servers_list_->begin()->get_timestamp() != 0);
 }
 
 void ServerQueueTest::GetAfterRelease() {
